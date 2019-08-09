@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HSSFFont getFontAt(short idx) {
+        if(fonts == null) fonts = new Hashtable();
+
+        // So we don&#x27;t confuse users, give them back
+        //  the same object every time, but create
+        //  them lazily
+        Short sIdx = Short.valueOf(idx);
+        if(fonts.containsKey(sIdx)) {
+            return (HSSFFont)fonts.get(sIdx);
+        }
+
+        FontRecord font = workbook.getFontRecordAt(idx);
+        HSSFFont retval = new HSSFFont(idx, font);
+        fonts.put(sIdx, retval);
+
+        return retval;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public FontRecord getFontRecordAt(int idx) {
+        int index = idx;
+
+        if (index &gt; 4) {
+            index -= 1;   // adjust for &quot;There is no 4&quot;
+        }
+        if (index &gt; (numfonts - 1)) {
+            throw new ArrayIndexOutOfBoundsException(
+            &quot;There are only &quot; + numfonts
+            + &quot; font records, you asked for &quot; + idx);
+        }
+        FontRecord retval =
+        ( FontRecord ) records.get((records.getFontpos() - (numfonts - 1)) + index);
+
+        return retval;
+    }
+</code></pre>
+</body>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void ensureColumnBounds(Sheet sheet) {
+        if (gotBounds)
+            return;
+
+        Iterator&lt;Row&gt; iter = sheet.rowIterator();
+        firstColumn = (iter.hasNext() ? Integer.MAX_VALUE : 0);
+        endColumn = 0;
+        while (iter.hasNext()) {
+            Row row = iter.next();
+            short firstCell = row.getFirstCellNum();
+            if (firstCell &gt;= 0) {
+                firstColumn = Math.min(firstColumn, firstCell);
+                endColumn = Math.max(endColumn, row.getLastCellNum());
+            }
+        }
+        gotBounds = true;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  public SVTableModel(HSSFSheet st) {
+    this.st = st;
+    Iterator i = st.rowIterator();
+
+    while (i.hasNext()) {
+      HSSFRow row = (HSSFRow)i.next();
+      if (maxcol &lt; (row.getLastCellNum()+1)) {
+         this.maxcol = row.getLastCellNum();
+      }
+    }
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static void process(HSSFWorkbook wb) {
+		HSSFFormulaEvaluator eval =	new HSSFFormulaEvaluator(wb);
+		for(int i=0; i&lt;wb.getNumberOfSheets(); i++) {
+			HSSFSheet s = wb.getSheetAt(i);
+
+			Iterator it = s.rowIterator();
+			while(it.hasNext()) {
+				HSSFRow r = (HSSFRow)it.next();
+				process(r, eval);
+			}
+		}
+	}
+</code></pre>
+</body>

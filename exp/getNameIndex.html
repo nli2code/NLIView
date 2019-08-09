@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test30070() {
+        HSSFWorkbook wb = openSample(&quot;30070.xls&quot;); //contains custom VBA function &#x27;Commission&#x27;
+        HSSFSheet sh = wb.getSheetAt(0);
+        HSSFCell cell = sh.getRow(0).getCell(1);
+
+        //B1 uses VBA in the formula
+        assertEquals(&quot;Commission(A1)&quot;, cell.getCellFormula());
+
+        //name sales_1 refers to Commission(Sheet0!$A$1)
+        int idx = wb.getNameIndex(&quot;sales_1&quot;);
+        assertTrue(idx != -1);
+
+        HSSFName name = wb.getNameAt(idx);
+        assertEquals(&quot;Commission(Sheet0!$A$1)&quot;, name.getRefersToFormula());
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int getNameIndex(String name) {
+        int i = 0;
+        for(XSSFName nr : namedRanges) {
+            if(nr.getNameName().equals(name)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static CellReference getCellReference(Workbook workbook, String cellName) {
+		CellReference cellReference = null;
+		int namedCellIndex = workbook.getNameIndex(cellName);
+		if (namedCellIndex &gt;= 0) {
+			cellReference =
+					new AreaReference(workbook.getNameAt(namedCellIndex).getRefersToFormula()).getFirstCell();
+		}
+		return cellReference;
+	}
+</code></pre>
+</body>

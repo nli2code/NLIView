@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static void main(String[] args) throws Exception {
+		if(args.length == 0) {
+			System.err.println(&quot;Use:&quot;);
+			System.err.println(&quot;  VSDDumper &lt;filename&gt;&quot;);
+			System.exit(1);
+		}
+
+		HDGFDiagram hdgf = new HDGFDiagram(
+				new POIFSFileSystem(new FileInputStream(args[0]))
+		);
+
+		System.out.println(&quot;Opened &quot; + args[0]);
+		System.out.println(&quot;The document claims a size of &quot; +
+				hdgf.getDocumentSize() + &quot;   (&quot; +
+				Long.toHexString(hdgf.getDocumentSize()) + &quot;)&quot;);
+		System.out.println();
+
+		dumpStream(hdgf.getTrailerStream(), 0);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private void confirmIsPOIFS(String sampleFileName, boolean expectedResult) {
+		InputStream in  = new PushbackInputStream(openSampleStream(sampleFileName), 10);
+		boolean actualResult;
+		try {
+			actualResult = POIFSFileSystem.hasPOIFSHeader(in);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		assertEquals(expectedResult, actualResult);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void decrypt() throws IOException, GeneralSecurityException {
+        POIFSFileSystem fs = new POIFSFileSystem(POIDataSamples.getPOIFSInstance().openResourceAsStream(&quot;protect.xlsx&quot;));
+
+        EncryptionInfo info = new EncryptionInfo(fs);
+
+        Decryptor d = Decryptor.getInstance(info);
+
+        d.verifyPassword(Decryptor.DEFAULT_PASSWORD);
+
+        zipOk(fs.getRoot(), d);
+    }
+</code></pre>
+</body>

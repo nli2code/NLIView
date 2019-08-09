@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testGetPartsByName() throws Exception {
+        String filepath =  OpenXML4JTestDataSamples.getSampleFileName(&quot;sample.docx&quot;);
+
+        OPCPackage pkg = OPCPackage.open(filepath, PackageAccess.READ_WRITE);
+        List&lt;PackagePart&gt; rs =  pkg.getPartsByName(Pattern.compile(&quot;/word/.*?\\.xml&quot;));
+        HashMap&lt;String, PackagePart&gt;  selected = new HashMap&lt;String, PackagePart&gt;();
+
+        for(PackagePart p : rs)
+            selected.put(p.getPartName().getName(), p);
+
+        assertEquals(6, selected.size());
+        assertTrue(selected.containsKey(&quot;/word/document.xml&quot;));
+        assertTrue(selected.containsKey(&quot;/word/fontTable.xml&quot;));
+        assertTrue(selected.containsKey(&quot;/word/settings.xml&quot;));
+        assertTrue(selected.containsKey(&quot;/word/styles.xml&quot;));
+        assertTrue(selected.containsKey(&quot;/word/theme/theme1.xml&quot;));
+        assertTrue(selected.containsKey(&quot;/word/webSettings.xml&quot;));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSLFPictureShape createPicture(int pictureIndex){
+
+        List&lt;PackagePart&gt;  pics = _sheet.getPackagePart().getPackage()
+                .getPartsByName(Pattern.compile(&quot;/ppt/media/image&quot; + (pictureIndex + 1) + &quot;.*?&quot;));
+
+        if(pics.size() == 0) {
+            throw new IllegalArgumentException(&quot;Picture with index=&quot; + pictureIndex + &quot; was not found&quot;);
+        }
+
+        PackagePart pic = pics.get(0);
+
+        PackageRelationship rel = _sheet.getPackagePart().addRelationship(
+                pic.getPartName(), TargetMode.INTERNAL, XSLFRelation.IMAGES.getRelation());
+
+        XSLFPictureShape sh = getDrawing().createPicture(rel.getId());
+        sh.resize();
+        _shapes.add(sh);
+        return sh;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public List&lt;PackagePart&gt; getPartsByName(final Pattern namePattern) {
+	    if (namePattern == null) {
+	        throw new IllegalArgumentException(&quot;name pattern must not be null&quot;);
+	    }
+	    ArrayList&lt;PackagePart&gt; result = new ArrayList&lt;PackagePart&gt;();
+	    for (PackagePart part : partList.values()) {
+	        PackagePartName partName = part.getPartName();
+	        String name = partName.getName();
+	        Matcher matcher = namePattern.matcher(name);
+	        if (matcher.matches()) {
+	            result.add(part);
+	        }
+	    }
+	    return result;
+	}
+</code></pre>
+</body>

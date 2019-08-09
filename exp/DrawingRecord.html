@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public Object clone() {
+    	DrawingRecord rec = new DrawingRecord();
+    	
+    	rec.recordData = recordData.clone();
+    	if (contd != null) {
+	    	// TODO - this code probably never executes
+	    	rec.contd = contd.clone();
+    	}
+    	
+    	return rec;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static boolean isDrawingLayerRecord(final short sid) {
+        return sid == DrawingRecord.sid ||
+                sid == ContinueRecord.sid ||
+                sid == ObjRecord.sid ||
+                sid == TextObjectRecord.sid;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    HSSFSheet cloneSheet(HSSFWorkbook workbook) {
+        this.getDrawingPatriarch();/**Aggregate drawing records**/
+        HSSFSheet sheet = new HSSFSheet(workbook, _sheet.cloneSheet());
+        int pos = sheet._sheet.findFirstRecordLocBySid(DrawingRecord.sid);
+        DrawingRecord dr = (DrawingRecord) sheet._sheet.findFirstRecordBySid(DrawingRecord.sid);
+        if (null != dr) {
+            sheet._sheet.getRecords().remove(dr);
+        }
+        if (getDrawingPatriarch() != null) {
+            HSSFPatriarch patr = HSSFPatriarch.createPatriarch(this.getDrawingPatriarch(), sheet);
+            sheet._sheet.getRecords().add(pos, patr._getBoundAggregate());
+            sheet._patriarch = patr;
+        }
+        return sheet;
+    }
+</code></pre>
+</body>

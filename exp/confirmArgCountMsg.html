@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void confirmArgCountMsg(String formula, String expectedMessage) {
+		HSSFWorkbook book = new HSSFWorkbook();
+		try {
+			HSSFFormulaParser.parse(formula, book);
+			throw new AssertionFailedError(&quot;Didn&#x27;t get parse exception as expected&quot;);
+		} catch (FormulaParseException e) {
+			confirmParseException(e, expectedMessage);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testWrongNumberOfFunctionArgs() {
+		confirmArgCountMsg(&quot;sin()&quot;, &quot;Too few arguments to function &#x27;SIN&#x27;. Expected 1 but got 0.&quot;);
+		confirmArgCountMsg(&quot;countif(1, 2, 3, 4)&quot;, &quot;Too many arguments to function &#x27;COUNTIF&#x27;. Expected 2 but got 4.&quot;);
+		confirmArgCountMsg(&quot;index(1, 2, 3, 4, 5, 6)&quot;, &quot;Too many arguments to function &#x27;INDEX&#x27;. At most 4 were expected but got 6.&quot;);
+		confirmArgCountMsg(&quot;vlookup(1, 2)&quot;, &quot;Too few arguments to function &#x27;VLOOKUP&#x27;. At least 3 were expected but got 2.&quot;);
+	}
+</code></pre>
+</body>

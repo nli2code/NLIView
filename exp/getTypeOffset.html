@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public XSSFFont findFont(short boldWeight, short color, short fontHeight, String name, boolean italic, boolean strikeout, short typeOffset, byte underline) {
+		for (XSSFFont font : fonts) {
+			if (	(font.getBoldweight() == boldWeight)
+					&amp;&amp; font.getColor() == color
+					&amp;&amp; font.getFontHeight() == fontHeight
+					&amp;&amp; font.getFontName().equals(name)
+					&amp;&amp; font.getItalic() == italic
+					&amp;&amp; font.getStrikeout() == strikeout
+					&amp;&amp; font.getTypeOffset() == typeOffset
+					&amp;&amp; font.getUnderline() == underline)
+			{
+				return font;
+			}
+		}
+		return null;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public short getTypeOffset() {
+        CTVerticalAlignFontProperty vAlign = _ctFont.sizeOfVertAlignArray() == 0 ? null : _ctFont.getVertAlignArray(0);
+        if (vAlign == null) {
+            return Font.SS_NONE;
+        }
+        int val = vAlign.getVal().intValue();
+        switch (val) {
+            case STVerticalAlignRun.INT_BASELINE:
+                return Font.SS_NONE;
+            case STVerticalAlignRun.INT_SUBSCRIPT:
+                return Font.SS_SUB;
+            case STVerticalAlignRun.INT_SUPERSCRIPT:
+                return Font.SS_SUPER;
+            default:
+                throw new POIXMLException(&quot;Wrong offset value &quot; + val);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testTypeOffset() {
+		CTFont ctFont=CTFont.Factory.newInstance();
+		CTVerticalAlignFontProperty valign=ctFont.addNewVertAlign();
+		valign.setVal(STVerticalAlignRun.BASELINE);
+		ctFont.setVertAlignArray(0,valign);
+
+		XSSFFont font=new XSSFFont(ctFont);
+		assertEquals(Font.SS_NONE,font.getTypeOffset());
+
+		font.setTypeOffset(XSSFFont.SS_SUPER);
+		assertEquals(STVerticalAlignRun.SUPERSCRIPT,ctFont.getVertAlignArray(0).getVal());
+	}
+</code></pre>
+</body>

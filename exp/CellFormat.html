@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testApplyObjectBoolean() {
+        
+        CellFormat cf1 = CellFormat.getInstance(&quot;0&quot;);
+        CellFormat cf2 = CellFormat.getInstance(&quot;General&quot;);
+        CellFormat cf3 = CellFormat.getInstance(&quot;@&quot;);
+        
+        assertEquals(&quot;TRUE&quot;, cf1.apply(true).text);
+        assertEquals(&quot;FALSE&quot;, cf2.apply(false).text);
+        assertEquals(&quot;TRUE&quot;, cf3.apply(true).text);
+        
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>            public Object getValue(Cell cell) {
+                int type = CellFormat.ultimateType(cell);
+                if (type == Cell.CELL_TYPE_BOOLEAN)
+                    return cell.getBooleanCellValue();
+                else if (type == Cell.CELL_TYPE_NUMERIC)
+                    return cell.getNumericCellValue();
+                else
+                    return cell.getStringCellValue();
+            }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testFormatWithFourSections() {
+        CellFormat fmt = CellFormat.getInstance(&quot;0.00;-0.00;-; @ &quot;);
+        
+        assertEquals(&quot;12.35&quot;,  fmt.apply(12.345).text);
+        assertEquals(&quot;-12.35&quot;, fmt.apply(-12.345).text);
+        assertEquals(&quot;-&quot;,      fmt.apply(0.0).text);
+        assertEquals(&quot; abc &quot;,  fmt.apply(&quot;abc&quot;).text);
+    }
+</code></pre>
+</body>

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testPassword() {
+		Biff8EncryptionKey.setCurrentUserPassword(&quot;password&quot;);
+		ExcelExtractor extractor = createExtractor(&quot;password.xls&quot;);
+		String text = extractor.getText();
+		Biff8EncryptionKey.setCurrentUserPassword(null);
+
+		assertTrue(text.contains(&quot;ZIP&quot;));
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testCreateKeyDigest() {
+		byte[] docIdData = fromHex(&quot;17 F6 D1 6B 09 B1 5F 7B 4C 9D 03 B4 81 B5 B4 4A&quot;);
+		byte[] keyDigest = Biff8EncryptionKey.createKeyDigest(&quot;MoneyForNothing&quot;, docIdData);
+		byte[] expResult = fromHex(&quot;C2 D9 56 B2 6B&quot;);
+		if (!Arrays.equals(expResult, keyDigest)) {
+			throw new ComparisonFailure(&quot;keyDigest mismatch&quot;, HexDump.toHex(expResult), HexDump.toHex(keyDigest));
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		public RecordInputStream createDecryptingStream(InputStream original) {
+			FilePassRecord fpr = _filePassRec;
+			String userPassword = Biff8EncryptionKey.getCurrentUserPassword();
+
+			Biff8EncryptionKey key;
+			if (userPassword == null) {
+				key = Biff8EncryptionKey.create(fpr.getDocId());
+			} else {
+				key = Biff8EncryptionKey.create(userPassword, fpr.getDocId());
+			}
+			if (!key.validate(fpr.getSaltData(), fpr.getSaltHash())) {
+				throw new EncryptedDocumentException(
+						(userPassword == null ? &quot;Default&quot; : &quot;Supplied&quot;)
+						+ &quot; password is invalid for docId/saltData/saltHash&quot;);
+			}
+			return new RecordInputStream(original, key, _initialRecordsSize);
+		}
+</code></pre>
+</body>

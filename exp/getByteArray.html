@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void serialize( byte[] data, int offset )
+    {
+        LittleEndian.putInt( data, 0x0 + offset, field_1_iStartAt );
+        data[ 0x4 + offset ] = field_2_nfc;
+        data[ 0x5 + offset ] = field_3_info;
+        System.arraycopy( field_4_rgbxchNums, 0, data, 0x6 + offset, field_4_rgbxchNums.length );
+        data[ 0xf + offset ] = field_5_ixchFollow;
+        LittleEndian.putInt( data, 0x10 + offset, field_6_dxaIndentSav );
+        LittleEndian.putInt( data, 0x14 + offset, field_7_unused2 );
+        LittleEndian.putUByte( data, 0x18 + offset, field_8_cbGrpprlChpx );
+        LittleEndian.putUByte( data, 0x19 + offset, field_9_cbGrpprlPapx );
+        LittleEndian.putUByte( data, 0x1a + offset, field_10_ilvlRestartLim );
+        field_11_grfhic.serialize( data, 0x1b + offset );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    CodePageString( final byte[] data, final int startOffset )
+    {
+        int offset = startOffset;
+
+        int size = LittleEndian.getInt( data, offset );
+        offset += LittleEndian.INT_SIZE;
+
+        _value = LittleEndian.getByteArray( data, offset, size );
+        if ( _value[size - 1] != 0 ) {
+            // TODO Some files, such as TestVisioWithCodepage.vsd, are currently
+            //  triggering this for values that don&#x27;t look like codepages
+            // See Bug #52258 for details
+            logger.log(POILogger.WARN, &quot;CodePageString started at offset #&quot; + offset
+                        + &quot; is not NULL-terminated&quot; );
+//            throw new IllegalPropertySetDataException(
+//                    &quot;CodePageString started at offset #&quot; + offset
+//                            + &quot; is not NULL-terminated&quot; );
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public DocumentProperties( byte[] tableStream, int offset, int length )
+    {
+        super.fillFields( tableStream, offset );
+
+        final int supportedSize = DOPAbstractType.getSize();
+        if ( length != supportedSize )
+        {
+            this._preserved = LittleEndian.getByteArray( tableStream, offset
+                    + supportedSize, length - supportedSize );
+        }
+        else
+        {
+            _preserved = new byte[0];
+        }
+    }
+</code></pre>
+</body>

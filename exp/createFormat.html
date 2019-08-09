@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public int createFormat(String formatString) {
+
+        maxformatid = maxformatid &gt;= 0xa4 ? maxformatid + 1 : 0xa4; //Starting value from M$ empircal study.
+        FormatRecord rec = new FormatRecord(maxformatid, formatString);
+
+        int pos = 0;
+        while ( pos &lt; records.size() &amp;&amp; records.get( pos ).getSid() != FormatRecord.sid )
+            pos++;
+        pos += formats.size();
+        formats.add( rec );
+        records.add( pos, rec );
+        return maxformatid;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public short getFormat(String format, boolean createIfNotFound) {
+      for (FormatRecord r : formats) {
+        if (r.getFormatString().equals(format)) {
+        return (short)r.getIndexCode();
+        }
+      }
+
+      if (createIfNotFound) {
+        return (short)createFormat(format);
+      }
+
+      return -1;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static FormatRecord createFormat(int id) {
+        // we&#x27;ll need multiple editions for
+        // the different formats
+
+        
+        switch (id) {
+            case 0: return new FormatRecord(5, BuiltinFormats.getBuiltinFormat(5)); 
+            case 1: return new FormatRecord(6, BuiltinFormats.getBuiltinFormat(6)); 
+            case 2: return new FormatRecord(7, BuiltinFormats.getBuiltinFormat(7)); 
+            case 3: return new FormatRecord(8, BuiltinFormats.getBuiltinFormat(8)); 
+            case 4: return new FormatRecord(0x2a, BuiltinFormats.getBuiltinFormat(0x2a)); 
+            case 5: return new FormatRecord(0x29, BuiltinFormats.getBuiltinFormat(0x29)); 
+            case 6: return new FormatRecord(0x2c, BuiltinFormats.getBuiltinFormat(0x2c)); 
+            case 7: return new FormatRecord(0x2b, BuiltinFormats.getBuiltinFormat(0x2b)); 
+        }
+        throw new  IllegalArgumentException(&quot;Unexpected id &quot; + id);
+    }
+</code></pre>
+</body>

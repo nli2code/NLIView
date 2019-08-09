@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testFunctionsFromTestSpreadsheet() {
+
+		processFunctionGroup(SS.START_OPERATORS_ROW_INDEX, null);
+		processFunctionGroup(SS.START_FUNCTIONS_ROW_INDEX, null);
+		// example for debugging individual functions/operators:
+//		processFunctionGroup(SS.START_OPERATORS_ROW_INDEX, &quot;ConcatEval&quot;);
+//		processFunctionGroup(SS.START_FUNCTIONS_ROW_INDEX, &quot;AVERAGE&quot;);
+
+		// confirm results
+		String successMsg = &quot;There were &quot;
+				+ _evaluationSuccessCount + &quot; successful evaluation(s) and &quot;
+				+ _functionSuccessCount + &quot; function(s) without error&quot;;
+		if(_functionFailureCount &gt; 0) {
+			String msg = _functionFailureCount + &quot; function(s) failed in &quot;
+			+ _evaluationFailureCount + &quot; evaluation(s).  &quot; + successMsg;
+			throw new AssertionFailedError(msg);
+		}
+        logger.log(POILogger.INFO, getClass().getName() + &quot;: &quot; + successMsg);
+	}
+</code></pre>
+</body>

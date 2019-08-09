@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testLoad() {
+
+        AreaFormatRecord record = new AreaFormatRecord(TestcaseRecordInputStream.create(0x100a, data));
+        assertEquals( 0xFFFFFF, record.getForegroundColor());
+        assertEquals( 0x000000, record.getBackgroundColor());
+        assertEquals( 1, record.getPattern());
+        assertEquals( 1, record.getFormatFlags());
+        assertEquals( true, record.isAutomatic() );
+        assertEquals( false, record.isInvert() );
+        assertEquals( 0x4e, record.getForecolorIndex());
+        assertEquals( 0x4d, record.getBackcolorIndex());
+
+
+        assertEquals( 20, record.getRecordSize() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public Color getBackgroundColor(){
+        AbstractEscherOptRecord opt = shape.getEscherOptRecord();
+        EscherSimpleProperty p = HSLFShape.getEscherProperty(opt, EscherProperties.FILL__NOFILLHITTEST);
+
+        if(p != null &amp;&amp; (p.getPropertyValue() &amp; 0x10) == 0) return null;
+
+        return shape.getColor(EscherProperties.FILL__FILLBACKCOLOR, EscherProperties.FILL__FILLOPACITY, -1);
+    }
+</code></pre>
+</body>

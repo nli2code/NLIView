@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private void isCellHiddenMatches(Cell cell1, Cell cell2) {
+		boolean b1 = cell1.getCellStyle().getHidden();
+		boolean b2 = cell1.getCellStyle().getHidden();
+		if (b1 != b2) {
+//			addMessage(loc1, loc2, &quot;Cell Visibility does not Match ::&quot;, (b1 ? &quot;&quot; : &quot;NOT &quot;) + &quot;HIDDEN&quot;,
+//					(b2 ? &quot;&quot; : &quot;NOT &quot;) + &quot;HIDDEN&quot;);
+			addMessage(cell1.getAddress().toString());
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void isCellLockedMatches(Locator loc1, Locator loc2) {
+        boolean b1 = loc1.cell.getCellStyle().getLocked();
+        boolean b2 = loc1.cell.getCellStyle().getLocked();
+        if (b1 != b2) {
+            addMessage(loc1, loc2,
+                    &quot;Cell Protection does not Match ::&quot;,
+                (b1 ? &quot;&quot; : &quot;NOT &quot;)+&quot;LOCKED&quot;,
+                (b2 ? &quot;&quot; : &quot;NOT &quot;)+&quot;LOCKED&quot;
+            );
+        }
+    }
+</code></pre>
+</body>

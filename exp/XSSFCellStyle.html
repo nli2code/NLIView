@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setRowStyle(CellStyle style) {
+        if(style == null) {
+           if(_row.isSetS()) {
+              _row.unsetS();
+              _row.unsetCustomFormat();
+           }
+        } else {
+            StylesTable styleSource = getSheet().getWorkbook().getStylesSource();
+            
+            XSSFCellStyle xStyle = (XSSFCellStyle)style;
+            xStyle.verifyBelongsToStylesSource(styleSource);
+
+            long idx = styleSource.putStyle(xStyle);
+            _row.setS(idx);
+            _row.setCustomFormat(true);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public XSSFCellStyle getStyleAt(int idx) {
+		int styleXfId = 0;
+
+		// 0 is the empty default
+		if(xfs.get(idx).getXfId() &gt; 0) {
+			styleXfId = (int) xfs.get(idx).getXfId();
+		}
+
+		return new XSSFCellStyle(idx, styleXfId, this, theme);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>			public Object get(Column column, Cell cell, CellStyle style) {
+				if (style instanceof XSSFCellStyle) {
+					return ((XSSFCellStyle) style).getTopBorderXSSFColor();
+				} else {
+					Workbook book = cell.getSheet().getWorkbook();
+					short color = style.getTopBorderColor();
+					return PoiExcelColorVisitor.getHssfColor(book, color);
+				}
+			}
+</code></pre>
+</body>

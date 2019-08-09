@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setProperty(final int id, final Object value)
+    {
+        if (value instanceof String)
+            setProperty(id, (String) value);
+        else if (value instanceof Long)
+            setProperty(id, ((Long) value).longValue());
+        else if (value instanceof Integer)
+            setProperty(id, ((Integer) value).intValue());
+        else if (value instanceof Short)
+            setProperty(id, ((Short) value).intValue());
+        else if (value instanceof Boolean)
+            setProperty(id, ((Boolean) value).booleanValue());
+        else if (value instanceof Date)
+            setProperty(id, Variant.VT_FILETIME, value);
+        else
+            throw new HPSFRuntimeException(
+                    &quot;HPSF does not support properties of type &quot; +
+                    value.getClass().getName() + &quot;.&quot;);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  protected void tearDown()
+    throws Exception
+  {
+    _hWPFDocFixture.tearDown();
+    _hWPFDocFixture = null;
+
+    System.setProperty( &quot;org.apache.poi.hwpf.preserveTextTable&quot;, Boolean.FALSE.toString() );
+    super.tearDown();
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testWriteWithPropertyNameColumnHeaders() throws Exception {
+        final String SHEET_ABC = &quot;sheet_abc&quot;;
+        final Map&lt;String, TypedList&lt;?&gt;&gt; data = new HashMap&lt;String, TypedList&lt;?&gt;&gt;();
+        final TypedList&lt;TestRow&gt; testRows = new TypedArrayList&lt;TestRow&gt;(TestRow.class);
+        testRows.add(TestHelper.createTestRow(234L, &quot;name1&quot;, &quot;methodFieldABC&quot;, &quot;fieldWithOnlySet1&quot;));
+        testRows.add(TestHelper.createTestRow(789L, &quot;name2&quot;, &quot;methodFieldZXF&quot;, &quot;fieldWithOnlySet2&quot;));
+        data.put(SHEET_ABC, testRows);
+        annotatedWritePoiParser.setCreateHeaderRow(true);
+        annotatedWritePoiParser.write(data);
+
+        Workbook workbook = WorkbookFactory.create(new FileInputStream(tempOutputFile));
+        Sheet sheet = workbook.getSheet(SHEET_ABC);
+        Assert.assertNotNull(&quot;Sheet &#x27;sheet_abc&#x27; must exists&quot;, sheet);
+        Assert.assertEquals(&quot;Sheet &#x27;sheet_abc&#x27; must contain 3 rows&quot;, 3, sheet.getLastRowNum() + 1);
+
+        Assert.assertEquals(&quot;id&quot;, getStringValueFromCell(sheet, 0, 0));
+        assertHeaderRow(sheet);
+        assertDatarow(sheet, 1);
+    }
+</code></pre>
+</body>

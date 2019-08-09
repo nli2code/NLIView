@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void serialize(LittleEndianOutput out) {
+        out.writeShort(getPaperSize());
+        out.writeShort(getScale());
+        out.writeShort(getPageStart());
+        out.writeShort(getFitWidth());
+        out.writeShort(getFitHeight());
+        out.writeShort(getOptions());
+        out.writeShort(getHResolution());
+        out.writeShort(getVResolution());
+        out.writeDouble(getHeaderMargin());
+        out.writeDouble(getFooterMargin());
+        out.writeShort(getCopies());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public double getMargin(short margin) {
+        switch (margin){
+            case FooterMargin:
+                return _sheet.getPageSettings().getPrintSetup().getFooterMargin();
+            case HeaderMargin:
+                return _sheet.getPageSettings().getPrintSetup().getHeaderMargin();
+            default:
+                return _sheet.getPageSettings().getMargin(margin);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testSetGetHeaderFooterMargin() {
+        CTWorksheet worksheet = CTWorksheet.Factory.newInstance();
+        CTPageMargins pMargins = worksheet.addNewPageMargins();
+        pMargins.setHeader(1.5);
+        pMargins.setFooter(2);
+        XSSFPrintSetup printSetup = new XSSFPrintSetup(worksheet);
+        assertEquals(1.5, printSetup.getHeaderMargin(), 0.0);
+        assertEquals(2.0, printSetup.getFooterMargin(), 0.0);
+
+        printSetup.setHeaderMargin(5);
+        printSetup.setFooterMargin(3.5);
+        assertEquals(5.0, pMargins.getHeader(), 0.0);
+        assertEquals(3.5, pMargins.getFooter(), 0.0);
+    }
+</code></pre>
+</body>

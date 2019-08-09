@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    static String substringBeforeLast( String str, String separator )
+    {
+        if ( isEmpty( str ) || isEmpty( separator ) )
+        {
+            return str;
+        }
+        int pos = str.lastIndexOf( separator );
+        if ( pos == -1 )
+        {
+            return str;
+        }
+        return str.substring( 0, pos );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static void handleFileCollision(String fileName, ReportFileType fileType)
+			throws FileNotFoundException, Exception {
+		String filePath = buildFilePath(fileName, fileType);
+		File fileObject = new File(filePath);
+		while (fileObject.exists()) {
+			String fullFileName = fileObject.getName().trim();
+			String name = StringUtils.substring(fullFileName, 0, fullFileName.lastIndexOf(&quot;.&quot;));
+			String number = StringUtils.substring(name, name.lastIndexOf(&quot;_&quot;) + 1, name.length());
+			fileNumber = Integer.valueOf(number) + 1;
+			filePath = buildFilePath(fileName, fileType);
+			fileObject = new File(filePath);
+		}
+		outputStream = new FileOutputStream(filePath);
+
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static void main(String[] args) throws Exception {
+        for (int i = 0; i &lt; args.length; i++) {
+            OPCPackage pkg = OPCPackage.open(args[i]);
+            XSSFWorkbook wb = new XSSFWorkbook(pkg);
+
+            int sep = args[i].lastIndexOf(&#x27;.&#x27;);
+            String outfile = args[i].substring(0, sep) + &quot;-save.xls&quot; + (wb.isMacroEnabled() ? &quot;m&quot; : &quot;x&quot;);
+            FileOutputStream out = new FileOutputStream(outfile);
+            wb.write(out);
+            out.close();
+
+            pkg.close();
+        }
+    }
+</code></pre>
+</body>

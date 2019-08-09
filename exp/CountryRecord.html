@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void addName(NameRecord name) {
+		_definedNames.add(name);
+
+		// TODO - this is messy
+		// Not the most efficient way but the other way was causing too many bugs
+		int idx = findFirstRecordLocBySid(ExternSheetRecord.sid);
+		if (idx == -1) idx = findFirstRecordLocBySid(SupBookRecord.sid);
+		if (idx == -1) idx = findFirstRecordLocBySid(CountryRecord.sid);
+		int countNames = _definedNames.size();
+		_workbookRecordList.add(idx+countNames, name);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public RecalcIdRecord getRecalcId(){
+        RecalcIdRecord record = (RecalcIdRecord)findFirstRecordBySid(RecalcIdRecord.sid);
+        if(record == null){
+            record = new RecalcIdRecord();
+            // typically goes after the Country record
+            int pos = findFirstRecordLocBySid(CountryRecord.sid);
+            records.add(pos + 1, record);
+        }
+        return record;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static CountryRecord createCountry() {
+        CountryRecord retval = new CountryRecord();
+
+        retval.setDefaultCountry(( short ) 1);
+
+        // from Russia with love ;)
+        if ( Locale.getDefault().toString().equals( &quot;ru_RU&quot; ) ) {
+            retval.setCurrentCountry(( short ) 7);
+        }
+        else {
+            retval.setCurrentCountry(( short ) 1);
+        }
+
+        return retval;
+    }
+</code></pre>
+</body>

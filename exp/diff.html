@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	boolean compareTime (Cell pre, Cell current) {
+		
+		ImportReportInterfaceImpl importInterfaceImpl = new ImportReportInterfaceImpl();
+		
+		
+		double currentTime = current.getNumericCellValue();
+		double preTime = pre.getNumericCellValue();
+		
+		double diff = currentTime - preTime;
+		
+		if (diff &gt; 0.0005) return true;
+		else return false;
+		
+		
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static int dateDiff(long startDateMS, long endDateMS) {
+		long msDiff = endDateMS - startDateMS;
+
+		// some extra checks to make sure we don&#x27;t hide some other bug with the rounding 
+		int remainderHours = (int) ((msDiff % MS_PER_DAY) / MS_PER_HOUR);
+		switch (remainderHours) {
+			case 0:  // normal case
+				break;
+			case 1:  // transition from normal time to daylight savings adjusted
+			case 23: // transition from daylight savings adjusted to normal time
+				// Unexpected since we are using UTC_TIME_ZONE 
+			default:
+				throw new RuntimeException(&quot;Unexpected date diff between &quot; + startDateMS + &quot; and &quot; + endDateMS);
+
+		}
+		return (int) (0.5 + ((double)msDiff / MS_PER_DAY));
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private int diff(final byte[] a, final byte[] b)
+    {
+        final int min = Math.min(a.length, b.length);
+        for (int i = 0; i &lt; min; i++)
+            if (a[i] != b[i])
+                return i;
+        if (a.length != b.length)
+            return min;
+        return -1;
+    }
+</code></pre>
+</body>

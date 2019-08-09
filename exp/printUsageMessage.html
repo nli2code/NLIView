@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void printUsageMessage(PrintStream ps) {
+		ps.println(&quot;Use:&quot;);
+		ps.println(&quot;    &quot; + ExcelExtractor.class.getName() + &quot; [&lt;flag&gt; &lt;value&gt; [&lt;flag&gt; &lt;value&gt; [...]]] [-i &lt;filename.xls&gt;]&quot;);
+		ps.println(&quot;       -i &lt;filename.xls&gt; specifies input file (default is to use stdin)&quot;);
+		ps.println(&quot;       Flags can be set on or off by using the values &#x27;Y&#x27; or &#x27;N&#x27;.&quot;);
+		ps.println(&quot;       Following are available flags and their default values:&quot;);
+		ps.println(&quot;       --show-sheet-names  Y&quot;);
+		ps.println(&quot;       --evaluate-formulas Y&quot;);
+		ps.println(&quot;       --show-comments     N&quot;);
+		ps.println(&quot;       --show-blanks       Y&quot;);
+		ps.println(&quot;       --headers-footers   Y&quot;);
+	}
+</code></pre>
+</body>

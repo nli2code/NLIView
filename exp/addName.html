@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public NameRecord createBuiltInName(byte builtInName, int sheetNumber) {
+        if (sheetNumber &lt; 0 || sheetNumber+1 &gt; Short.MAX_VALUE) {
+            throw new IllegalArgumentException(&quot;Sheet number [&quot;+sheetNumber+&quot;]is not valid &quot;);
+        }
+
+        NameRecord name = new NameRecord(builtInName, sheetNumber);
+
+        if(linkTable.nameAlreadyExists(name)) {
+            throw new RuntimeException(&quot;Builtin (&quot; + builtInName
+                    + &quot;) already exists for sheet (&quot; + sheetNumber + &quot;)&quot;);
+        }
+        addName(name);
+        return name;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void addName(NameRecord name) {
+		_definedNames.add(name);
+
+		// TODO - this is messy
+		// Not the most efficient way but the other way was causing too many bugs
+		int idx = findFirstRecordLocBySid(ExternSheetRecord.sid);
+		if (idx == -1) idx = findFirstRecordLocBySid(SupBookRecord.sid);
+		if (idx == -1) idx = findFirstRecordLocBySid(CountryRecord.sid);
+		int countNames = _definedNames.size();
+		_workbookRecordList.add(idx+countNames, name);
+	}
+</code></pre>
+</body>

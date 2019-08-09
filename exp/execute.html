@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void execute() throws BuildException {
+        log( &quot;handling the workbook with class &quot; + className, Project.MSG_INFO ) ;
+        try {
+            Class clazz = Class.forName( className ) ;
+            Object handlerObj = clazz.newInstance() ;
+            if( handlerObj instanceof IExcelAntWorkbookHandler ) {
+                IExcelAntWorkbookHandler iHandler = (IExcelAntWorkbookHandler)handlerObj ;
+                iHandler.setWorkbook( wbUtil.getWorkbook() ) ;
+                iHandler.execute() ;
+             }
+        } catch( Exception e ) {
+            throw new BuildException( e.getMessage(), e ) ;
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testSetDouble() {
+		String cellId = &quot;&#x27;Sheet3&#x27;!$A$1&quot; ;
+		double testValue = 1.1 ;
+		
+		fixture.setCell( cellId ) ;
+		fixture.setValue( testValue ) ;
+		
+		double value = fixture.getCellValue() ;
+		
+		assertTrue( value &gt; 0 ) ;
+		assertEquals( testValue, value, 0.0 ) ;
+		
+		fixture.execute() ;
+		
+		double setValue = util.getCellAsDouble( cellId ) ;
+		
+		assertEquals( setValue, testValue, 0.0 ) ;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void execute(Path2D.Double path, Context ctx){
+        double x1 = ctx.getValue(arg1);
+        double y1 = ctx.getValue(arg2);
+        double x2 = ctx.getValue(arg3);
+        double y2 = ctx.getValue(arg4);
+        double x3 = ctx.getValue(arg5);
+        double y3 = ctx.getValue(arg6);
+        path.curveTo(x1, y1, x2, y2, x3, y3);
+    }
+</code></pre>
+</body>

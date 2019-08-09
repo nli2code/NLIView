@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public List&lt;Linha&gt; linhasAPartirDa(Integer linha) {
+		return StreamSupport.stream(sheet.spliterator(), false)
+				.skip(linha - 1)
+				.map(row -&gt; Linha.of(row, this))
+				.collect(Collectors.toList());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private LinkedList&lt;? extends Item&gt; getShuffledVillages(Workbook wb) {
+        Sheet sheet = wb.getSheet(SheetName.VILLAGES.getName());
+
+        List&lt;Cell&gt; unfilteredCivCells = new ArrayList&lt;&gt;();
+        sheet.forEach(row -&gt; row.forEach(unfilteredCivCells::add));
+
+        List&lt;Village&gt; villages = unfilteredCivCells.stream()
+                .filter(notEmptyPredicate)
+                .filter(notRandomPredicate)
+                .filter(rowNotZeroPredicate)
+                .filter(columnIndexZeroPredicate)
+                .map(village -&gt; new Village(village.toString()))
+                .collect(Collectors.toList());
+
+        Collections.shuffle(villages);
+        return new LinkedList&lt;&gt;(villages);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private void readMounted(Workbook wb) throws IOException {
+        Sheet mountedsheet = wb.getSheet(SheetName.MOUNTED.toString());
+
+        List&lt;Cell&gt; unfilteredCells = new ArrayList&lt;&gt;();
+        mountedsheet.forEach(row -&gt; row.forEach(unfilteredCells::add));
+
+        List&lt;Mounted&gt; mountedUnits = unfilteredCells.stream()
+                .filter(ItemReader.notEmptyPredicate)
+                .filter(ItemReader.notRandomPredicate)
+                .filter(ItemReader.rowNotZeroPredicate)
+                .filter(ItemReader.columnIndexZeroPredicate)
+                .map(cell -&gt; createMounted(cell.toString()))
+                .collect(Collectors.toList());
+
+        Collections.shuffle(mountedUnits);
+        mountedList = new LinkedList&lt;&gt;(mountedUnits);
+        log.debug(&quot;Mounted units from excel are &quot; + mountedList);
+    }
+</code></pre>
+</body>

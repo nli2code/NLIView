@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toFormulaString(String[] operands) {
+        StringBuilder buf = new StringBuilder();
+
+        if(isExternalFunction()) {
+            buf.append(operands[0]); // first operand is actually the function name
+            appendArgs(buf, 1, operands);
+        } else {
+            buf.append(getName());
+            appendArgs(buf, 0, operands);
+        }
+        return buf.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testMacroFunction() {
+		// testNames.xls contains a VB function called &#x27;myFunc&#x27;
+		HSSFWorkbook w = HSSFTestDataSamples.openSampleWorkbook(&quot;testNames.xls&quot;);
+		HSSFEvaluationWorkbook book = HSSFEvaluationWorkbook.create(w);
+
+		Ptg[] ptg = HSSFFormulaParser.parse(&quot;myFunc()&quot;, w);
+		// myFunc() actually takes 1 parameter.  Don&#x27;t know if POI will ever be able to detect this problem
+
+		// the name gets encoded as the first arg
+		NamePtg tname = (NamePtg) ptg[0];
+		assertEquals(&quot;myFunc&quot;, tname.toFormulaString(book));
+
+		AbstractFunctionPtg tfunc = (AbstractFunctionPtg) ptg[1];
+		assertTrue(tfunc.isExternalFunction());
+	}
+</code></pre>
+</body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public Component getListCellRendererComponent( JList list,
+           Object value, int index, boolean isSelected, boolean cellHasFocus) {
+      Dimension d = getPreferredSize();
+      HSSFRow row = sheet.getRow(index);
+      int rowHeight;
+      if(row == null) {
+    	  rowHeight = (int)sheet.getDefaultRowHeightInPoints();
+      } else {
+    	  rowHeight = (int)row.getHeightInPoints();
+      }
+      d.height = rowHeight+extraHeight;
+      setPreferredSize(d);
+      setText((value == null) ? &quot;&quot; : value.toString());
+      return this;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void resize(double scaleX, double scaleY) {
+        HSSFClientAnchor anchor = getClientAnchor();
+        anchor.setAnchorType(AnchorType.MOVE_DONT_RESIZE);
+
+        HSSFClientAnchor pref = getPreferredSize(scaleX,scaleY);
+
+        int row2 = anchor.getRow1() + (pref.getRow2() - pref.getRow1());
+        int col2 = anchor.getCol1() + (pref.getCol2() - pref.getCol1());
+
+        anchor.setCol2((short)col2);
+        // anchor.setDx1(0);
+        anchor.setDx2(pref.getDx2());
+
+        anchor.setRow2(row2);
+        // anchor.setDy1(0);
+        anchor.setDy2(pref.getDy2());
+    }
+</code></pre>
+</body>

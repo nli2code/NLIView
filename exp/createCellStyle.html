@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public CellStyle stringSeptailStyle(Workbook workbook, boolean isWarp) {
+        CellStyle style = workbook.createCellStyle();
+        style.setBorderLeft((short) 1); // 左边框
+        style.setBorderRight((short) 1); // 右边框
+        style.setBorderBottom((short) 1);
+        style.setBorderTop((short) 1);
+        style.setFillForegroundColor((short) 41); // 填充的背景颜色
+        style.setFillPattern(CellStyle.SOLID_FOREGROUND); // 填充图案
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setDataFormat(STRING_FORMAT);
+        if (isWarp) {
+            style.setWrapText(true);
+        }
+        return style;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private CellStyle getRowStyle(HSSFWorkbook workbook) {
+
+		CellStyle style = workbook.createCellStyle();
+		Font font = workbook.createFont();
+		font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
+		font.setColor(Font.COLOR_NORMAL);
+		font.setItalic(true);
+		font.setFontName(&quot;Times New Roman&quot;);
+
+		style.setFont(font);
+		return style;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public Cell fromJava(Row row, int column, BigDecimal value) {
+        final Sheet sheet = row.getSheet();
+        final Workbook workbook = sheet.getWorkbook();
+        String value1 = String.valueOf(value);
+        final CellStyle cellStyle = workbook.createCellStyle();
+        final Cell cell = row.createCell(column);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(value1);
+        cell.setCellType(Cell.CELL_TYPE_STRING);
+
+        return cell;
+    }
+</code></pre>
+</body>

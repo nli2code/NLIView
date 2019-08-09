@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setFontName(String name){
+		// Add a null termination if required
+		if(! name.endsWith(&quot;\000&quot;)) {
+			name = name + &quot;\000&quot;;
+		}
+
+		// Ensure it&#x27;s not now too long
+		if(name.length() &gt; 32) {
+			throw new RuntimeException(&quot;The length of the font name, including null termination, must not exceed 32 characters&quot;);
+		}
+
+		// Everything&#x27;s happy, so save the name
+        try {
+            byte[] bytes = name.getBytes(&quot;UTF-16LE&quot;);
+            System.arraycopy(bytes, 0, _recdata, 0, bytes.length);
+        } catch (UnsupportedEncodingException e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>   public void writeValue(OutputStream out) throws IOException {
+      try {
+         byte[] data = rawId.getBytes(&quot;ASCII&quot;); 
+         out.write(data);
+      } catch(UnsupportedEncodingException e) {
+         throw new RuntimeException(&quot;Core encoding not found, JVM broken?&quot;, e);
+      }
+   }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static short hashPassword(String password) {
+        byte[] passwordCharacters = password.getBytes();
+        int hash = 0;
+        if (passwordCharacters.length &gt; 0) {
+            int charIndex = passwordCharacters.length;
+            while (charIndex-- &gt; 0) {
+                hash = ((hash &gt;&gt; 14) &amp; 0x01) | ((hash &lt;&lt; 1) &amp; 0x7fff);
+                hash ^= passwordCharacters[charIndex];
+            }
+            // also hash with charcount
+            hash = ((hash &gt;&gt; 14) &amp; 0x01) | ((hash &lt;&lt; 1) &amp; 0x7fff);
+            hash ^= passwordCharacters.length;
+            hash ^= (0x8000 | (&#x27;N&#x27; &lt;&lt; 8) | &#x27;K&#x27;);
+        }
+        return (short)hash;
+    } 
+</code></pre>
+</body>

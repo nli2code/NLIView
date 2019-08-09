@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void readFrom(InputStream is) throws IOException, SAXException {
+        InputSource sheetSource = new InputSource(is);
+        SAXParserFactory saxFactory = SAXParserFactory.newInstance();
+        try {
+           SAXParser saxParser = saxFactory.newSAXParser();
+           XMLReader sheetParser = saxParser.getXMLReader();
+           sheetParser.setContentHandler(this);
+           sheetParser.parse(sheetSource);
+        } catch(ParserConfigurationException e) {
+           throw new RuntimeException(&quot;SAX parser appears to be broken - &quot; + e.getMessage());
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    CustomGeometry getGeometry(){
+        CTShapeProperties spPr = getSpPr();
+        CustomGeometry geom;
+        PresetGeometries dict = PresetGeometries.getInstance();
+        if(spPr.isSetPrstGeom()){
+            String name = spPr.getPrstGeom().getPrst().toString();
+            geom = dict.get(name);
+            if(geom == null) {
+                throw new IllegalStateException(&quot;Unknown shape geometry: &quot; + name);
+            }
+        } else if (spPr.isSetCustGeom()){
+            geom = new CustomGeometry(spPr.getCustGeom());
+        } else {
+            geom = dict.get(&quot;rect&quot;);
+        }
+        return geom;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    protected MasterTextPropAtom(byte[] source, int start, int len) {
+        // Get the header.
+        _header = new byte[8];
+        System.arraycopy(source,start,_header,0,8);
+
+        // Get the record data.
+        _data = new byte[len-8];
+        System.arraycopy(source,start+8,_data,0,len-8);
+
+        try {
+            read();
+        } catch (Exception e){
+            logger.log(POILogger.ERROR, &quot;Failed to parse MasterTextPropAtom&quot;, e);
+        }
+    }
+</code></pre>
+</body>

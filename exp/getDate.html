@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>   public static String getAsString(TNEFAttribute attr) {
+      if(attr == null) {
+         return null;
+      }
+      if(attr instanceof TNEFStringAttribute) {
+         return ((TNEFStringAttribute)attr).getString();
+      }
+      
+      logger.log(POILogger.WARN, &quot;Warning, non string property found: &quot; + attr.toString());
+      return null;
+  }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static Calendar getEndingDateAccordingToStartingDate(double date, Calendar startingDate) {
+        Calendar endingDate = getDate(date);
+        endingDate.setTime(DateUtil.getJavaDate(date, false));
+        if (isLastDayOfMonth(endingDate)) {
+            if (startingDate.get(Calendar.DATE) &lt; 30) {
+                endingDate = getFirstDayOfNextMonth(endingDate);
+            }
+        }
+        return endingDate;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static Date getDate(byte[] data, int offset) {
+        Calendar cal = new GregorianCalendar();
+
+        cal.set(Calendar.YEAR,         LittleEndian.getShort(data,offset));
+        cal.set(Calendar.MONTH,        LittleEndian.getShort(data,offset+2)-1);
+        // Not actually needed - can be found from day of month
+        //cal.set(Calendar.DAY_OF_WEEK,  LittleEndian.getShort(data,offset+4)+1);
+        cal.set(Calendar.DAY_OF_MONTH, LittleEndian.getShort(data,offset+6));
+        cal.set(Calendar.HOUR_OF_DAY,  LittleEndian.getShort(data,offset+8));
+        cal.set(Calendar.MINUTE,       LittleEndian.getShort(data,offset+10));
+        cal.set(Calendar.SECOND,       LittleEndian.getShort(data,offset+12));
+        cal.set(Calendar.MILLISECOND,  LittleEndian.getShort(data,offset+14));
+
+        return cal.getTime();
+	}
+</code></pre>
+</body>

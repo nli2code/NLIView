@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>     public final void testSinglePrintAreaWOSheet() throws Exception
+     {
+         Workbook workbook = _testDataProvider.createWorkbook();
+         workbook.createSheet(&quot;Test Print Area&quot;);
+         String sheetName = workbook.getSheetName(0);
+
+         String reference = &quot;$A$1:$B$1&quot;;
+         workbook.setPrintArea(0, reference);
+
+         String retrievedPrintArea = workbook.getPrintArea(0);
+
+         assertNotNull(&quot;Print Area not defined for first sheet&quot;, retrievedPrintArea);
+         assertEquals(&quot;&#x27;&quot; + sheetName + &quot;&#x27;!&quot; + reference, retrievedPrintArea);
+         
+         workbook.close();
+     }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testPrintArea() {
+        Workbook workbook = _testDataProvider.createWorkbook();
+        Sheet sheet1 = workbook.createSheet(&quot;Test Print Area&quot;);
+        String sheetName1 = sheet1.getSheetName();
+
+        // workbook.setPrintArea(0, reference);
+        workbook.setPrintArea(0, 1, 5, 4, 9);
+        String retrievedPrintArea = workbook.getPrintArea(0);
+        assertEquals(&quot;&#x27;&quot; + sheetName1 + &quot;&#x27;!$B$5:$F$10&quot;, retrievedPrintArea);
+
+        String reference = &quot;$A$1:$B$1&quot;;
+        workbook.setPrintArea(0, reference);
+        retrievedPrintArea = workbook.getPrintArea(0);
+        assertEquals(&quot;&#x27;&quot; + sheetName1 + &quot;&#x27;!&quot; + reference, retrievedPrintArea);
+
+        workbook.removePrintArea(0);
+        assertNull(workbook.getPrintArea(0));
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>     public void testPrintAreaFileRead() {
+         HSSFWorkbook workbook = HSSFTestDataSamples.openSampleWorkbook(&quot;SimpleWithPrintArea.xls&quot;);
+
+        String sheetName = workbook.getSheetName(0);
+        String reference = sheetName+&quot;!$A$1:$C$5&quot;;
+
+        assertEquals(reference, workbook.getPrintArea(0));
+    }
+</code></pre>
+</body>

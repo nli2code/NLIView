@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public int addString(UnicodeString string)
+    {
+        field_1_num_strings++;
+        UnicodeString ucs = ( string == null ) ? EMPTY_STRING
+                : string;
+        int rval;
+        int index = field_3_strings.getIndex(ucs);
+
+        if ( index != -1 ) {
+            rval = index;
+        } else {
+            // This is a new string -- we didn&#x27;t see it among the
+            // strings we&#x27;ve already collected
+            rval = field_3_strings.size();
+            field_2_num_unique_strings++;
+            SSTDeserializer.addToStringTable( field_3_strings, ucs );
+        }
+        return rval;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void manufactureStrings( int stringCount, RecordInputStream in )
+    {
+      for (int i=0;i&lt;stringCount;i++) {
+         // Extract exactly the count of strings from the SST record.
+         UnicodeString str;
+         if(in.available() == 0 &amp;&amp; ! in.hasNextRecord()) {
+            System.err.println(&quot;Ran out of data before creating all the strings! String at index &quot; + i + &quot;&quot;);
+            str = new UnicodeString(&quot;&quot;);
+         } else {
+            str = new UnicodeString(in);
+         }
+         addToStringTable( strings, str );
+      }
+    }
+</code></pre>
+</body>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setActiveSheet(int index) {
+
+        validateSheetIndex(index);
+        int nSheets = _sheets.size();
+        for (int i=0; i&lt;nSheets; i++) {
+             getSheetAt(i).setActive(i == index);
+        }
+        workbook.getWindowOne().setActiveSheetIndex(index);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public HSSFSheet createSheet(String sheetname)
+    {
+        if (sheetname == null) {
+            throw new IllegalArgumentException(&quot;sheetName must not be null&quot;);
+        }
+
+        if (workbook.doesContainsSheetName( sheetname, _sheets.size() ))
+            throw new IllegalArgumentException( &quot;The workbook already contains a sheet of this name&quot; );
+
+        HSSFSheet sheet = new HSSFSheet(this);
+
+        workbook.setSheetName(_sheets.size(), sheetname);
+        _sheets.add(sheet);
+        boolean isOnlySheet = _sheets.size() == 1;
+        sheet.setSelected(isOnlySheet);
+        sheet.setActive(isOnlySheet);
+        return sheet;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public HSSFSheet createSheet()
+    {
+        HSSFSheet sheet = new HSSFSheet(this);
+
+        _sheets.add(sheet);
+        workbook.setSheetName(_sheets.size() - 1, &quot;Sheet&quot; + (_sheets.size() - 1));
+        boolean isOnlySheet = _sheets.size() == 1;
+        sheet.setSelected(isOnlySheet);
+        sheet.setActive(isOnlySheet);
+        return sheet;
+    }
+</code></pre>
+</body>

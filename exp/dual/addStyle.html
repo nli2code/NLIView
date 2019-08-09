@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void fillChart(final Chart chart, final ChartAxis... axis) {
+        if (!(chart instanceof XSSFChart)) {
+            throw new IllegalArgumentException(&quot;Chart must be instance of XSSFChart&quot;);
+        }
+
+        final XSSFChart xssfChart = (XSSFChart) chart;
+        final CTPlotArea plotArea = xssfChart.getCTChart().getPlotArea();
+        final CTBarChart barChart = plotArea.addNewBarChart();
+
+        barChart.addNewVaryColors().setVal(false);
+
+        // set bars orientation
+        barChart.addNewBarDir().setVal(barDir);
+
+        xssfChart.setTitle(this.title);
+
+        CTValAx[] ctValAx = plotArea.getValAxArray();
+        if (ctValAx.length != 0) {
+            ctValAx[0].addNewMajorGridlines().addNewSpPr().addNewSolidFill();
+            ctValAx[0].getCrossBetween().setVal(STCrossBetween.BETWEEN);
+        }
+
+        for (CustomChartSeries s : series) {
+            s.addToChart(barChart);
+        }
+
+        for (ChartAxis ax : axis) {
+            barChart.addNewAxId().setVal(ax.getId());
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void fillChart(Chart chart, ChartAxis... axis) {
+        if (!(chart instanceof XSSFChart)) {
+            throw new IllegalArgumentException(&quot;Chart must be instance of XSSFChart&quot;);
+        }
+
+        XSSFChart xssfChart = (XSSFChart) chart;
+        CTPlotArea plotArea = xssfChart.getCTChart().getPlotArea();
+        CTLineChart lineChart = plotArea.addNewLineChart();
+        lineChart.addNewVaryColors().setVal(false);
+
+        for (Series s : series) {
+            s.addToChart(lineChart);
+        }
+
+        for (ChartAxis ax : axis) {
+            lineChart.addNewAxId().setVal(ax.getId());
+        }
+    }
+</code></pre>
+</body>

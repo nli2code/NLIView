@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected EscherContainerRecord createSpContainer(int idx, boolean isChild) {
+        _escherContainer = super.createSpContainer(isChild);
+        _escherContainer.setOptions((short)15);
+
+        EscherSpRecord spRecord = _escherContainer.getChildById(EscherSpRecord.RECORD_ID);
+        spRecord.setOptions((short)((ShapeTypes.PictureFrame &lt;&lt; 4) | 0x2));
+
+        //set default properties for a picture
+        EscherOptRecord opt = (EscherOptRecord)getEscherChild(_escherContainer, EscherOptRecord.RECORD_ID);
+        setEscherProperty(opt, EscherProperties.PROTECTION__LOCKAGAINSTGROUPING, 0x800080);
+
+        //another weird feature of powerpoint: for picture id we must add 0x4000.
+        setEscherProperty(opt, (short)(EscherProperties.BLIP__BLIPTODISPLAY + 0x4000), idx);
+
+        return _escherContainer;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testCorrectOrderInSpContainer(){
+        HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;drawings.xls&quot;);
+        HSSFSheet sheet = wb.getSheet(&quot;pictures&quot;);
+        HSSFPatriarch drawing = sheet.getDrawingPatriarch();
+
+        HSSFSimpleShape rectangle = (HSSFSimpleShape) drawing.getChildren().get(0);
+
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(0).getRecordId(), EscherSpRecord.RECORD_ID);
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(1).getRecordId(), EscherOptRecord.RECORD_ID);
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(2).getRecordId(), EscherClientAnchorRecord.RECORD_ID);
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(3).getRecordId(), EscherClientDataRecord.RECORD_ID);
+
+        rectangle.setAnchor(new HSSFClientAnchor());
+
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(0).getRecordId(), EscherSpRecord.RECORD_ID);
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(1).getRecordId(), EscherOptRecord.RECORD_ID);
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(2).getRecordId(), EscherClientAnchorRecord.RECORD_ID);
+        assertEquals(HSSFTestHelper.getEscherContainer(rectangle).getChild(3).getRecordId(), EscherClientDataRecord.RECORD_ID);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testSerialize() {
+        EscherSpRecord r = createRecord();
+
+        byte[] data = new byte[16];
+        int bytesWritten = r.serialize( 0, data, new NullEscherSerializationListener() );
+        assertEquals( 16, bytesWritten );
+        assertEquals( &quot;[02, 00, &quot; +
+                &quot;0A, F0, &quot; +
+                &quot;08, 00, 00, 00, &quot; +
+                &quot;00, 04, 00, 00, &quot; +
+                &quot;05, 00, 00, 00]&quot;,
+                HexDump.toHex( data ) );
+    }
+</code></pre>
+</body>

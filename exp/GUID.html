@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		public static GUID parse(String rep) {
+			char[] cc = rep.toCharArray();
+			if (cc.length != TEXT_FORMAT_LENGTH) {
+				throw new RecordFormatException(&quot;supplied text is the wrong length for a GUID&quot;);
+			}
+			int d0 = (parseShort(cc, 0) &lt;&lt; 16) + (parseShort(cc, 4) &lt;&lt; 0);
+			int d1 = parseShort(cc, 9);
+			int d2 = parseShort(cc, 14);
+			for (int i = 23; i &gt; 19; i--) {
+				cc[i] = cc[i - 1];
+			}
+			long d3 = parseLELong(cc, 20);
+
+			return new GUID(d0, d1, d2, d3);
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		public boolean equals(Object obj) {
+			GUID other = (GUID) obj;
+            if (obj == null || !(obj instanceof GUID))
+                return false;
+			return _d1 == other._d1 &amp;&amp; _d2 == other._d2
+			    &amp;&amp; _d3 == other._d3 &amp;&amp; _d4 == other._d4;
+		}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void confirmGUID(GUID g, int d1, int d2, int d3, long d4) {
+		assertEquals(new String(HexDump.intToHex(d1)), new String(HexDump.intToHex(g.getD1())));
+		assertEquals(new String(HexDump.shortToHex(d2)), new String(HexDump.shortToHex(g.getD2())));
+		assertEquals(new String(HexDump.shortToHex(d3)), new String(HexDump.shortToHex(g.getD3())));
+		assertEquals(new String(HexDump.longToHex(d4)), new String(HexDump.longToHex(g.getD4())));
+	}
+</code></pre>
+</body>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void styleColor(Formatter out, String attr, short index) {
+        HSSFColor color = colors.getColor(index);
+        if (index == HSSF_AUTO.getIndex() || color == null) {
+            out.format(&quot;  /* %s: index = %d */%n&quot;, attr, index);
+        } else {
+            short[] rgb = color.getTriplet();
+            out.format(&quot;  %s: #%02x%02x%02x; /* index = %d */%n&quot;, attr, rgb[0],
+                    rgb[1], rgb[2], index);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>        public void styleColor(Formatter out, String attr, Color color) {
+            XSSFColor xSSFColor = (XSSFColor) color;
+            if (color == null || xSSFColor.isAuto())
+                return;
+
+            byte[] rgb = xSSFColor.getRgb();
+            if (rgb == null) {
+                return;
+            }
+            out.format(&quot;  %s: #%02x%02x%02x;%n&quot;, attr, rgb[0], rgb[1], rgb[2]);
+        }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private void fontStyle(CellStyle style) {
+        Font font = wb.getFontAt(style.getFontIndex());
+
+        if (font.getBoldweight() &gt;= HSSFFont.BOLDWEIGHT_NORMAL)
+            out.format(&quot;  font-weight: bold;%n&quot;);
+        if (font.getItalic())
+            out.format(&quot;  font-style: italic;%n&quot;);
+
+        int fontheight = font.getFontHeightInPoints();
+        if (fontheight == 9) {
+            //fix for stupid ol Windows
+            fontheight = 10;
+        }
+        out.format(&quot;  font-size: %dpt;%n&quot;, fontheight);
+
+        // Font color is handled with the other colors
+    }
+</code></pre>
+</body>

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testNormalConstructor() throws IOException {
+		byte[] data = new byte[ 512 ];
+
+		for (int j = 0; j &lt; 512; j++)
+		{
+			data[ j ] = ( byte ) j;
+		}
+		RawDataBlock block = new RawDataBlock(new ByteArrayInputStream(data));
+
+		assertTrue(&quot;Should not be at EOF&quot;, !block.eof());
+		byte[] out_data = block.getData();
+
+		assertEquals(&quot;Should be same length&quot;, data.length, out_data.length);
+		for (int j = 0; j &lt; 512; j++)
+		{
+			assertEquals(&quot;Should be same value at offset &quot; + j, data[ j ],
+						 out_data[ j ]);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public OPOIFSDocument(String name, SmallDocumentBlock[] blocks, int length) {
+		_size = length;
+		
+		if(blocks.length == 0) {
+		   _bigBigBlockSize = POIFSConstants.SMALLER_BIG_BLOCK_SIZE_DETAILS;
+		} else {
+		   _bigBigBlockSize = blocks[0].getBigBlockSize();
+		}
+
+		_big_store = new BigBlockStore(_bigBigBlockSize, EMPTY_BIG_BLOCK_ARRAY);
+		_property = new DocumentProperty(name, _size);
+		_small_store = new SmallBlockStore(_bigBigBlockSize, blocks);
+		_property.setDocument(this);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testEmptyConstructor() throws IOException {
+		byte[]	   data  = new byte[ 0 ];
+		RawDataBlock block = new RawDataBlock(new ByteArrayInputStream(data));
+
+		assertTrue(&quot;Should be at EOF&quot;, block.eof());
+		try
+		{
+			block.getData();
+		}
+		catch (IOException ignored)
+		{
+
+			// as expected
+		}
+	}
+</code></pre>
+</body>

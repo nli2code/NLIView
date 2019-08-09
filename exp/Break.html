@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public final int[] getBreaks() {
+        int count = getNumBreaks();
+        if (count &lt; 1) {
+            return EMPTY_INT_ARRAY;
+        }
+        int[] result = new int[count];
+        for (int i=0; i&lt;count; i++) {
+            Break breakItem = _breaks.get(i);
+            result[i] = breakItem.main;
+        }
+        return result;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void addBreak(int main, int subFrom, int subTo) {
+
+        Integer key = Integer.valueOf(main);
+        Break region = _breakMap.get(key);
+        if(region == null) {
+            region = new Break(main, subFrom, subTo);
+            _breakMap.put(key, region);
+            _breaks.add(region);
+        } else {
+            region.main = main;
+            region.subFrom = subFrom;
+            region.subTo = subTo;
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public final void removeBreak(int main) {
+        Integer rowKey = Integer.valueOf(main);
+        Break region = _breakMap.get(rowKey);
+        _breaks.remove(region);
+        _breakMap.remove(rowKey);
+    }
+</code></pre>
+</body>

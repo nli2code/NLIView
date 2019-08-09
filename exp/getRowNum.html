@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static String getCellTextValue(HSSFRow r, int colIndex, String columnName) {
+		if(r == null) {
+			return null;
+		}
+		HSSFCell cell = r.getCell(colIndex);
+		if(cell == null) {
+			return null;
+		}
+		if(cell.getCellType() == HSSFCell.CELL_TYPE_BLANK) {
+			return null;
+		}
+		if(cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+			return cell.getRichStringCellValue().getString();
+		}
+
+		throw new RuntimeException(&quot;Bad cell type for &#x27;&quot; + columnName + &quot;&#x27; column: (&quot;
+				+ cell.getCellType() + &quot;) row (&quot; + (r.getRowNum() +1) + &quot;)&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public HSSFCell createCell(int columnIndex, int type)
+    {
+        short shortCellNum = (short)columnIndex;
+        if(columnIndex &gt; 0x7FFF) {
+            shortCellNum = (short)(0xffff - columnIndex);
+        }
+
+        HSSFCell cell = new HSSFCell(book, sheet, getRowNum(), shortCellNum, type);
+        addCell(cell);
+        sheet.getSheet().addValueRecord(getRowNum(), cell.getCellValueRecord());
+        return cell;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static void main(String[] args) throws Exception {
+        Workbook wb = new XSSFWorkbook(new FileInputStream(args[0]));
+        for (int i = 0; i &lt; wb.getNumberOfSheets(); i++) {
+            Sheet sheet = wb.getSheetAt(i);
+            System.out.println(wb.getSheetName(i));
+            for (Row row : sheet) {
+                System.out.println(&quot;rownum: &quot; + row.getRowNum());
+                for (Cell cell : row) {
+                    System.out.println(cell.toString());
+                }
+            }
+        }
+    }
+</code></pre>
+</body>

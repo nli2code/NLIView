@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static ZipEntry getContentTypeZipEntry(ZipPackage pkg) {
+		Enumeration entries = pkg.getZipArchive().getEntries();
+		// Enumerate through the Zip entries until we find the one named
+		// &#x27;[Content_Types].xml&#x27;.
+		while (entries.hasMoreElements()) {
+			ZipEntry entry = (ZipEntry) entries.nextElement();
+			if (entry.getName().equals(
+					ContentTypeManager.CONTENT_TYPES_PART_NAME))
+				return entry;
+		}
+		return null;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public int[] getKnownSlideIDs() {
+		int[] ids = new int[_slideLocations.size()];
+		Enumeration&lt;Integer&gt; e = _slideLocations.keys();
+		for(int i=0; i&lt;ids.length; i++) {
+			Integer id = e.nextElement();
+			ids[i] = id.intValue();
+		}
+		return ids;
+	}
+</code></pre>
+</body>

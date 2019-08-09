@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testBasic() {
+		confirm(120, 2009, 1, 15, 2009, 5, 15);
+		confirm(158, 2009, 1, 26, 2009, 7, 4);
+
+		// same results in leap years
+		confirm(120, 2008, 1, 15, 2008, 5, 15);
+		confirm(158, 2008, 1, 26, 2008, 7, 4);
+
+		// longer time spans
+		confirm(562, 2008, 8, 11, 2010, 3, 3);
+		confirm(916, 2007, 2, 23, 2009, 9, 9);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testBasic() {
+		FormulaRecord f = new FormulaRecord();
+		f.setCachedResultTypeString();
+		StringRecord s = new StringRecord();
+		s.setString(&quot;abc&quot;);
+		FormulaRecordAggregate fagg = new FormulaRecordAggregate(f, s, SharedValueManager.createEmpty());
+		assertEquals(&quot;abc&quot;, fagg.getStringValue());
+		assertFalse(fagg.isPartOfArrayFormula());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testBasic() {
+		confirm(new NumberEval(5), 0.05);
+		confirm(new NumberEval(3000), 30.0);
+		confirm(new NumberEval(-150), -1.5);
+		confirm(new StringEval(&quot;0.2&quot;), 0.002);
+		confirm(BoolEval.TRUE, 0.01);
+	}
+</code></pre>
+</body>

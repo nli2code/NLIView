@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public Rectangle2D getAnchor() {
+
+        CTTransform2D xfrm = getXfrm();
+
+        CTPoint2D off = xfrm.getOff();
+        double x = Units.toPoints(off.getX());
+        double y = Units.toPoints(off.getY());
+        CTPositiveSize2D ext = xfrm.getExt();
+        double cx = Units.toPoints(ext.getCx());
+        double cy = Units.toPoints(ext.getCy());
+        return new Rectangle2D.Double(x, y, cx, cy);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public double getLeftInset(){
+        CTTextBodyProperties bodyPr = ctShape.getTxBody().getBodyPr();
+        if (bodyPr != null) {
+        	if(bodyPr.isSetLIns()){
+        		return Units.toPoints(bodyPr.getLIns());
+        	}
+        }
+        // If this attribute is omitted, then a value of 0.05 inches is implied
+        return 3.6;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public double getShadowDistance() {
+        AbstractEscherOptRecord opt = getEscherOptRecord();
+        EscherSimpleProperty prop = getEscherProperty(opt, EscherProperties.SHADOWSTYLE__OFFSETX);
+        int offX = (prop == null) ? 0 : prop.getPropertyValue();
+        prop = getEscherProperty(opt, EscherProperties.SHADOWSTYLE__OFFSETY);
+        int offY = (prop == null) ? 0 : prop.getPropertyValue();
+        return Units.toPoints((long)Math.hypot(offX, offY));
+    }
+</code></pre>
+</body>

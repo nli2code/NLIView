@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	protected void writeProperties(POIFSFileSystem outFS, List&lt;String&gt; writtenEntries) throws IOException {
+        SummaryInformation si = getSummaryInformation();
+        if(si != null) {
+			writePropertySet(SummaryInformation.DEFAULT_STREAM_NAME, si, outFS);
+			if(writtenEntries != null) {
+				writtenEntries.add(SummaryInformation.DEFAULT_STREAM_NAME);
+			}
+		}
+        DocumentSummaryInformation dsi = getDocumentSummaryInformation();
+        if(dsi != null) {
+			writePropertySet(DocumentSummaryInformation.DEFAULT_STREAM_NAME, dsi, outFS);
+			if(writtenEntries != null) {
+				writtenEntries.add(DocumentSummaryInformation.DEFAULT_STREAM_NAME);
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	protected void writePropertySet(String name, PropertySet set, POIFSFileSystem outFS) throws IOException {
+		try {
+			MutablePropertySet mSet = new MutablePropertySet(set);
+			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+
+			mSet.write(bOut);
+			byte[] data = bOut.toByteArray();
+			ByteArrayInputStream bIn = new ByteArrayInputStream(data);
+			outFS.createDocument(bIn,name);
+
+			logger.log(POILogger.INFO, &quot;Wrote property set &quot; + name + &quot; of size &quot; + data.length);
+		} catch(org.apache.poi.hpsf.WritingNotSupportedException wnse) {
+			System.err.println(&quot;Couldn&#x27;t write property set with name &quot; + name + &quot; as not supported by HPSF yet&quot;);
+		}
+	}
+</code></pre>
+</body>

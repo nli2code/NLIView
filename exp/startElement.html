@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		public void startElement(String uri, String localName, String name,
+				Attributes attributes) throws SAXException {
+			// c =&gt; cell
+			if(name.equals(&quot;c&quot;)) {
+				// Print the cell reference
+				System.out.print(attributes.getValue(&quot;r&quot;) + &quot; - &quot;);
+				// Figure out if the value is an index in the SST
+				String cellType = attributes.getValue(&quot;t&quot;);
+				if(cellType != null &amp;&amp; cellType.equals(&quot;s&quot;)) {
+					nextIsString = true;
+				} else {
+					nextIsString = false;
+				}
+			}
+			// Clear contents cache
+			lastContents = &quot;&quot;;
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void startElement(String uri, String localName, String name,
+                             Attributes attributes) throws SAXException {
+        if (&quot;sst&quot;.equals(name)) {
+            String count = attributes.getValue(&quot;count&quot;);
+            if(count != null) this.count = Integer.parseInt(count);
+            String uniqueCount = attributes.getValue(&quot;uniqueCount&quot;);
+            if(uniqueCount != null) this.uniqueCount = Integer.parseInt(uniqueCount);
+
+            this.strings = new ArrayList&lt;String&gt;(this.uniqueCount);
+
+            characters = new StringBuffer();
+        } else if (&quot;si&quot;.equals(name)) {
+            characters.setLength(0);
+        } else if (&quot;t&quot;.equals(name)) {
+            tIsOpen = true;
+        }
+    }
+</code></pre>
+</body>

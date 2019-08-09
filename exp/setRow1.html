@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private EscherClientAnchorRecord createRecord()
+    {
+        EscherClientAnchorRecord r = new EscherClientAnchorRecord();
+        r.setCol1( (short) 55 );
+        r.setCol2( (short) 44 );
+        r.setDx1( (short) 33 );
+        r.setDx2( (short) 22 );
+        r.setDy1( (short) 11 );
+        r.setDy2( (short) 66 );
+        r.setFlag( (short) 77 );
+        r.setRow1( (short) 88 );
+        r.setRow2( (short) 99 );
+        r.setOptions( (short) 0x0001 );
+        r.setRemainingData( new byte[]{(byte) 0xFF, (byte) 0xDD} );
+        return r;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void insertPicture(Sheet sheet, InputStream imageInputStream, MIMETypeEnum imageType,
+                              int beginRow, int beginCol) {
+        Drawing drawing = sheet.createDrawingPatriarch();
+        ClientAnchor clientAnchor = workbook.getCreationHelper().createClientAnchor();
+        clientAnchor.setRow1(beginRow);
+        clientAnchor.setCol1(beginCol);
+        Picture picture = drawing.createPicture(clientAnchor,
+                workbook.addPicture(ImageUtils.getImageData(imageInputStream, imageType), getImageType(imageType)));
+        picture.resize();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setAnchor(Rectangle2D anchor){
+        EscherSpRecord spRecord = _escherContainer.getChildById(EscherSpRecord.RECORD_ID);
+        int flags = spRecord.getFlags();
+        if ((flags &amp; EscherSpRecord.FLAG_CHILD) != 0){
+            EscherChildAnchorRecord rec = (EscherChildAnchorRecord)getEscherChild(_escherContainer, EscherChildAnchorRecord.RECORD_ID);
+            rec.setDx1((int)(anchor.getX()*MASTER_DPI/POINT_DPI));
+            rec.setDy1((int)(anchor.getY()*MASTER_DPI/POINT_DPI));
+            rec.setDx2((int)((anchor.getWidth() + anchor.getX())*MASTER_DPI/POINT_DPI));
+            rec.setDy2((int)((anchor.getHeight() + anchor.getY())*MASTER_DPI/POINT_DPI));
+        }
+        else {
+            EscherClientAnchorRecord rec = (EscherClientAnchorRecord)getEscherChild(_escherContainer, EscherClientAnchorRecord.RECORD_ID);
+            rec.setFlag((short)(anchor.getY()*MASTER_DPI/POINT_DPI));
+            rec.setCol1((short)(anchor.getX()*MASTER_DPI/POINT_DPI));
+            rec.setDx1((short)(((anchor.getWidth() + anchor.getX())*MASTER_DPI/POINT_DPI)));
+            rec.setRow1((short)(((anchor.getHeight() + anchor.getY())*MASTER_DPI/POINT_DPI)));
+        }
+
+    }
+</code></pre>
+</body>

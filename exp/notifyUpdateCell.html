@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void updateCell(String sheetName, int rowIndex, int columnIndex, ValueEval value) {
+
+		ForkedEvaluationCell cell = _sewb.getOrCreateUpdatableCell(sheetName, rowIndex, columnIndex);
+		cell.setValue(value);
+		_evaluator.notifyUpdateCell(cell);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		public void setCellValue(String cellRefText, double value) {
+			HSSFCell cell = getOrCreateCell(cellRefText);
+			// be sure to blank cell, in case it is currently a formula
+			cell.setCellType(HSSFCell.CELL_TYPE_BLANK);
+			// otherwise this line will only set the formula cached result;
+			cell.setCellValue(value);
+			_evaluator.notifyUpdateCell(wrapCell(cell));
+		}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static void confirmError(HSSFFormulaEvaluator fe, HSSFCell cell, String formulaText,
+			int expectedErrorCode) {
+		cell.setCellFormula(formulaText);
+		fe.notifyUpdateCell(cell);
+		CellValue result = fe.evaluate(cell);
+		assertEquals(result.getCellType(), HSSFCell.CELL_TYPE_ERROR);
+		assertEquals(expectedErrorCode, result.getErrorValue());
+	}
+</code></pre>
+</body>

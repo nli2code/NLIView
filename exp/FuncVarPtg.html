@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testMissingArgs() {
+
+		confirmTokenClasses(&quot;if(A1, ,C1)&quot;,
+				RefPtg.class,
+				AttrPtg.class, // tAttrIf
+				MissingArgPtg.class,
+				AttrPtg.class, // tAttrSkip
+				RefPtg.class,
+				AttrPtg.class, // tAttrSkip
+				FuncVarPtg.class
+		);
+
+		confirmTokenClasses(&quot;counta( , A1:B2, )&quot;, MissingArgPtg.class, AreaPtg.class, MissingArgPtg.class,
+				FuncVarPtg.class);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testLookupAndMatchFunctionArgs() {
+		Ptg[] ptgs = parseFormula(&quot;lookup(A1, A3:A52, B3:B52)&quot;);
+		confirmTokenClasses(ptgs, RefPtg.class, AreaPtg.class, AreaPtg.class, FuncVarPtg.class);
+		assertTrue(&quot;ptg0 has Value class&quot;, ptgs[0].getPtgClass() == Ptg.CLASS_VALUE);
+
+		ptgs = parseFormula(&quot;match(A1, A3:A52)&quot;);
+		confirmTokenClasses(ptgs, RefPtg.class, AreaPtg.class, FuncVarPtg.class);
+		assertTrue(&quot;ptg0 has Value class&quot;, ptgs[0].getPtgClass() == Ptg.CLASS_VALUE);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testEmbeddedIf() {
+		Ptg[] ptgs = parseFormula(&quot;IF(3&gt;=1,\&quot;*\&quot;,IF(4&lt;&gt;1,\&quot;first\&quot;,\&quot;second\&quot;))&quot;);
+		assertEquals(17, ptgs.length);
+
+		assertEquals(&quot;6th Ptg is not a goto (Attr) ptg&quot;,AttrPtg.class,ptgs[5].getClass());
+		assertEquals(&quot;9th Ptg is not a not equal ptg&quot;,NotEqualPtg.class,ptgs[8].getClass());
+		assertEquals(&quot;15th Ptg is not the inner IF variable function ptg&quot;,FuncVarPtg.class,ptgs[14].getClass());
+	}
+</code></pre>
+</body>

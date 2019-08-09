@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void removeRow(RowRecord row) {
+		int rowIndex = row.getRowNumber();
+		_valuesAgg.removeAllCellsValuesForRow(rowIndex);
+		Integer key = Integer.valueOf(rowIndex);
+		RowRecord rr = _rowRecords.remove(key);
+		if (rr == null) {
+			throw new RuntimeException(&quot;Invalid row index (&quot; + key.intValue() + &quot;)&quot;);
+		}
+		if (row != rr) {
+			_rowRecords.put(key, rr);
+			throw new RuntimeException(&quot;Attempt to remove row that does not belong to this sheet&quot;);
+		}
+		
+		// Clear the cached values
+		_rowRecordValues = null;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		public int getRowNumber(String sheetName,String searchValue) {
+				
+				try {
+					
+					excelWSheet= excelWorkBook.getSheet(sheetName);
+					
+					for (Row row : excelWSheet) 
+						for (Cell cell : row) 
+							if (cell.getCellType() == Cell.CELL_TYPE_STRING) 
+								if (cell.getRichStringCellValue().getString().trim().equalsIgnoreCase(searchValue)) 
+									return row.getRowNum();
+					
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+				return 0;
+			}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private int getEndRowNumberForBlock(int block) {
+	  int endIndex = ((block + 1)*DBCellRecord.BLOCK_SIZE)-1;
+	  if (endIndex &gt;= _rowRecords.size())
+		endIndex = _rowRecords.size()-1;
+
+        if(_rowRecordValues == null){
+            _rowRecordValues = _rowRecords.values().toArray(new RowRecord[_rowRecords.size()]);
+        }
+
+        try {
+            return _rowRecordValues[endIndex].getRowNumber();
+        } catch(ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException(&quot;Did not find end row for block &quot; + block);
+	  }
+	}
+</code></pre>
+</body>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void serialize(LittleEndianOutput out) {
+
+		out.writeShort(rt);
+		out.writeShort(grbitFrt);
+		out.writeByte(verOriginator);
+		out.writeByte(verWriter);
+		int nCFRTIDs = rgCFRTID.length;
+		out.writeShort(nCFRTIDs);
+
+		for (int i = 0; i &lt; nCFRTIDs; i++) {
+			rgCFRTID[i].serialize(out);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void serialize(LittleEndianOutput out) {
+		out.writeShort(field_1_xf_index);
+		if (isBuiltin()) {
+			out.writeByte(field_2_builtin_style);
+			out.writeByte(field_3_outline_style_level);
+		} else {
+			out.writeShort(field_4_name.length());
+			out.writeByte(field_3_stringHasMultibyte ? 0x01 : 0x00);
+			if (field_3_stringHasMultibyte) {
+				StringUtil.putUnicodeLE(getName(), out);
+			} else {
+				StringUtil.putCompressedUnicode(getName(), out);
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void serialize(LittleEndianOutput out) {
+        int nItems = _numberOfRegions;
+        out.writeShort(nItems);
+        for (int i = 0; i &lt; _numberOfRegions; i++) {
+			_regions[_startIndex + i].serialize(out);
+		}
+    }
+</code></pre>
+</body>

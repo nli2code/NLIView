@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static boolean dateTimeEqualToUTCString(Date dateTime, String utcString) {
+		Calendar utcCalendar = Calendar.getInstance(TimeZone.getTimeZone(&quot;UTC&quot;), Locale.UK);
+        utcCalendar.setTimeInMillis(dateTime.getTime());
+        String dateTimeUtcString = utcCalendar.get(Calendar.YEAR) + &quot;-&quot; + 
+               zeroPad((utcCalendar.get(Calendar.MONTH)+1)) + &quot;-&quot; + 
+               zeroPad(utcCalendar.get(Calendar.DAY_OF_MONTH)) + &quot;T&quot; + 
+               zeroPad(utcCalendar.get(Calendar.HOUR_OF_DAY)) + &quot;:&quot; +
+               zeroPad(utcCalendar.get(Calendar.MINUTE)) + &quot;:&quot; + 
+               zeroPad(utcCalendar.get(Calendar.SECOND)) + &quot;Z&quot;;
+		
+		
+        return utcString.equals(dateTimeUtcString);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testDocumentProperties() {
+		String category = _coreProperties.getCategory();
+		assertEquals(&quot;test&quot;, category);
+		String contentStatus = &quot;Draft&quot;;
+		_coreProperties.setContentStatus(contentStatus);
+		assertEquals(&quot;Draft&quot;, contentStatus);
+		Date created = _coreProperties.getCreated();
+		// the original file contains a following value: 2009-07-20T13:12:00Z
+		assertTrue(dateTimeEqualToUTCString(created, &quot;2009-07-20T13:12:00Z&quot;));
+		String creator = _coreProperties.getCreator();
+		assertEquals(&quot;Paolo Mottadelli&quot;, creator);
+		String subject = _coreProperties.getSubject();
+		assertEquals(&quot;Greetings&quot;, subject);
+		String title = _coreProperties.getTitle();
+		assertEquals(&quot;Hello World&quot;, title);
+	}
+</code></pre>
+</body>

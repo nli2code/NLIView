@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public int serialize( byte[] data, int startOffset )
+    {
+        int offset = startOffset;
+
+        _xst.serialize( data, offset );
+        offset += _xst.getSize();
+
+        LittleEndian.putUShort( data, offset, _chTerm );
+        offset += LittleEndian.SHORT_SIZE;
+
+        return offset - startOffset;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void serialize( byte[] data, int offset )
+    {
+        field_1_cvFore.serialize( data, 0x0 + offset );
+        field_2_cvBack.serialize( data, 0x4 + offset );
+        LittleEndian.putUShort( data, 0x8 + offset, field_3_ipat );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void write(OutputStream out) throws IOException {
+        byte[] data;
+
+        data = new byte[LittleEndian.SHORT_SIZE];
+        LittleEndian.putUShort(data, 0, getSignature());
+        out.write(data);
+
+        data = new byte[LittleEndian.SHORT_SIZE];
+        LittleEndian.putUShort(data, 0, getType() + 0xF018);
+        out.write(data);
+
+        byte[] rawdata = getRawData();
+
+        data = new byte[LittleEndian.INT_SIZE];
+        LittleEndian.putInt(data, 0, rawdata.length);
+        out.write(data);
+
+        out.write(rawdata);
+    }
+</code></pre>
+</body>

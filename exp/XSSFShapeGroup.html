@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public List&lt;XSSFShape&gt;  getShapes(){
+        List&lt;XSSFShape&gt; lst = new ArrayList&lt;XSSFShape&gt;();
+        for(XmlObject obj : drawing.selectPath(&quot;./*/*&quot;)) {
+            if(obj instanceof CTPicture) lst.add(new XSSFPicture(this, (CTPicture)obj)) ;
+            else if(obj instanceof CTConnector) lst.add(new XSSFConnector(this, (CTConnector)obj)) ;
+            else if(obj instanceof CTShape) lst.add(new XSSFSimpleShape(this, (CTShape)obj)) ;
+            else if(obj instanceof CTGraphicalObjectFrame) lst.add(new XSSFGraphicFrame(this, (CTGraphicalObjectFrame)obj)) ;
+            else if(obj instanceof CTGroupShape) lst.add(new XSSFShapeGroup(this, (CTGroupShape)obj)) ;
+        }
+        return lst;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSSFShapeGroup createGroup(XSSFClientAnchor anchor)
+    {
+        CTTwoCellAnchor ctAnchor = createTwoCellAnchor(anchor);
+        CTGroupShape ctGroup = ctAnchor.addNewGrpSp();
+        ctGroup.set(XSSFShapeGroup.prototype());
+
+        XSSFShapeGroup shape = new XSSFShapeGroup(this, ctGroup);
+        shape.anchor = anchor;
+        return shape;
+    }
+</code></pre>
+</body>

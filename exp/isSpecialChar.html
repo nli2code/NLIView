@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	/* package */ static boolean isSpecialChar(char ch) {
+		// note - Character.isJavaIdentifierPart() would allow dollars &#x27;$&#x27;
+		if(Character.isLetterOrDigit(ch)) {
+			return false;
+		}
+		switch(ch) {
+			case &#x27;.&#x27;: // dot is OK
+			case &#x27;_&#x27;: // underscore is OK
+				return false;
+			case &#x27;\n&#x27;:
+			case &#x27;\r&#x27;:
+			case &#x27;\t&#x27;:
+				throw new RuntimeException(&quot;Illegal character (0x&quot; 
+						+ Integer.toHexString(ch) + &quot;) found in sheet name&quot;);
+		}
+		return true;
+	}
+</code></pre>
+</body>

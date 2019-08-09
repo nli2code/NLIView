@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected static OPCPackage newPackage(XSSFWorkbookType workbookType) {
+        try {
+            OPCPackage pkg = OPCPackage.create(new ByteArrayOutputStream());
+            // Main part
+            PackagePartName corePartName = PackagingURIHelper.createPartName(XSSFRelation.WORKBOOK.getDefaultFileName());
+            // Create main part relationship
+            pkg.addRelationship(corePartName, TargetMode.INTERNAL, PackageRelationshipTypes.CORE_DOCUMENT);
+            // Create main document part
+            pkg.createPart(corePartName, workbookType.getContentType());
+
+            pkg.getPackageProperties().setCreatorProperty(DOCUMENT_CREATOR);
+
+            return pkg;
+        } catch (Exception e){
+            throw new POIXMLException(e);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>   public void testSelfRelations_bug51187() throws Exception {
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	OPCPackage pkg = OPCPackage.create(baos);
+
+    	PackagePart partA =
+    		pkg.createPart(PackagingURIHelper.createPartName(&quot;/partA&quot;), &quot;text/plain&quot;);
+    	assertNotNull(partA);
+
+    	// reference itself
+    	PackageRelationship rel1 = partA.addRelationship(partA.getPartName(), TargetMode.INTERNAL, &quot;partA&quot;);
+
+    	
+    	// Save, and re-load
+    	pkg.close();
+    	ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    	pkg = OPCPackage.open(bais);
+
+    	partA = pkg.getPart(PackagingURIHelper.createPartName(&quot;/partA&quot;));
+
+
+    	// Check the relations
+    	assertEquals(1, partA.getRelationships().size());
+
+       PackageRelationship rel2 = partA.getRelationships().getRelationship(0);
+
+    	assertEquals(rel1.getRelationshipType(), rel2.getRelationshipType());
+       assertEquals(rel1.getId(), rel2.getId());
+       assertEquals(rel1.getSourceURI(), rel2.getSourceURI());
+       assertEquals(rel1.getTargetURI(), rel2.getTargetURI());
+       assertEquals(rel1.getTargetMode(), rel2.getTargetMode());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void openPackage() throws IOException, InvalidFormatException {
+		File targetFile = OpenXML4JTestDataSamples.getOutputFile(&quot;TestOpenPackageTMP.docx&quot;);
+
+		File inputFile = OpenXML4JTestDataSamples.getSampleFile(&quot;TestOpenPackageINPUT.docx&quot;);
+
+		File expectedFile = OpenXML4JTestDataSamples.getSampleFile(&quot;TestOpenPackageOUTPUT.docx&quot;);
+
+		// Copy the input file in the output directory
+		FileHelper.copyFile(inputFile, targetFile);
+
+		// Create a package
+		OPCPackage pkg = OPCPackage.open(targetFile.getAbsolutePath());
+
+		// Modify core part
+		PackagePartName corePartName = PackagingURIHelper
+				.createPartName(&quot;/word/document.xml&quot;);
+
+		PackagePart corePart = pkg.getPart(corePartName);
+
+		// Delete some part to have a valid document
+		for (PackageRelationship rel : corePart.getRelationships()) {
+			corePart.removeRelationship(rel.getId());
+			pkg.removePart(PackagingURIHelper.createPartName(PackagingURIHelper
+					.resolvePartUri(corePart.getPartName().getURI(), rel
+							.getTargetURI())));
+		}
+
+		// Create a content
+		Document doc = DocumentHelper.createDocument();
+        Element elDocument = doc.createElementNS(&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;, &quot;w:document&quot;);
+        doc.appendChild(elDocument);
+        Element elBody = doc.createElementNS(&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;, &quot;w:body&quot;);
+        elDocument.appendChild(elBody);
+        Element elParagraph = doc.createElementNS(&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;, &quot;w:p&quot;);
+        elBody.appendChild(elParagraph);
+        Element elRun = doc.createElementNS(&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;, &quot;w:r&quot;);
+        elParagraph.appendChild(elRun);
+        Element elText = doc.createElementNS(&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;, &quot;w:t&quot;);
+        elRun.appendChild(elText);
+        elText.setTextContent(&quot;Hello Open XML !&quot;);
+
+		StreamHelper.saveXmlInStream(doc, corePart.getOutputStream());
+
+		// Save and close
+		try {
+			pkg.close();
+		} catch (IOException e) {
+			fail();
+		}
+
+		ZipFileAssert.assertEquals(expectedFile, targetFile);
+		assertTrue(targetFile.delete());
+	}
+</code></pre>
+</body>

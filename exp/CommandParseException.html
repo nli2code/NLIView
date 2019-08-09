@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		private static boolean parseBoolArg(String[] args, int i) throws CommandParseException {
+			if (i &gt;= args.length) {
+				throw new CommandParseException(&quot;Expected value after &#x27;&quot; + args[i-1] + &quot;&#x27;&quot;);
+			}
+			String value = args[i].toUpperCase();
+			if (&quot;Y&quot;.equals(value) || &quot;YES&quot;.equals(value) || &quot;ON&quot;.equals(value) || &quot;TRUE&quot;.equals(value)) {
+				return true;
+			}
+			if (&quot;N&quot;.equals(value) || &quot;NO&quot;.equals(value) || &quot;OFF&quot;.equals(value) || &quot;FALSE&quot;.equals(value)) {
+				return false;
+			}
+			throw new CommandParseException(&quot;Invalid value &#x27;&quot; + args[i] + &quot;&#x27; for &#x27;&quot; + args[i-1] + &quot;&#x27;. Expected &#x27;Y&#x27; or &#x27;N&#x27;&quot;);
+		}
+</code></pre>
+</body>

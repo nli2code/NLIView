@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testDocumentProperties() throws Exception
+    {
+        String result = getHtmlText( &quot;documentProperties.doc&quot; );
+
+        assertContains( result, &quot;&lt;title&gt;This is document title&lt;/title&gt;&quot; );
+        assertContains( result,
+                &quot;&lt;meta content=\&quot;This is document keywords\&quot; name=\&quot;keywords\&quot;&gt;&quot; );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testPicture() throws Exception
+    {
+        String result = getHtmlText( &quot;picture.doc&quot;, true );
+
+        // picture
+        assertContains( result, &quot;src=\&quot;0.emf\&quot;&quot; );
+        // visible size
+        assertContains( result, &quot;width:3.1305554in;height:1.7250001in;&quot; );
+        // shift due to crop
+        assertContains( result, &quot;left:-0.09375;top:-0.25694445;&quot; );
+        // size without crop
+        assertContains( result, &quot;width:3.4125in;height:2.325in;&quot; );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testEndnote() throws Exception
+    {
+        String result = getHtmlText( &quot;endingnote.doc&quot; );
+
+        assertContains(
+                result,
+                &quot;&lt;a class=\&quot;a1 endnoteanchor\&quot; href=\&quot;#endnote_1\&quot; name=\&quot;endnote_back_1\&quot;&gt;1&lt;/a&gt;&quot; );
+        assertContains(
+                result,
+                &quot;&lt;a class=\&quot;a1 endnoteindex\&quot; href=\&quot;#endnote_back_1\&quot; name=\&quot;endnote_1\&quot;&gt;1&lt;/a&gt; &lt;span&quot; );
+        assertContains( result, &quot;Ending note text&quot; );
+    }
+</code></pre>
+</body>

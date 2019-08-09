@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testLoad() {
+
+        ChartRecord record = new ChartRecord(TestcaseRecordInputStream.create(0x1002, data));
+        assertEquals( 0, record.getX());
+        assertEquals( 0, record.getY());
+        assertEquals( 30474216, record.getWidth());
+        assertEquals( 15060168, record.getHeight());
+
+        assertEquals( 20, record.getRecordSize() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String toString() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(&quot;[CHART]\n&quot;);
+        sb.append(&quot;    .x     = &quot;).append(getX()).append(&#x27;\n&#x27;);
+        sb.append(&quot;    .y     = &quot;).append(getY()).append(&#x27;\n&#x27;);
+        sb.append(&quot;    .width = &quot;).append(getWidth()).append(&#x27;\n&#x27;);
+        sb.append(&quot;    .height= &quot;).append(getHeight()).append(&#x27;\n&#x27;);
+        sb.append(&quot;[/CHART]\n&quot;);
+        return sb.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void addToPath(java.awt.geom.Path2D.Double path, XDGFShape parent) {
+
+        if (getDel())
+            return;
+
+        double w = parent.getWidth();
+        double h = parent.getHeight();
+
+        // intentionally shadowing variables here
+        double x = getX() * w;
+        double y = getY() * h;
+        double a = getA() * w;
+        double b = getB() * h;
+        double c = getC();
+        double d = getD();
+
+        EllipticalArcTo.createEllipticalArc(x, y, a, b, c, d, path);
+
+    }
+</code></pre>
+</body>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>   public String[] getRecipientNamesList() throws ChunkNotFoundException {
+      if(recipientChunks == null || recipientChunks.length == 0) {
+         throw new ChunkNotFoundException(&quot;No recipients section present&quot;);
+      }
+
+      String[] names = new String[recipientChunks.length];
+      for(int i=0; i&lt;names.length; i++) {
+         RecipientChunks rc = recipientChunks[i];
+         String name = rc.getRecipientName();
+         if(name != null) {
+            names[i] = name;
+         } else {
+            throw new ChunkNotFoundException(&quot;No display name holding chunks found for the &quot; + (i+1) + &quot;th recipient&quot;);
+         }
+      }
+
+      return names;
+   }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>   public RecipientChunks(String name) {
+      recipientNumber = -1;
+      int splitAt = name.lastIndexOf(&#x27;#&#x27;);
+      if(splitAt &gt; -1) {
+         String number = name.substring(splitAt+1);
+         try {
+            recipientNumber = Integer.parseInt(number, 16);
+         } catch(NumberFormatException e) {
+        	 logger.log(POILogger.ERROR, &quot;Invalid recipient number in name &quot; + name);
+         }
+      }
+   }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>      public int compare(RecipientChunks a, RecipientChunks b) {
+         if(a.recipientNumber &lt; b.recipientNumber)
+            return -1;
+         if(a.recipientNumber &gt; b.recipientNumber)
+            return +1;
+         return 0;
+      }
+</code></pre>
+</body>

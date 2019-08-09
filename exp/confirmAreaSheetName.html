@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSpecialSheetNames() {
+        AreaReference ar;
+        ar = new AreaReference(&quot;&#x27;Sheet A&#x27;!A1:A1&quot;);
+        confirmAreaSheetName(ar, &quot;Sheet A&quot;, &quot;&#x27;Sheet A&#x27;!A1&quot;);
+
+        ar = new AreaReference(&quot;&#x27;Hey! Look Here!&#x27;!A1:A1&quot;);
+        confirmAreaSheetName(ar, &quot;Hey! Look Here!&quot;, &quot;&#x27;Hey! Look Here!&#x27;!A1&quot;);
+
+        ar = new AreaReference(&quot;&#x27;O&#x27;&#x27;Toole&#x27;!A1:B2&quot;);
+        confirmAreaSheetName(ar, &quot;O&#x27;Toole&quot;, &quot;&#x27;O&#x27;&#x27;Toole&#x27;!A1:B2&quot;);
+
+        ar = new AreaReference(&quot;&#x27;one:many&#x27;!A1:B2&quot;);
+        confirmAreaSheetName(ar, &quot;one:many&quot;, &quot;&#x27;one:many&#x27;!A1:B2&quot;);
+    }
+</code></pre>
+</body>

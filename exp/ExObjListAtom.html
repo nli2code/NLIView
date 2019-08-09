@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected ExEmbedAtom(byte[] source, int start, int len) {
+        // Get the header.
+        _header = new byte[8];
+        System.arraycopy(source,start,_header,0,8);
+
+        // Get the record data.
+        _data = new byte[len-8];
+        System.arraycopy(source,start+8,_data,0,len-8);
+
+        // Must be at least 8 bytes long
+        if(_data.length &lt; 8) {
+        	throw new IllegalArgumentException(&quot;The length of the data for a ExEmbedAtom must be at least 4 bytes, but was only &quot; + _data.length);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected ExHyperlinkAtom() {
+        _header = new byte[8];
+        _data = new byte[4];
+
+        LittleEndian.putShort(_header, 2, (short)getRecordType());
+        LittleEndian.putInt(_header, 4, _data.length);
+
+        // It is fine for the other values to be zero
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void findInterestingChildren() {
+		// First child should be the atom
+		if(_children[0] instanceof ExObjListAtom) {
+			exObjListAtom = (ExObjListAtom)_children[0];
+		} else {
+			throw new IllegalStateException(&quot;First child record wasn&#x27;t a ExObjListAtom, was of type &quot; + _children[0].getRecordType());
+		}
+	}
+</code></pre>
+</body>

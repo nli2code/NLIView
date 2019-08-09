@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public TickRecord(RecordInputStream in)
+    {
+
+        field_1_majorTickType          = in.readByte();
+        field_2_minorTickType          = in.readByte();
+        field_3_labelPosition          = in.readByte();
+        field_4_background             = in.readByte();
+        field_5_labelColorRgb          = in.readInt();
+        field_6_zero1                  = in.readInt();
+        field_7_zero2                  = in.readInt();
+        field_8_zero3                  = in.readInt();
+        field_9_zero4                  = in.readInt();
+        
+        field_10_options                = in.readShort();
+        field_11_tickColor              = in.readShort();
+        field_12_zero5                 = in.readShort();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private TickRecord createTickRecord1()
+	{
+		TickRecord r = new TickRecord();
+		r.setMajorTickType( (byte) 2 );
+		r.setMinorTickType( (byte) 0 );
+		r.setLabelPosition( (byte) 3 );
+		r.setBackground( (byte) 1 );
+		r.setLabelColorRgb( 0 );
+		r.setZero1( (short) 0 );
+		r.setZero2( (short) 0 );
+		r.setZero3( (short) 45 );
+		r.setAutorotate( true );
+		r.setAutoTextBackground( true );
+		r.setRotation( (short) 0 );
+		r.setAutorotate( true );
+		r.setTickColor( (short) 77 );
+		return r;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public Object clone() {
+        TickRecord rec = new TickRecord();
+    
+        rec.field_1_majorTickType = field_1_majorTickType;
+        rec.field_2_minorTickType = field_2_minorTickType;
+        rec.field_3_labelPosition = field_3_labelPosition;
+        rec.field_4_background = field_4_background;
+        rec.field_5_labelColorRgb = field_5_labelColorRgb;
+        rec.field_6_zero1 = field_6_zero1;
+        rec.field_7_zero2 = field_7_zero2;
+        rec.field_8_zero3 = field_8_zero3;
+        rec.field_9_zero4 = field_9_zero4;
+        rec.field_10_options = field_10_options;
+        rec.field_11_tickColor = field_11_tickColor;
+        rec.field_12_zero5 = field_12_zero5;
+        return rec;
+    }
+</code></pre>
+</body>

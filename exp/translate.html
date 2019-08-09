@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void draw(Graphics2D graphics, Shape outline) {
+
+        double angle = getAngle();
+        double dist = getDistance();
+        double dx = dist * Math.cos(Math.toRadians(angle));
+        double dy = dist * Math.sin(Math.toRadians(angle));
+
+        graphics.translate(dx, dy);
+
+        Color fillColor = getFillColor();
+        if (fillColor != null) {
+            graphics.setColor(fillColor);
+            graphics.draw(outline);
+        }
+
+        graphics.translate(-dx, -dy);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public and.awt.Shape getOutline(){
+        GeneralPath path =  getPath();
+        Rectangle2D anchor = getAnchor2D();
+        Rectangle2D bounds = path.getBounds2D();
+        AffineTransform at = new AffineTransform();
+        at.translate(anchor.getX(), anchor.getY());
+        at.scale(
+                anchor.getWidth()/bounds.getWidth(),
+                anchor.getHeight()/bounds.getHeight()
+        );
+        return at.createTransformedShape(path);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void moveTo(int x, int y){
+        and.awt.Rectangle anchor = getAnchor();
+        int dx = x - anchor.x;
+        int dy = y - anchor.y;
+        anchor.translate(dx, dy);
+        setAnchor(anchor);
+
+        Shape[] shape = getShapes();
+        for (int i = 0; i &lt; shape.length; i++) {
+            and.awt.Rectangle chanchor = shape[i].getAnchor();
+            chanchor.translate(dx, dy);
+            shape[i].setAnchor(chanchor);
+        }
+    }
+</code></pre>
+</body>

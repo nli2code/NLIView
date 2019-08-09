@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void checkDefaultBackgroundFills() {
+      if (_format.getFillForeground() == org.apache.poi.hssf.util.HSSFColor.AUTOMATIC.index) {
+    	  //JMH: Why +1, hell why not. I guess it made some sense to someone at the time. Doesnt
+    	  //to me now.... But experience has shown that when the fore is set to AUTOMATIC then the
+    	  //background needs to be incremented......
+    	  if (_format.getFillBackground() != (org.apache.poi.hssf.util.HSSFColor.AUTOMATIC.index+1))
+    		  setFillBackgroundColor((short)(org.apache.poi.hssf.util.HSSFColor.AUTOMATIC.index+1));
+      } else if (_format.getFillBackground() == org.apache.poi.hssf.util.HSSFColor.AUTOMATIC.index+1)
+    	  //Now if the forground changes to a non-AUTOMATIC color the background resets itself!!!
+    	  if (_format.getFillForeground() != org.apache.poi.hssf.util.HSSFColor.AUTOMATIC.index)
+    		  setFillBackgroundColor(org.apache.poi.hssf.util.HSSFColor.AUTOMATIC.index);
+    }
+</code></pre>
+</body>

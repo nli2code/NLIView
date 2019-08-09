@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static BATBlockAndIndex getSBATBlockAndIndex(final int offset, 
+          final HeaderBlock header, final List&lt;BATBlock&gt; sbats) {
+       POIFSBigBlockSize bigBlockSize = header.getBigBlockSize();
+       int entriesPerBlock = bigBlockSize.getBATEntriesPerBlock();
+       
+       // SBATs are so much easier, as they&#x27;re chained streams
+       int whichSBAT = offset / entriesPerBlock;
+       int index = offset % entriesPerBlock;
+       return new BATBlockAndIndex( index, sbats.get(whichSBAT) );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected NPOIFSMiniStore(NPOIFSFileSystem filesystem, RootProperty root,
+         List&lt;BATBlock&gt; sbats, HeaderBlock header)
+    {
+       this._filesystem = filesystem;
+       this._sbat_blocks = sbats;
+       this._header = header;
+       this._root = root;
+       
+       this._mini_stream = new NPOIFSStream(filesystem, root.getStartBlock());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static BATBlock createBATBlock(final POIFSBigBlockSize bigBlockSize, ByteBuffer data)
+    {
+       // Create an empty block
+       BATBlock block = new BATBlock(bigBlockSize);
+       
+       // Fill it
+       byte[] buffer = new byte[LittleEndian.INT_SIZE];
+       for(int i=0; i&lt;block._values.length; i++) {
+          data.get(buffer);
+          block._values[i] = LittleEndian.getInt(buffer);
+       }
+       block.recomputeFree();
+       
+       // All done
+       return block;
+    }
+</code></pre>
+</body>

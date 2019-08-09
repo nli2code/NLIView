@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>  private void addBorder(StringBuffer buf, short[] brc, String where)
+  {
+    if((brc[0] &amp; 0xff00) != 0 &amp;&amp; brc[0] != -1)
+    {
+      int type = (brc[0] &amp; 0xff00) &gt;&gt; 8;
+      float width = (brc[0] &amp; 0x00ff)/8.0f;
+      String style = getBorderStyle(brc[0]);
+      String color = getColor(brc[1] &amp; 0x00ff);
+      String thickness = getBorderThickness(brc[0]);
+      buf.append(&quot;border-&quot; + where + &quot;-style=\&quot;&quot; + style + &quot;\&quot;\r\n&quot;);
+      buf.append(&quot;border-&quot; + where + &quot;-color=\&quot;&quot; + color + &quot;\&quot;\r\n&quot;);
+      buf.append(&quot;border-&quot; + where + &quot;-width=\&quot;&quot; + width + &quot;pt\&quot;\r\n&quot;);
+    }
+  }
+</code></pre>
+</body>

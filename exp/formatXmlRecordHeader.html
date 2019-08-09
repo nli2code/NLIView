@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toXml(String tab) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(tab).append(formatXmlRecordHeader(getClass().getSimpleName(), HexDump.toHex(getRecordId()), HexDump.toHex(getVersion()), HexDump.toHex(getInstance())))
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;RectX&gt;&quot;).append(field_1_rectX1).append(&quot;&lt;/RectX&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;RectY&gt;&quot;).append(field_2_rectY1).append(&quot;&lt;/RectY&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;RectWidth&gt;&quot;).append(field_3_rectX2).append(&quot;&lt;/RectWidth&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;RectHeight&gt;&quot;).append(field_4_rectY2).append(&quot;&lt;/RectHeight&gt;\n&quot;);
+        builder.append(tab).append(&quot;&lt;/&quot;).append(getClass().getSimpleName()).append(&quot;&gt;\n&quot;);
+        return builder.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String toXml(String tab) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(tab).append(formatXmlRecordHeader(getClass().getSimpleName(),
+                HexDump.toHex(getRecordId()), HexDump.toHex(getVersion()), HexDump.toHex(getInstance())));
+        for (EscherProperty property: getEscherProperties()){
+            builder.append(property.toXml(tab+&quot;\t&quot;));
+        }
+        builder.append(tab).append(&quot;&lt;/&quot;).append(getClass().getSimpleName()).append(&quot;&gt;\n&quot;);
+        return builder.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public String toXml(String tab) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(tab).append(formatXmlRecordHeader(getClass().getSimpleName(), HexDump.toHex(getRecordId()), HexDump.toHex(getVersion()), HexDump.toHex(getInstance())))
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;BlipTypeWin32&gt;&quot;).append(field_1_blipTypeWin32).append(&quot;&lt;/BlipTypeWin32&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;BlipTypeMacOS&gt;&quot;).append(field_2_blipTypeMacOS).append(&quot;&lt;/BlipTypeMacOS&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;SUID&gt;&quot;).append(field_3_uid == null ? &quot;&quot; : HexDump.toHex(field_3_uid)).append(&quot;&lt;/SUID&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Tag&gt;&quot;).append(field_4_tag).append(&quot;&lt;/Tag&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Size&gt;&quot;).append(field_5_size).append(&quot;&lt;/Size&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Ref&gt;&quot;).append(field_6_ref).append(&quot;&lt;/Ref&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Offset&gt;&quot;).append(field_7_offset).append(&quot;&lt;/Offset&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Usage&gt;&quot;).append(field_8_usage).append(&quot;&lt;/Usage&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Name&gt;&quot;).append(field_9_name).append(&quot;&lt;/Name&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Unused2&gt;&quot;).append(field_10_unused2).append(&quot;&lt;/Unused2&gt;\n&quot;)
+                .append(tab).append(&quot;\t&quot;).append(&quot;&lt;Unused3&gt;&quot;).append(field_11_unused3).append(&quot;&lt;/Unused3&gt;\n&quot;);
+        builder.append(tab).append(&quot;&lt;/&quot;).append(getClass().getSimpleName()).append(&quot;&gt;\n&quot;);
+        return builder.toString();
+    }
+</code></pre>
+</body>

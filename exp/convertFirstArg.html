@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1,
+			ValueEval arg2) {
+		TwoDEval reference = convertFirstArg(arg0);
+
+		try {
+			int columnIx = resolveIndexArg(arg2, srcRowIndex, srcColumnIndex);
+			int rowIx = resolveIndexArg(arg1, srcRowIndex, srcColumnIndex);
+			return getValueFromArea(reference, rowIx, columnIx);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static TwoDEval convertFirstArg(ValueEval arg0) {
+		ValueEval firstArg = arg0;
+		if (firstArg instanceof RefEval) {
+			// convert to area ref for simpler code in getValueFromArea()
+			return ((RefEval)firstArg).offset(0, 0, 0, 0);
+		}
+		if((firstArg instanceof TwoDEval)) {
+			return (TwoDEval) firstArg;
+		}
+		// else the other variation of this function takes an array as the first argument
+		// it seems like interface &#x27;ArrayEval&#x27; does not even exist yet
+		throw new RuntimeException(&quot;Incomplete code - cannot handle first arg of type (&quot;
+				+ firstArg.getClass().getName() + &quot;)&quot;);
+
+	}
+</code></pre>
+</body>

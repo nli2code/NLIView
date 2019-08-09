@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testNoHyperlinks() throws Exception {
+		HPBFDocument doc = new HPBFDocument(
+                _samples.openResourceAsStream(&quot;SampleNewsletter.pub&quot;)
+		);
+
+		QuillContents qc = doc.getQuillContents();
+		assertEquals(20, qc.getBits().length);
+
+		Type12 plc18 = (Type12)qc.getBits()[18];
+
+		assertEquals(1, plc18.getNumberOfPLCs());
+		assertEquals(0, plc18.getNumberOfHyperlinks());
+		assertEquals(0, plc18.getTextStartAt(0));
+		assertEquals(601, plc18.getAllTextEndAt());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testText() throws Exception {
+		HPBFDocument doc = new HPBFDocument(
+                _samples.openResourceAsStream(&quot;Sample.pub&quot;)
+		);
+
+		QuillContents qc = doc.getQuillContents();
+		assertEquals(20, qc.getBits().length);
+
+		QCTextBit text = (QCTextBit)qc.getBits()[0];
+		String t = text.getText();
+		assertTrue(t.startsWith(&quot;This is some text on the first page&quot;));
+		assertTrue(t.endsWith(&quot;Within doc to page 1\r&quot;));
+	}
+</code></pre>
+</body>

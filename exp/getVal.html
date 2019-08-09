@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String getStyleID(){
+        String styleId = null;
+        CTTblPr tblPr = ctTbl.getTblPr();
+        if (tblPr != null) {
+            CTString styleStr = tblPr.getTblStyle();
+            if (styleStr != null) {
+                styleId = styleStr.getVal();
+            }
+        }
+        return styleId;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static AxisPosition toAxisPosition(CTAxPos ctAxPos) {
+		switch (ctAxPos.getVal().intValue()) {
+			case STAxPos.INT_B: return AxisPosition.BOTTOM;
+			case STAxPos.INT_L: return AxisPosition.LEFT;
+			case STAxPos.INT_R: return AxisPosition.RIGHT;
+			case STAxPos.INT_T: return AxisPosition.TOP;
+			default: return AxisPosition.BOTTOM;
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public short getFontHeight() {
+        CTFontSize size = _ctFont.sizeOfSzArray() == 0 ? null : _ctFont.getSzArray(0);
+        if (size != null) {
+            double fontHeight = size.getVal();
+            return (short)(fontHeight*20);
+        }
+        return (short)(DEFAULT_FONT_SIZE*20);
+    }
+</code></pre>
+</body>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void getSheetHeaders(Iterator&lt;Row&gt; rowIterator, FileSheet page) {
+        Row row;
+        Iterator&lt;Cell&gt; cellIterator;
+        Cell cell;
+
+        if (rowIterator.hasNext()) {
+            row = rowIterator.next();
+            cellIterator = getCellIterator(row);
+            while (cellIterator.hasNext()) {
+                cell = cellIterator.next();
+                page.addHeader(getCellValue(cell));
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static int getSheetRowNumber(XSSFSheet sheet)
+	{
+		int count=0;
+		int begin = sheet.getFirstRowNum();  
+		  
+	    int end = sheet.getLastRowNum();  
+	  
+	    for (int i = begin; i &lt;= end; i++) {  
+	        if (null == sheet.getRow(i)||  null==sheet.getRow(i).getCell(0) || getCellValue(sheet.getRow(i).getCell(0)) == &quot;&quot;) {  
+	            continue;  
+	        }  
+	        else count++;
+	    }
+	    return count;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static Object getCellValue(Cell cell) {
+		switch (cell.getCellType()) {
+		case Cell.CELL_TYPE_STRING:
+			return cell.getStringCellValue();
+		case Cell.CELL_TYPE_BOOLEAN:
+			return cell.getBooleanCellValue();
+		case Cell.CELL_TYPE_NUMERIC:
+			return cell.getNumericCellValue();
+		}
+
+		return null;
+	}
+</code></pre>
+</body>

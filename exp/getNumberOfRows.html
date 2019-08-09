@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static void showTableProperties(List&lt;XWPFTable&gt; lt)
+    {
+        for (XWPFTable t: lt) {
+            System.out.println(&quot;TABLE: &quot;);
+            //Not yet needed
+            //System.out.println(&quot;COL BAND SIZE: &quot; + t.getColBandSize());
+            //System.out.println(&quot;ROW BAND SIZE: &quot; + t.getRowBandSize());
+            System.out.println(&quot;NO. OF ROWS: &quot; + t.getNumberOfRows());
+            System.out.println(&quot;WIDTH: &quot; + t.getWidth());
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public Result parse() {
+        Result result = new Result();
+        Sheet groupsSheet = workbook.getSheet(&quot;Groups&quot;);
+        Integer noOfEntries = getNumberOfRows(groupsSheet, 0);
+        for (int rowIndex = 1; rowIndex &lt; noOfEntries; rowIndex++) {
+            Row row;
+            try {
+                row = groupsSheet.getRow(rowIndex);
+                if(isNotImported(row, STATUS_COL)) {
+                    groups.add(parseAsGroup(row));
+                    meetings.add(parseAsMeeting(row));
+                }
+            } catch (Exception e) {
+                result.addError(&quot;Row = &quot; + rowIndex + &quot; , &quot; + e.getMessage());
+            }
+        }
+        return result;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setOutsideBorders(Object... args){
+        if (args.length == 0) return;
+        
+        TableShape&lt;?,?&gt; table = getShape();
+        final int rows = table.getNumberOfRows();
+        final int cols = table.getNumberOfColumns();
+        
+        BorderEdge edges[] = new BorderEdge[4];
+        for (int row = 0; row &lt; rows; row++) {
+            for (int col = 0; col &lt; cols; col++) {
+                edges[0] = (col == 0) ? BorderEdge.left : null;
+                edges[1] = (col == cols - 1) ? BorderEdge.right : null;
+                edges[2] = (row == 0) ? BorderEdge.top : null;
+                edges[3] = (row == rows - 1) ? BorderEdge.bottom : null;
+                setEdges(table.getCell(row, col), edges, args);
+            }
+        }
+    }
+</code></pre>
+</body>

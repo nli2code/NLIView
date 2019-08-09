@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static &lt;T&gt;void pojo2Excel(List&lt;T&gt; pojoList,OutputStream out) throws Exception{
+		//获取类的属性作为列名
+		LinkedHashMap&lt;String,String&gt; alias=new LinkedHashMap&lt;String,String&gt;();
+		//获取类名作为标题
+		String headLine=&quot;&quot;;
+		if(pojoList.size()&gt;0) {
+			Object pojo = pojoList.get(0);
+			Class&lt;? extends Object&gt; claz = pojo.getClass();
+			headLine=claz.getName();
+			Field[] fields=claz.getDeclaredFields();
+			String[]   name   =   new   String[fields.length]; 
+			Field.setAccessible(fields,   true); 
+            for   (int   i   =   0;   i   &lt;   name.length;   i++)   { 
+                   name[i]   =   fields[i].getName(); 
+                   alias.put(isNull(name[i]).toString(), isNull(name[i]).toString());
+            } 
+            pojo2Excel(pojoList,out,alias,headLine);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void dumpFields()
+    {
+        if ( !( _doc instanceof HWPFDocument ) )
+        {
+            System.out.println( &quot;Word 95 not supported so far&quot; );
+            return;
+        }
+
+        HWPFDocument document = (HWPFDocument) _doc;
+
+        for ( FieldsDocumentPart part : FieldsDocumentPart.values() )
+        {
+            System.out.println( &quot;=== Document part: &quot; + part + &quot; ===&quot; );
+            for ( Field field : document.getFields().getFields( part ) )
+            {
+                System.out.println( field );
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>  public void testReadWrite()
+    throws Exception
+  {
+    int size = _fileInformationBlock.getSize();
+    byte[] buf = new byte[size];
+
+    _fileInformationBlock.getFibBase().serialize(buf, 0);
+
+    FileInformationBlock newFileInformationBlock =
+      new FileInformationBlock(buf);
+
+    Field[] fields = FileInformationBlock.class.getSuperclass().getDeclaredFields();
+    AccessibleObject.setAccessible(fields, true);
+
+    for (int x = 0; x &lt; fields.length; x++)
+    {
+      assertEquals(fields[x].get(_fileInformationBlock), fields[x].get(newFileInformationBlock));
+    }
+  }
+</code></pre>
+</body>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testNotesTwo() {
+		HSLFNotes notes = ss.getNotes().get(1);
+		String[] expectText = new String[] {&quot;These are the notes on page two, again lacking formatting&quot;};
+		assertEquals(expectText.length, notes.getTextParagraphs().size());
+		for(int i=0; i&lt;expectText.length; i++) {
+			assertEquals(expectText[i], HSLFTextParagraph.getRawText(notes.getTextParagraphs().get(i)));
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testSpecialChars() {
+		assertEquals(&quot;&amp;U&quot;, HSSFHeader.startUnderline());
+		assertEquals(&quot;&amp;U&quot;, HSSFHeader.endUnderline());
+		assertEquals(&quot;&amp;P&quot;, HSSFHeader.page());
+
+		assertEquals(&quot;&amp;22&quot;, HSSFFooter.fontSize((short)22));
+		assertEquals(&quot;&amp;\&quot;Arial,bold\&quot;&quot;, HSSFFooter.font(&quot;Arial&quot;, &quot;bold&quot;));
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>  private String createEvenOddPageSequence(String titlePage, String evenPage, String oddPage, int counter)
+  {
+    String name = &quot;my-sequence&quot; + counter;
+    _headerBuffer.append(&quot;&lt;fo:page-sequence-master master-name=\&quot;&quot; + name + &quot;\&quot;&gt; &quot;);
+    _headerBuffer.append(&quot;&lt;fo:repeatable-page-master-alternatives&gt;&quot;);
+    if(titlePage != null)
+    {
+      _headerBuffer.append(&quot;&lt;fo:conditional-page-master-reference &quot; +
+                           &quot;page-position=\&quot;first\&quot; master-reference=\&quot;&quot; +
+                            titlePage + &quot;\&quot;/&gt;&quot;);
+    }
+    _headerBuffer.append(&quot;&lt;fo:conditional-page-master-reference odd-or-even=\&quot;odd\&quot; &quot;);
+    _headerBuffer.append(&quot;master-reference=\&quot;&quot;+ oddPage + &quot;\&quot;/&gt; &quot;);
+    _headerBuffer.append(&quot;&lt;fo:conditional-page-master-reference odd-or-even=\&quot;even\&quot; &quot;);
+    _headerBuffer.append(&quot;master-reference=\&quot;&quot; + evenPage + &quot;\&quot;/&gt; &quot;);
+    _headerBuffer.append(&quot;&lt;/fo:repeatable-page-master-alternatives&gt;&quot;);
+    _headerBuffer.append(&quot;&lt;/fo:page-sequence-master&gt;&quot;);
+    return name;
+  }
+</code></pre>
+</body>

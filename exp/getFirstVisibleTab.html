@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSheetSelection() {
+        Workbook b = _testDataProvider.createWorkbook();
+        b.createSheet(&quot;Sheet One&quot;);
+        b.createSheet(&quot;Sheet Two&quot;);
+        b.setActiveSheet(1);
+        b.setSelectedTab(1);
+        b.setFirstVisibleTab(1);
+        assertEquals(1, b.getActiveSheetIndex());
+        assertEquals(1, b.getFirstVisibleTab());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testWindowOneDefaults() {
+        HSSFWorkbook b = new HSSFWorkbook( );
+        try {
+            assertEquals(b.getActiveSheetIndex(), 0);
+            assertEquals(b.getFirstVisibleTab(), 0);
+        } catch (NullPointerException npe) {
+            fail(&quot;WindowOneRecord in Workbook is probably not initialized&quot;);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testDefaultValues() {
+        Workbook b = _testDataProvider.createWorkbook();
+        assertEquals(0, b.getActiveSheetIndex());
+        assertEquals(0, b.getFirstVisibleTab());
+        assertEquals(0, b.getNumberOfNames());
+        assertEquals(0, b.getNumberOfSheets());
+    }
+</code></pre>
+</body>

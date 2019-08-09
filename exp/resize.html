@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void resize() throws Exception {
+        XSSFWorkbook wb = XSSFITestDataProvider.instance.openSampleWorkbook(&quot;resize_compare.xlsx&quot;);
+        XSSFDrawing dp = wb.getSheetAt(0).createDrawingPatriarch();
+        List&lt;XSSFShape&gt; pics = dp.getShapes();
+        XSSFPicture inpPic = (XSSFPicture)pics.get(0);
+        XSSFPicture cmpPic = (XSSFPicture)pics.get(0);
+        
+        baseTestResize(inpPic, cmpPic, 2.0, 2.0);
+        wb.close();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSLFPictureShape createPicture(PictureData pictureData){
+        if (!(pictureData instanceof XSLFPictureData)) {
+            throw new IllegalArgumentException(&quot;pictureData needs to be of type XSLFPictureData&quot;);
+        }
+        XSLFPictureData xPictureData = (XSLFPictureData)pictureData;
+        PackagePart pic = xPictureData.getPackagePart();
+
+        PackageRelationship rel = getSheet().getPackagePart().addRelationship(
+                pic.getPartName(), TargetMode.INTERNAL, XSLFRelation.IMAGES.getRelation());
+
+        XSLFPictureShape sh = getDrawing().createPicture(rel.getId());
+        new DrawPictureShape(sh).resize();
+        _shapes.add(sh);
+        sh.setParent(this);
+        return sh;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void resize() {
+        XSLFPictureData pict = getPictureData();
+
+        try {
+            BufferedImage img = ImageIO.read(new ByteArrayInputStream(pict.getData()));
+            setAnchor(new Rectangle2D.Double(0, 0, img.getWidth(), img.getHeight()));
+            img.bm.recycle();
+        }
+        catch (Exception e) {
+            //default size is 200x200
+            setAnchor(new and.awt.Rectangle(50, 50, 200, 200));
+        }
+    }
+</code></pre>
+</body>

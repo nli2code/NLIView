@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void applyFont(short fontIndex) {
+        XSSFFont font;
+        if(styles == null) {
+            font = new XSSFFont();
+            font.setFontName(&quot;#&quot; + fontIndex);
+        } else {
+            font = styles.getFontAt(fontIndex);
+        }
+        String text = getString();
+        applyFont(0, text.length(), font);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static void processFontRuns(RecordInputStream in, HSSFRichTextString str,
+			int formattingRunDataLength) {
+		if (formattingRunDataLength % FORMAT_RUN_ENCODED_SIZE != 0) {
+			throw new RecordFormatException(&quot;Bad format run data length &quot; + formattingRunDataLength
+					+ &quot;)&quot;);
+		}
+		int nRuns = formattingRunDataLength / FORMAT_RUN_ENCODED_SIZE;
+		for (int i = 0; i &lt; nRuns; i++) {
+			short index = in.readShort();
+			short iFont = in.readShort();
+			in.readInt(); // skip reserved.
+			str.applyFont(index, str.length(), iFont);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setString(RichTextString string) {
+        //TODO add other shape types which can not contain text
+        if (getShapeType() == 0 || getShapeType() == OBJECT_TYPE_LINE){
+            throw new IllegalStateException(&quot;Cannot set text for shape type: &quot;+getShapeType());
+        }
+        HSSFRichTextString rtr = (HSSFRichTextString) string;
+        // If font is not set we must set the default one
+        if (rtr.numFormattingRuns() == 0) rtr.applyFont((short) 0);
+        TextObjectRecord txo = getOrCreateTextObjRecord();
+        txo.setStr(rtr);
+        if (string.getString() != null){
+            setPropertyValue(new EscherSimpleProperty(EscherProperties.TEXT__TEXTID, string.getString().hashCode()));
+        }
+    }
+</code></pre>
+</body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		public void confirmData(String expHexData) {
+
+			byte[] expData = HexRead.readFromString(expHexData);
+			byte[] actData = new byte[expData.length];
+			_bds.readFully(actData);
+			if (Arrays.equals(expData, actData)) {
+				return;
+			}
+			_errorsOccurred = true;
+			if (ONLY_LOG_ERRORS) {
+				logErr(2, &quot;Data mismatch &quot; + HexDump.toHex(expData) + &quot; - &quot;
+						+ HexDump.toHex(actData));
+				return;
+			}
+			throw new ComparisonFailure(&quot;Data mismatch&quot;, HexDump.toHex(expData), HexDump.toHex(actData));
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		private void cmp(char[] exp, char[] act) {
+			if (Arrays.equals(exp, act)) {
+				return;
+			}
+			_errorsOccurred = true;
+			if (ONLY_LOG_ERRORS) {
+				logErr(3, &quot;Value mismatch &quot; + new String(exp) + &quot; - &quot; + new String(act));
+				return;
+			}
+			throw new ComparisonFailure(&quot;Value mismatch&quot;, new String(exp), new String(act));
+		}
+</code></pre>
+</body>

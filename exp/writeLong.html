@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void replaceNaNs(byte[] fileContent, long[] replacementNaNs) {
+		int countFound = 0;
+		for(int i=0; i&lt;fileContent.length; i++) {
+			if(isNaNBytes(fileContent, i)) {
+				writeLong(fileContent, i, replacementNaNs[countFound]);
+				countFound++;
+			}
+		}
+		if (countFound &lt; replacementNaNs.length) {
+			throw new RuntimeException(&quot;wrong repl count&quot;);
+		}
+		
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  public void serialize(final LittleEndianOutput out) {
+    final int field_4_name_length = field_6_name_text.length();
+    final int field_5_comment_length = field_7_comment_text.length();
+
+    out.writeShort(field_1_record_type);
+    out.writeShort(field_2_frt_cell_ref_flag);
+    out.writeLong(field_3_reserved);
+    out.writeShort(field_4_name_length);
+    out.writeShort(field_5_comment_length);
+
+    out.writeByte(0);
+    StringUtil.putCompressedUnicode(field_6_name_text, out);
+    out.writeByte(0);
+    StringUtil.putCompressedUnicode(field_7_comment_text, out);
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static void writeLong(byte[] bb, int i, long val) {
+		String oldVal = interpretLong(bb, i);
+		bb[i+7] = (byte) (val &gt;&gt; 56);
+		bb[i+6] = (byte) (val &gt;&gt; 48);
+		bb[i+5] = (byte) (val &gt;&gt; 40);
+		bb[i+4] = (byte) (val &gt;&gt; 32);
+		bb[i+3] = (byte) (val &gt;&gt; 24);
+		bb[i+2] = (byte) (val &gt;&gt; 16);
+		bb[i+1] = (byte) (val &gt;&gt;  8);
+		bb[i+0] = (byte) (val &gt;&gt;  0);
+		if (false) {
+			String newVal = interpretLong(bb, i);
+			System.out.println(&quot;changed offset &quot; + i + &quot; from &quot; + oldVal + &quot; to &quot; + newVal);
+		}
+		
+	}
+</code></pre>
+</body>

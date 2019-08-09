@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public int getRotationDegree(){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        EscherSimpleProperty property = getOptRecord().lookup(EscherProperties.TRANSFORM__ROTATION);
+        if (null == property){
+            return 0;
+        }
+        try {
+            LittleEndian.putInt(property.getPropertyValue(), bos);
+            return LittleEndian.getShort(bos.toByteArray(), 2);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testReadExistingRectangle() {
+        HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;drawings.xls&quot;);
+        HSSFSheet sheet = wb.getSheet(&quot;rectangles&quot;);
+        HSSFPatriarch drawing = sheet.getDrawingPatriarch();
+        assertEquals(1, drawing.getChildren().size());
+
+        HSSFSimpleShape shape = (HSSFSimpleShape) drawing.getChildren().get(0);
+        assertEquals(shape.isNoFill(), false);
+        assertEquals(shape.getLineStyle(), HSSFShape.LINESTYLE_DASHDOTGEL);
+        assertEquals(shape.getLineStyleColor(), 0x616161);
+        assertEquals(HexDump.toHex(shape.getFillColor()), shape.getFillColor(), 0x2CE03D);
+        assertEquals(shape.getLineWidth(), HSSFShape.LINEWIDTH_ONE_PT * 2);
+        assertEquals(shape.getString().getString(), &quot;POItest&quot;);
+        assertEquals(shape.getRotationDegree(), 27);
+    }
+</code></pre>
+</body>

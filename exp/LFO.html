@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>  public HWPFList(boolean numbered, StyleSheet styleSheet)
+  {
+    _listData = new ListData((int)(Math.random() * System.currentTimeMillis()), numbered);
+    _override = new ListFormatOverride(_listData.getLsid());
+    _styleSheet = styleSheet;
+  }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public LFOData getLfoData( int ilfo ) throws NoSuchElementException
+    {
+        if ( ilfo &lt;= 0 || ilfo &gt; _lfoMac )
+        {
+            throw new NoSuchElementException( &quot;LFOData with ilfo &quot; + ilfo
+                    + &quot; not found. lfoMac is &quot; + _lfoMac );
+        }
+        return _rgLfoData[ilfo - 1];
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>  public void test() {
+    HWPFDocument doc = HWPFTestDataSamples.openSampleFile(&quot;Bug50075.doc&quot;);
+    Range range = doc.getRange();
+    assertEquals(1, range.numParagraphs());
+    ListEntry entry = (ListEntry) range.getParagraph(0);
+    ListFormatOverride override = doc.getListTables().getOverride(entry.getIlfo());
+    ListLevel level = doc.getListTables().getLevel(override.getLsid(), entry.getIlvl());
+    
+    // the bug reproduces, if this call fails with NullPointerException
+    level.getNumberText();
+  }
+</code></pre>
+</body>

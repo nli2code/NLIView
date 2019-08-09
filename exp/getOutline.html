@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public and.awt.Shape getOutline(){
+        GeneralPath path =  getPath();
+        Rectangle2D anchor = getAnchor2D();
+        Rectangle2D bounds = path.getBounds2D();
+        AffineTransform at = new AffineTransform();
+        at.translate(anchor.getX(), anchor.getY());
+        at.scale(
+                anchor.getWidth()/bounds.getWidth(),
+                anchor.getHeight()/bounds.getHeight()
+        );
+        return at.createTransformedShape(path);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public and.awt.Shape getOutline(){
+    	
+    	Log.d(&quot;getOutline&quot;, &quot;getOutline: &quot; + getText() + &quot;, type: &quot; + ShapeTypes.typeName(getShapeType()));
+    	
+        ShapeOutline outline = AutoShapes.getShapeOutline(getShapeType());
+        Rectangle2D anchor = getLogicalAnchor2D();
+        if(outline == null){
+            logger.log(POILogger.WARN, &quot;Outline not found for &quot; + ShapeTypes.typeName(getShapeType()));
+            return anchor;
+        }
+        and.awt.Shape shape = outline.getOutline(this);
+        return AutoShapes.transform(shape, anchor);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void drawString(AttributedCharacterIterator attributedcharacteriterator, float x, float y)
+    {
+        TextLayout textlayout = new TextLayout(attributedcharacteriterator, getFontRenderContext());
+        Paint paint1 = getPaint();
+        setColor(getColor());
+        fill(textlayout.getOutline(AffineTransform.getTranslateInstance(x, y)));
+        setPaint(paint1);
+    }
+</code></pre>
+</body>

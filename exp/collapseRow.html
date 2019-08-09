@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private boolean isRowGroupCollapsed(int row) {
+        int collapseRow = findEndOfRowOutlineGroup(row) + 1;
+        if (getRow(collapseRow) == null) {
+            return false;
+        }
+        return getRow(collapseRow).getCTRow().getCollapsed();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void collapseRow(int rowIndex) {
+        XSSFRow row = getRow(rowIndex);
+        if (row != null) {
+            int startRow = findStartOfRowOutlineGroup(rowIndex);
+
+            // Hide all the columns until the end of the group
+            int lastRow = writeHidden(row, startRow, true);
+            if (getRow(lastRow) != null) {
+                getRow(lastRow).getCTRow().setCollapsed(true);
+            } else {
+                XSSFRow newRow = createRow(lastRow);
+                newRow.getCTRow().setCollapsed(true);
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void collapseRow(int rowNumber) {
+
+		// Find the start of the group.
+		int startRow = findStartOfRowOutlineGroup(rowNumber);
+		RowRecord rowRecord = getRow(startRow);
+
+		// Hide all the columns until the end of the group
+		int nextRowIx = writeHidden(rowRecord, startRow);
+
+		RowRecord row = getRow(nextRowIx);
+		if (row == null) {
+			row = createRow(nextRowIx);
+			insertRow(row);
+		}
+		// Write collapse field
+		row.setColapsed(true);
+	}
+</code></pre>
+</body>

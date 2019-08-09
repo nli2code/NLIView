@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private CellStyle createCellContentStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        // 设置边框样式
+        style.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+        style.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+        style.setBorderRight(XSSFCellStyle.BORDER_THIN);
+        style.setBorderTop(XSSFCellStyle.BORDER_THIN);
+        //设置对齐样式
+        style.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+        // 生成字体
+        Font font = workbook.createFont();
+        // 正文样式
+        style.setFillPattern(XSSFCellStyle.NO_FILL);
+        style.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+        font.setBoldweight(XSSFFont.BOLDWEIGHT_NORMAL);
+        // 把字体应用到当前的样式
+        style.setFont(font);
+        return style;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public Cell fromJava(Row row, int column, BigDecimal value) {
+        final Sheet sheet = row.getSheet();
+        final Workbook workbook = sheet.getWorkbook();
+        String value1 = String.valueOf(value);
+        final CellStyle cellStyle = workbook.createCellStyle();
+        final Cell cell = row.createCell(column);
+        cell.setCellStyle(cellStyle);
+        cell.setCellValue(value1);
+        cell.setCellType(Cell.CELL_TYPE_STRING);
+
+        return cell;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public String getFormatString(int formatIndex) {
+		String format = null;
+		if (formatIndex &gt;= HSSFDataFormat.getNumberOfBuiltinBuiltinFormats()) {
+			FormatRecord tfr = _customFormatRecords.get(Integer.valueOf(formatIndex));
+			if (tfr == null) {
+				System.err.println(&quot;Requested format at index &quot; + formatIndex
+						+ &quot;, but it wasn&#x27;t found&quot;);
+			} else {
+				format = tfr.getFormatString();
+			}
+		} else {
+			format = HSSFDataFormat.getBuiltinFormat((short) formatIndex);
+		}
+		return format;
+	}
+</code></pre>
+</body>

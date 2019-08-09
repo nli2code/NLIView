@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toFormulaString() {
+        StringBuffer sb = new StringBuffer();
+        if (externalWorkbookNumber &gt;= 0) {
+            sb.append(&#x27;[&#x27;);
+            sb.append(externalWorkbookNumber);
+            sb.append(&#x27;]&#x27;);
+        }
+        SheetNameFormatter.appendFormat(sb, firstSheetName);
+        if (lastSheetName != null) {
+            sb.append(&#x27;:&#x27;);
+            SheetNameFormatter.appendFormat(sb, lastSheetName);
+        }
+        sb.append(&#x27;!&#x27;);
+        sb.append(formatReferenceAsString());
+        return sb.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static void appendFormat(StringBuffer out, String rawSheetName) {
+		boolean needsQuotes = needsDelimiting(rawSheetName);
+		if(needsQuotes) {
+			out.append(DELIMITER);
+			appendAndEscape(out, rawSheetName);
+			out.append(DELIMITER);
+		} else {
+			out.append(rawSheetName);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static void appendFormat(StringBuffer out, String workbookName, String rawSheetName) {
+		boolean needsQuotes = needsDelimiting(workbookName) || needsDelimiting(rawSheetName);
+		if(needsQuotes) {
+			out.append(DELIMITER);
+			out.append(&#x27;[&#x27;);
+			appendAndEscape(out, workbookName.replace(&#x27;[&#x27;, &#x27;(&#x27;).replace(&#x27;]&#x27;, &#x27;)&#x27;));
+			out.append(&#x27;]&#x27;);
+			appendAndEscape(out, rawSheetName);
+			out.append(DELIMITER);
+		} else {
+			out.append(&#x27;[&#x27;);
+			out.append(workbookName);
+			out.append(&#x27;]&#x27;);
+			out.append(rawSheetName);
+		}
+	}
+</code></pre>
+</body>

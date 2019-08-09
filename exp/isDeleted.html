@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public boolean isDeleted(){
+        String formulaText = getRefersToFormula();
+        if (formulaText == null) {
+            return false;
+        }
+        XSSFEvaluationWorkbook fpb = XSSFEvaluationWorkbook.create(_workbook);
+        Ptg[] ptgs = FormulaParser.parse(formulaText, fpb, FormulaType.NAMEDRANGE, getSheetIndex());
+        return Ptg.doesFormulaReferToDeletedCell(ptgs);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public final void testUninitialisedNameGetRefersToFormula_bug46973() {
+        Workbook wb = _testDataProvider.createWorkbook();
+        Name n = wb.createName();
+        n.setNameName(&quot;UPSState&quot;);
+        String formula;
+        try {
+            formula = n.getRefersToFormula();
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().equals(&quot;ptgs must not be null&quot;)) {
+                throw new AssertionFailedError(&quot;Identified bug 46973&quot;);
+            }
+            throw e;
+        }
+        assertNull(formula);
+        assertFalse(n.isDeleted()); // according to exact definition of isDeleted()
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public final void testDeletedCell() {
+        Workbook wb = _testDataProvider.createWorkbook();
+        Name n = wb.createName();
+        n.setNameName(&quot;MyName&quot;);
+        // contrived example to expose bug:
+        n.setRefersToFormula(&quot;if(A1,\&quot;#REF!\&quot;, \&quot;\&quot;)&quot;);
+
+        if (n.isDeleted()) {
+            throw new AssertionFailedError(&quot;Identified bug in recoginising formulas referring to deleted cells&quot;);
+        }
+
+    }
+</code></pre>
+</body>

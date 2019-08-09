@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected static ParagraphProperties newParagraph_applyStyleProperties(
+            StyleSheet styleSheet, PAPX papx, ParagraphProperties properties )
+    {
+        if ( styleSheet == null )
+            return properties;
+
+        int style = papx.getIstd();
+        byte[] grpprl = styleSheet.getPAPX( style );
+        return ParagraphSprmUncompressor.uncompressPAP( properties, grpprl, 2 );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>            public int compare( PAPX o1, PAPX o2 )
+            {
+                Integer i1 = papxToFileOrder.get( o1 );
+                Integer i2 = papxToFileOrder.get( o2 );
+                return i1.compareTo( i2 );
+            }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public String toString()
+    {
+        return &quot;LVL: &quot; + ( &quot;\n&quot; + _lvlf ).replaceAll( &quot;\n&quot;, &quot;\n    &quot; )
+                + &quot;\n&quot;
+                + ( &quot;PAPX&#x27;s grpprl: &quot; + Arrays.toString( _grpprlPapx ) + &quot;\n&quot; )
+                + ( &quot;CHPX&#x27;s grpprl: &quot; + Arrays.toString( _grpprlChpx ) + &quot;\n&quot; )
+                + ( &quot;xst: &quot; + Arrays.toString( _xst ) + &quot;\n&quot; );
+    }
+</code></pre>
+</body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testErrors() {
+		confirmValueError(&quot;1+1&quot;);
+		confirmValueError(&quot;1 1&quot;);
+		confirmValueError(&quot;1,00.0&quot;);
+		confirmValueError(&quot;1,00&quot;);
+		confirmValueError(&quot;$1,00.5e1&quot;);
+		confirmValueError(&quot;1,00.5e1&quot;);
+		confirmValueError(&quot;1,0,000&quot;);
+		confirmValueError(&quot;1,00,000&quot;);
+		confirmValueError(&quot;++100&quot;);
+		confirmValueError(&quot;$$5&quot;);
+		confirmValueError(&quot;-&quot;);
+		confirmValueError(&quot;+&quot;);
+		confirmValueError(&quot;$&quot;);
+		confirmValueError(&quot;,300&quot;);
+		confirmValueError(&quot;0.233,4&quot;);
+		confirmValueError(&quot;1e2.5&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testErrors() {
+		confirmMid(ErrorEval.NAME_INVALID, new NumberEval(3), new NumberEval(4), ErrorEval.NAME_INVALID);
+		confirmMid(new StringEval(&quot;galactic&quot;), ErrorEval.NAME_INVALID, new NumberEval(4), ErrorEval.NAME_INVALID);
+		confirmMid(new StringEval(&quot;galactic&quot;), new NumberEval(3), ErrorEval.NAME_INVALID, ErrorEval.NAME_INVALID);
+		confirmMid(new StringEval(&quot;galactic&quot;), ErrorEval.DIV_ZERO, ErrorEval.NAME_INVALID, ErrorEval.DIV_ZERO);
+
+		confirmMid(new StringEval(&quot;galactic&quot;), BlankEval.instance, new NumberEval(3.1), ErrorEval.VALUE_INVALID);
+
+		confirmMid(new StringEval(&quot;galactic&quot;), new NumberEval(0), new NumberEval(4), ErrorEval.VALUE_INVALID);
+		confirmMid(new StringEval(&quot;galactic&quot;), new NumberEval(1), new NumberEval(-1), ErrorEval.VALUE_INVALID);
+	}
+</code></pre>
+</body>

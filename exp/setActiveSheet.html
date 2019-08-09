@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSheetSelection() {
+        Workbook b = _testDataProvider.createWorkbook();
+        b.createSheet(&quot;Sheet One&quot;);
+        b.createSheet(&quot;Sheet Two&quot;);
+        b.setActiveSheet(1);
+        b.setSelectedTab(1);
+        b.setFirstVisibleTab(1);
+        assertEquals(1, b.getActiveSheetIndex());
+        assertEquals(1, b.getFirstVisibleTab());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setActiveSheet(int index) {
+
+        validateSheetIndex(index);
+        int nSheets = _sheets.size();
+        for (int i=0; i&lt;nSheets; i++) {
+             getSheetAt(i).setActive(i == index);
+        }
+        workbook.getWindowOne().setActiveSheetIndex(index);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testGetSetActiveSheet(){
+        Workbook workbook = _testDataProvider.createWorkbook();
+        assertEquals(0, workbook.getActiveSheetIndex());
+
+        workbook.createSheet(&quot;sheet1&quot;);
+        workbook.createSheet(&quot;sheet2&quot;);
+        workbook.createSheet(&quot;sheet3&quot;);
+        // set second sheet
+        workbook.setActiveSheet(1);
+        // test if second sheet is set up
+        assertEquals(1, workbook.getActiveSheetIndex());
+
+        workbook.setActiveSheet(0);
+        // test if second sheet is set up
+        assertEquals(0, workbook.getActiveSheetIndex());
+    }
+</code></pre>
+</body>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testStringRecordHandling(){
+        readRecords(&quot;53588.xls&quot;);
+        Record[] rr = r;
+        int missingCount=0;
+        int lastCount=0;
+        for (int i = 0; i &lt; rr.length; i++) {
+            Record record = rr[i];
+            if (record instanceof MissingCellDummyRecord) {
+                missingCount++;
+            }
+            if (record instanceof LastCellOfRowDummyRecord) {
+                lastCount++;
+            }
+        }
+        assertEquals(1, missingCount);
+        assertEquals(1, lastCount);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testNoExtraNewLines() {
+		// Load a different file
+		// This file has has something in lines 1-33
+		readRecords(&quot;MRExtraLines.xls&quot;);
+		
+		int rowCount=0;
+		for(int i=0; i&lt;r.length; i++) {
+			if(r[i] instanceof LastCellOfRowDummyRecord) {
+				LastCellOfRowDummyRecord eor = (LastCellOfRowDummyRecord) r[i];
+				assertEquals(rowCount, eor.getRow());
+				rowCount++;
+			}
+		}
+		// Check we got the 33 rows
+		assertEquals(33, rowCount);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void readRecords(String sampleFileName) {
+		HSSFRequest req = new HSSFRequest();
+		MockHSSFListener mockListen = new MockHSSFListener();
+		MissingRecordAwareHSSFListener listener = new MissingRecordAwareHSSFListener(mockListen);
+		req.addListenerForAllRecords(listener);
+		
+		HSSFEventFactory factory = new HSSFEventFactory();
+		try {
+			InputStream is = HSSFTestDataSamples.openSampleFileStream(sampleFileName);
+			POIFSFileSystem fs = new POIFSFileSystem(is);
+			factory.processWorkbookEvents(req, fs);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		r = mockListen.getRecords();
+		assertTrue(r.length &gt; 100);
+	} 
+</code></pre>
+</body>

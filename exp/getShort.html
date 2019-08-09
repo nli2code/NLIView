@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		private void fillNextBuffer() throws IOException {
+			if (_innerHasReachedEOF) {
+				return;
+			}
+			int b0 = _is.read();
+			if (b0 == -1) {
+				_innerHasReachedEOF = true;
+				return;
+			}
+			_data[0] = (byte) b0;
+			_is.readFully(_data, 1, 3);
+			int len = LittleEndian.getShort(_data, 2);
+			_is.readFully(_data, 4, len);
+			_currentPos = 0;
+			_currentSize = len + 4;
+			_recordCounter++;
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public short getIstd()
+    {
+        if ( _buf == null )
+            return 0;
+
+    byte[] buf = getGrpprl();
+    if (buf.length == 0)
+    {
+      return 0;
+    }
+    if (buf.length == 1)
+    {
+      return (short)LittleEndian.getUnsignedByte(buf, 0);
+    }
+    return LittleEndian.getShort(buf);
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void serialize( byte[] data, int offset )
+    {
+        field_1_cvFore.serialize( data, 0x0 + offset );
+        field_2_cvBack.serialize( data, 0x4 + offset );
+        LittleEndian.putUShort( data, 0x8 + offset, field_3_ipat );
+    }
+</code></pre>
+</body>

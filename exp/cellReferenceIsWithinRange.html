@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	/* package */ static boolean nameLooksLikePlainCellReference(String rawSheetName) {
+		Matcher matcher = CELL_REF_PATTERN.matcher(rawSheetName);
+		if(!matcher.matches()) {
+			return false;
+		}
+		
+		// rawSheetName == &quot;Sheet1&quot; gets this far.
+		String lettersPrefix = matcher.group(1);
+		String numbersSuffix = matcher.group(2);
+		return cellReferenceIsWithinRange(lettersPrefix, numbersSuffix);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static void confirmCrInRange(boolean expResult, String colStr, String rowStr,
+			SpreadsheetVersion sv) {
+		if (expResult == CellReference.cellReferenceIsWithinRange(colStr, rowStr, sv)) {
+			return;
+		}
+		throw new AssertionFailedError(&quot;expected (c=&#x27;&quot; + colStr + &quot;&#x27;, r=&#x27;&quot; + rowStr + &quot;&#x27; to be &quot;
+				+ (expResult ? &quot;within&quot; : &quot;out of&quot;) + &quot; bounds for version &quot; + sv.name());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static boolean cellReferenceIsWithinRange(String colStr, String rowStr, SpreadsheetVersion ssVersion) {
+		if (!isColumnWithnRange(colStr, ssVersion)) {
+			return false;
+		}
+		return isRowWithnRange(rowStr, ssVersion);
+	}
+</code></pre>
+</body>

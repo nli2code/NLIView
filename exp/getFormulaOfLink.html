@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testLoad() {
+
+        LinkedDataRecord record = new LinkedDataRecord(TestcaseRecordInputStream.create(0x1051, data));
+        assertEquals( LinkedDataRecord.LINK_TYPE_VALUES, record.getLinkType());
+        assertEquals( LinkedDataRecord.REFERENCE_TYPE_WORKSHEET, record.getReferenceType());
+        assertEquals( 0, record.getOptions());
+        assertEquals( false, record.isCustomNumberFormat() );
+        assertEquals( 0, record.getIndexNumberFmtRecord());
+
+        Area3DPtg ptgExpected = new Area3DPtg(0, 7936, 0, 0,
+                false, false, false, false, 0);
+        
+        Ptg ptgActual = record.getFormulaOfLink()[0];
+        assertEquals(ptgExpected.toString(),  ptgActual.toString());
+
+        assertEquals( data.length + 4, record.getRecordSize() );
+    }
+</code></pre>
+</body>

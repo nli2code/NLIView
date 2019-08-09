@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public UnknownRecord(RecordInputStream in) {
+		_sid = in.getSid();
+		_rawData = in.readRemainder();
+		if (false &amp;&amp; getBiffName(_sid) == null) {
+			// unknown sids in the range 0x0004-0x0013 are probably &#x27;sub-records&#x27; of ObjectRecord
+			// those sids are in a different number space.
+			// TODO - put unknown OBJ sub-records in a different class
+			System.out.println(&quot;Unknown record 0x&quot; + Integer.toHexString(_sid).toUpperCase());
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public String toString() {
+		String biffName = getBiffName(_sid);
+		if (biffName == null) {
+			biffName = &quot;UNKNOWNRECORD&quot;;
+		}
+		StringBuffer sb = new StringBuffer();
+
+		sb.append(&quot;[&quot;).append(biffName).append(&quot;] (0x&quot;);
+		sb.append(Integer.toHexString(_sid).toUpperCase() + &quot;)\n&quot;);
+		if (_rawData.length &gt; 0) {
+			sb.append(&quot;  rawData=&quot;).append(HexDump.toHex(_rawData)).append(&quot;\n&quot;);
+		}
+		sb.append(&quot;[/&quot;).append(biffName).append(&quot;]\n&quot;);
+		return sb.toString();
+	}
+</code></pre>
+</body>

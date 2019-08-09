@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>   public void setForceFormulaRecalculation(boolean value){
+        CTWorkbook ctWorkbook = getCTWorkbook();
+        CTCalcPr calcPr = ctWorkbook.isSetCalcPr() ? ctWorkbook.getCalcPr() : ctWorkbook.addNewCalcPr();
+        // when set to 0, will tell Excel that it needs to recalculate all formulas
+        // in the workbook the next time the file is opened.
+        calcPr.setCalcId(0);
+
+        if(value &amp;&amp; calcPr.getCalcMode() == STCalcMode.MANUAL) {
+            calcPr.setCalcMode(STCalcMode.AUTO);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setForceFormulaRecalculation(boolean value) {
+        CTCalcPr calcPr = getWorkbook().getCTWorkbook().getCalcPr();
+
+        if(worksheet.isSetSheetCalcPr()) {
+          // Change the current setting
+          CTSheetCalcPr calc = worksheet.getSheetCalcPr();
+          calc.setFullCalcOnLoad(value);
+       }
+       else if(value) {
+          // Add the Calc block and set it
+          CTSheetCalcPr calc = worksheet.addNewSheetCalcPr();
+          calc.setFullCalcOnLoad(value);
+       }
+        if(value &amp;&amp; calcPr != null &amp;&amp; calcPr.getCalcMode() == STCalcMode.MANUAL) {
+            calcPr.setCalcMode(STCalcMode.AUTO);
+        }
+
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testRecalcId() {
+        XSSFWorkbook wb = new XSSFWorkbook();
+        assertFalse(wb.getForceFormulaRecalculation());
+        CTWorkbook ctWorkbook = wb.getCTWorkbook();
+        assertFalse(ctWorkbook.isSetCalcPr());
+
+        wb.setForceFormulaRecalculation(true); // resets the EngineId flag to zero
+
+        CTCalcPr calcPr = ctWorkbook.getCalcPr();
+        assertNotNull(calcPr);
+        assertEquals(0, (int) calcPr.getCalcId());
+
+        calcPr.setCalcId(100);
+        assertTrue(wb.getForceFormulaRecalculation());
+
+        wb.setForceFormulaRecalculation(true); // resets the EngineId flag to zero
+        assertEquals(0, (int) calcPr.getCalcId());
+        assertFalse(wb.getForceFormulaRecalculation());
+    }
+</code></pre>
+</body>

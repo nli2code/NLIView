@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(&quot;[PALETTE]\n&quot;);
+        buffer.append(&quot;  numcolors     = &quot;).append(_colors.size()).append(&#x27;\n&#x27;);
+        for (int i = 0; i &lt; _colors.size(); i++) {
+            PColor c = _colors.get(i);
+            buffer.append(&quot;* colornum      = &quot;).append(i).append(&#x27;\n&#x27;);
+            buffer.append(c.toString());
+            buffer.append(&quot;/*colornum      = &quot;).append(i).append(&#x27;\n&#x27;);
+        }
+        buffer.append(&quot;[/PALETTE]\n&quot;);
+        return buffer.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static &lt;T&gt;void pojo2Excel(List&lt;T&gt; pojoList,OutputStream out) throws Exception{
+		//获取类的属性作为列名
+		LinkedHashMap&lt;String,String&gt; alias=new LinkedHashMap&lt;String,String&gt;();
+		//获取类名作为标题
+		String headLine=&quot;&quot;;
+		if(pojoList.size()&gt;0) {
+			Object pojo = pojoList.get(0);
+			Class&lt;? extends Object&gt; claz = pojo.getClass();
+			headLine=claz.getName();
+			Field[] fields=claz.getDeclaredFields();
+			String[]   name   =   new   String[fields.length]; 
+			Field.setAccessible(fields,   true); 
+            for   (int   i   =   0;   i   &lt;   name.length;   i++)   { 
+                   name[i]   =   fields[i].getName(); 
+                   alias.put(isNull(name[i]).toString(), isNull(name[i]).toString());
+            } 
+            pojo2Excel(pojoList,out,alias,headLine);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void dumpDrawingGroupRecords(boolean fat)
+    {
+        DrawingGroupRecord r = (DrawingGroupRecord) workbook.findFirstRecordBySid( DrawingGroupRecord.sid );
+        r.decode();
+        List escherRecords = r.getEscherRecords();
+        PrintWriter w = new PrintWriter(System.out);
+        for ( Iterator iterator = escherRecords.iterator(); iterator.hasNext(); )
+        {
+            EscherRecord escherRecord = (EscherRecord) iterator.next();
+            if (fat)
+                System.out.println(escherRecord.toString());
+            else
+                escherRecord.display(w, 0);
+        }
+        w.flush();
+    }
+</code></pre>
+</body>

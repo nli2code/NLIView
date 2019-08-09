@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void fillChart(Chart chart, ChartAxis... axis) {
+        if (!(chart instanceof XSSFChart)) {
+            throw new IllegalArgumentException(&quot;Chart must be instance of XSSFChart&quot;);
+        }
+
+        XSSFChart xssfChart = (XSSFChart) chart;
+        CTPlotArea plotArea = xssfChart.getCTChart().getPlotArea();
+        CTLineChart lineChart = plotArea.addNewLineChart();
+        lineChart.addNewVaryColors().setVal(false);
+
+        for (Series s : series) {
+            s.addToChart(lineChart);
+        }
+
+        for (ChartAxis ax : axis) {
+            lineChart.addNewAxId().setVal(ax.getId());
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testCreatedRowStringCellValue() throws IOException {
+        final Configuration configuration = new Configuration();
+        configuration.addModel(Book.class);
+        final PoiDocumentManipulator poiDocumentManipulator = new PoiDocumentManipulator(ImplementationType.HSSF);
+        final TabularDocument bookDocument = configuration.lookupForDocument(Book.class);
+        final Book book = new Book();
+        final String title = &quot;Reza&quot;;
+        book.setTitle(title);
+        final Sheet sheet = SheetUtil.createSheet(ImplementationType.HSSF, &quot;sample&quot;);
+        final Row row = poiDocumentManipulator.toRow(bookDocument, book, sheet);
+        Assert.assertNotEquals(null, row);
+
+        Assert.assertNotEquals(null, row.getCell(1));
+        Assert.assertEquals(title, cellConverter.toJava(row, 1, String.class).get());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	void setTitle(Sheet writeSheet, Sheet sheet) {
+		
+		Map&lt;Integer, CellStyle&gt; styleMap = new HashMap&lt;Integer, CellStyle&gt;();
+		
+		//Use the header of the first Sheet as the output header
+		Row writeRow = writeSheet.createRow(0);
+		Cell writeCell;
+		Cell cell;
+		for (int i = 0; i &lt; sheet.getRow(1).getLastCellNum(); i++) {
+			
+			writeCell = writeRow.createCell(i);
+			cell = sheet.getRow(1).getCell(i);
+			copyCell(cell, writeCell, styleMap);
+		}
+	}
+</code></pre>
+</body>

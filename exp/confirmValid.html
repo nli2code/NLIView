@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testValidateWithSuppliedPassword() {
+
+		String docId = &quot;DF 35 52 38 0D 75 4A E6 85 C2 FD 78 CE 3D D1 B6&quot;;
+		String saltData = &quot;D4 04 43 EC B7 A7 6F 6A D2 68 C7 DF CF A8 80 68&quot;;
+		String saltHashA = &quot;8D C2 63 CC E1 1D E0 05 20 16 96 AF 48 59 94 64&quot;; // for password &#x27;5ecret&#x27;
+		String saltHashB = &quot;31 0B 0D A4 69 55 8E 27 A1 03 AD C9 AE F8 09 04&quot;; // for password &#x27;5ecret&#x27;
+
+		confirmValid(true, docId, saltData, saltHashA, &quot;5ecret&quot;);
+		confirmValid(false, docId, saltData, saltHashA, &quot;Secret&quot;);
+		confirmValid(true, docId, saltData, saltHashB, &quot;Secret&quot;);
+		confirmValid(false, docId, saltData, saltHashB, &quot;secret&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testValidateWithDefaultPassword() {
+
+		String docIdSuffixA = &quot;F 35 52 38 0D 75 4A E6 85 C2 FD 78 CE 3D D1 B6&quot;; // valid prefix is &#x27;D&#x27;
+		String saltHashA = &quot;30 38 BE 5E 93 C5 7E B4 5F 52 CD A1 C6 8F B6 2A&quot;;
+		String saltDataA = &quot;D4 04 43 EC B7 A7 6F 6A D2 68 C7 DF CF A8 80 68&quot;;
+
+		String docIdB = &quot;39 D7 80 41 DA E4 74 2C 8C 84 F9 4D 39 9A 19 2D&quot;;
+		String saltDataSuffixB = &quot;3 EA 8D 52 11 11 37 D2 BD 55 4C 01 0A 47 6E EB&quot;; // valid prefix is &#x27;C&#x27;
+		String saltHashB = &quot;96 19 F5 D0 F1 63 08 F1 3E 09 40 1E 87 F0 4E 16&quot;;
+
+		confirmValid(true, &quot;D&quot; + docIdSuffixA, saltDataA, saltHashA);
+		confirmValid(true, docIdB, &quot;C&quot; + saltDataSuffixB, saltHashB);
+		confirmValid(false, &quot;E&quot; + docIdSuffixA, saltDataA, saltHashA);
+		confirmValid(false, docIdB, &quot;B&quot; + saltDataSuffixB, saltHashB);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testValidNames() {
+		confirmValid(&quot;Sheet1&quot;, true);
+		confirmValid(&quot;O&#x27;Brien&#x27;s sales&quot;, true);
+		confirmValid(&quot; data # &quot;, true);
+		confirmValid(&quot;data $1.00&quot;, true);
+
+		confirmValid(&quot;data?&quot;, false);
+		confirmValid(&quot;abc/def&quot;, false);
+		confirmValid(&quot;data[0]&quot;, false);
+		confirmValid(&quot;data*&quot;, false);
+		confirmValid(&quot;abc\\def&quot;, false);
+		confirmValid(&quot;&#x27;data&quot;, false);
+		confirmValid(&quot;data&#x27;&quot;, false);
+	}
+</code></pre>
+</body>

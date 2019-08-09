@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private void appendDefaultType(Element root, Entry&lt;String, String&gt; entry) {
+        Element defaultType = root.getOwnerDocument().createElementNS(TYPES_NAMESPACE_URI, DEFAULT_TAG_NAME);
+        defaultType.setAttribute(EXTENSION_ATTRIBUTE_NAME, entry.getKey());
+        defaultType.setAttribute(CONTENT_TYPE_ATTRIBUTE_NAME, entry.getValue());
+        root.appendChild(defaultType);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void updateNameCommentRecordCache(final NameCommentRecord commentRecord) {
+       if(commentRecords.containsValue(commentRecord)) {
+          for(Entry&lt;String,NameCommentRecord&gt; entry : commentRecords.entrySet()) {
+             if(entry.getValue().equals(commentRecord)) {
+                commentRecords.remove(entry.getKey());
+                break;
+             }
+          }
+       }
+       commentRecords.put(commentRecord.getNameText(), commentRecord);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void readFrom(InputStream is) throws IOException {
+        try {
+            int cnt = 0;
+            _sstDoc = SstDocument.Factory.parse(is);
+            CTSst sst = _sstDoc.getSst();
+            count = (int)sst.getCount();
+            uniqueCount = (int)sst.getUniqueCount();
+            for (CTRst st : sst.getSiArray()) {
+                stmap.put(getKey(st), cnt);
+                strings.add(st);
+                cnt++;
+            }
+        } catch (XmlException e) {
+            throw new IOException(e.getLocalizedMessage());
+        }
+    }
+</code></pre>
+</body>

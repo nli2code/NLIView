@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testCachedValue_bug46479() {
+		FormulaRecord fr0 = new FormulaRecord();
+		FormulaRecord fr1 = new FormulaRecord();
+		// test some other cached value types 
+		fr0.setValue(3.5);
+		assertEquals(3.5, fr0.getValue(), 0.0);
+		fr0.setCachedResultErrorCode(HSSFErrorConstants.ERROR_REF);
+		assertEquals(HSSFErrorConstants.ERROR_REF, fr0.getCachedErrorValue());
+
+		fr0.setCachedResultBoolean(false);
+		fr1.setCachedResultBoolean(true);
+		if (fr0.getCachedBooleanValue() == true &amp;&amp; fr1.getCachedBooleanValue() == false) {
+			throw new AssertionFailedError(&quot;Identified bug 46479c&quot;);
+		}
+		assertEquals(false, fr0.getCachedBooleanValue());
+		assertEquals(true, fr1.getCachedBooleanValue());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public byte getErrorCellValue() {
+        switch(_cellType) {
+            case CELL_TYPE_ERROR:
+                return (( BoolErrRecord ) _record).getErrorValue();
+            default:
+                throw typeMismatch(CELL_TYPE_ERROR, _cellType, false);
+            case CELL_TYPE_FORMULA:
+                break;
+        }
+        FormulaRecord fr = ((FormulaRecordAggregate)_record).getFormulaRecord();
+        checkFormulaCachedValueType(CELL_TYPE_ERROR, fr);
+        return (byte) fr.getCachedErrorValue();
+    }
+</code></pre>
+</body>

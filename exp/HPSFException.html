@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSectionMethods() throws IOException, HPSFException
+    {
+        final SummaryInformation si = (SummaryInformation)
+            PropertySetFactory.create(new ByteArrayInputStream
+                (poiFiles[0].getBytes()));
+        final List sections = si.getSections();
+        final Section s = (Section) sections.get(0);
+        Assert.assertTrue(org.apache.poi.hpsf.Util.equal
+            (s.getFormatID().getBytes(), SectionIDMap.SUMMARY_INFORMATION_ID));
+        Assert.assertNotNull(s.getProperties());
+        Assert.assertEquals(17, s.getPropertyCount());
+        Assert.assertEquals(&quot;Titel&quot;, s.getProperty(2));
+        Assert.assertEquals(1764, s.getSize());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public long getClipboardFormat() throws HPSFException
+    {
+        if (!(getClipboardFormatTag() == CFTAG_WINDOWS))
+            throw new HPSFException(&quot;Clipboard Format Tag of Thumbnail must &quot; +
+                                    &quot;be CFTAG_WINDOWS.&quot;);
+
+        return LittleEndian.getUInt(getThumbnail(), OFFSET_CF);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public byte[] getThumbnailAsWMF() throws HPSFException
+    {
+        if (!(getClipboardFormatTag() == CFTAG_WINDOWS))
+            throw new HPSFException(&quot;Clipboard Format Tag of Thumbnail must &quot; +
+                                    &quot;be CFTAG_WINDOWS.&quot;);
+        if (!(getClipboardFormat() == CF_METAFILEPICT)) {
+            throw new HPSFException(&quot;Clipboard Format of Thumbnail must &quot; +
+                                    &quot;be CF_METAFILEPICT.&quot;);
+        }
+        byte[] thumbnail = getThumbnail();
+        int wmfImageLength = thumbnail.length - OFFSET_WMFDATA;
+        byte[] wmfImage = new byte[wmfImageLength];
+        System.arraycopy(thumbnail,
+                         OFFSET_WMFDATA,
+                         wmfImage,
+                         0,
+                         wmfImageLength);
+        return wmfImage;
+    }
+</code></pre>
+</body>

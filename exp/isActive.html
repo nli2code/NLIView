@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void shouldParseCorporateClient() throws IOException {
+    	InputStream is = this.getClass().getClassLoader().getResourceAsStream(&quot;client/client-corporate.xls&quot;);
+    	Workbook book = new HSSFWorkbook(is);
+        ClientDataImportHandler handler = new ClientDataImportHandler(book, restClient);
+        Result result = handler.parse();
+        Assert.assertTrue(result.isSuccess());
+        Assert.assertEquals(1, handler.getClients().size());
+        CorporateClient client = (CorporateClient) handler.getClients().get(0);
+        Assert.assertEquals(&quot;Remo Fernandez&quot;, client.getFullName());
+        Assert.assertEquals(&quot;9&quot;, client.getOfficeId());
+        Assert.assertEquals(&quot;9&quot;, handler.getIdByName(book.getSheet(&quot;Offices&quot;), &quot;Branch_7&quot;).toString());
+        Assert.assertEquals(&quot;4&quot;, client.getStaffId());
+        Assert.assertEquals(&quot;4&quot;, handler.getIdByName(book.getSheet(&quot;Staff&quot;), &quot;Tomas Rosicky&quot;).toString());
+        Assert.assertEquals(&quot;19 May 2013&quot;, client.getActivationDate());
+        Assert.assertEquals(&quot;true&quot;, client.isActive());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void parseGroups() {
+    	Gson gson = new Gson();
+        JsonParser parser = new JsonParser();
+        JsonObject obj = parser.parse(content).getAsJsonObject();
+        JsonArray array = obj.getAsJsonArray(&quot;pageItems&quot;);
+        Iterator&lt;JsonElement&gt; iterator = array.iterator();
+        groupNameToGroupId = new HashMap&lt;String, Integer&gt;();
+        while(iterator.hasNext()) {
+        	JsonElement json = iterator.next();
+        	CompactGroup group = gson.fromJson(json, CompactGroup.class);
+        	if(group.isActive())
+        	  groups.add(group);
+        	groupNameToGroupId.put(group.getName().trim(), group.getId());
+        }
+    }
+</code></pre>
+</body>

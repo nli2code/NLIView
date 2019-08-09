@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test47920() throws IOException {
+        POIFSFileSystem fs1 = new POIFSFileSystem(POIDataSamples.getSpreadSheetInstance().openResourceAsStream(&quot;47920.xls&quot;));
+        HSSFWorkbook wb = new HSSFWorkbook(fs1);
+        ClassID clsid1 = fs1.getRoot().getStorageClsid();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
+        wb.write(out);
+        byte[] bytes = out.toByteArray();
+        POIFSFileSystem fs2 = new POIFSFileSystem(new ByteArrayInputStream(bytes));
+        ClassID clsid2 = fs2.getRoot().getStorageClsid();
+
+        assertTrue(clsid1.equals(clsid2));
+    }
+</code></pre>
+</body>

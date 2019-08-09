@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void assertMSCompatibility(OPCPackage pkg) throws Exception {
+        PackagePartName relName = PackagingURIHelper.createPartName(PackageRelationship.getContainerPartRelationship());
+        PackagePart relPart = pkg.getPart(relName);
+        SAXReader reader = new SAXReader();
+        Document xmlRelationshipsDoc = reader
+                .read(relPart.getInputStream());
+
+        Element root = xmlRelationshipsDoc.getRootElement();
+        for (Iterator i = root
+                .elementIterator(PackageRelationship.RELATIONSHIP_TAG_NAME); i
+                .hasNext();) {
+            Element element = (Element) i.next();
+            String value = element.attribute(
+                    PackageRelationship.TARGET_ATTRIBUTE_NAME)
+                    .getValue();
+            assertTrue(&quot;Root target must not start with a leadng slash (&#x27;/&#x27;): &quot; + value, value.charAt(0) != &#x27;/&#x27;);
+        }
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected XSSFDrawing(PackagePart part, PackageRelationship rel) throws IOException, XmlException {
+        super(part, rel);
+        XmlOptions options  = new XmlOptions(DEFAULT_XML_OPTIONS);
+        //Removing root element
+        options.setLoadReplaceDocumentElement(null);
+        drawing = CTDrawing.Factory.parse(part.getInputStream(),options);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public ReadOnlySharedStringsTable(OPCPackage pkg)
+            throws IOException, SAXException {
+        ArrayList&lt;PackagePart&gt; parts =
+                pkg.getPartsByContentType(XSSFRelation.SHARED_STRINGS.getContentType());
+
+        // Some workbooks have no shared strings table.
+        if (parts.size() &gt; 0) {
+            PackagePart sstPart = parts.get(0);
+            readFrom(sstPart.getInputStream());
+        }
+    }
+</code></pre>
+</body>

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public SelectionRecord(RecordInputStream in) {
+        field_1_pane            = in.readByte();
+        field_2_row_active_cell = in.readUShort();
+        field_3_col_active_cell = in.readShort();
+        field_4_active_cell_ref_index = in.readShort();
+        int field_5_num_refs    = in.readUShort();
+
+        field_6_refs = new CellRangeAddress8Bit[field_5_num_refs];
+        for (int i = 0; i &lt; field_6_refs.length; i++) {
+            field_6_refs[i] = new CellRangeAddress8Bit(in);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static Ptg readRefPtg(byte[] formulaRawBytes) {
+		LittleEndianInput in = new LittleEndianInputStream(new ByteArrayInputStream(formulaRawBytes));
+		byte ptgSid = in.readByte();
+		switch(ptgSid) {
+			case AreaPtg.sid:   return new AreaPtg(in);
+			case Area3DPtg.sid: return new Area3DPtg(in);
+			case RefPtg.sid:	return new RefPtg(in);
+			case Ref3DPtg.sid:  return new Ref3DPtg(in);
+		}
+		return null;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		public void rollForward(int fromPosition, int toPosition) {
+			assertEquals(fromPosition, _ms.getPosition());
+			for (int i = fromPosition; i &lt; toPosition; i++) {
+				_bds.readByte();
+			}
+			assertEquals(toPosition, _ms.getPosition());
+		}
+</code></pre>
+</body>

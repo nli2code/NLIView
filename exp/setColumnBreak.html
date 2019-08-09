@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testPageBreakClones() {
+		HSSFWorkbook b = new HSSFWorkbook();
+		HSSFSheet s = b.createSheet(&quot;Test&quot;);
+		s.setRowBreak(3);
+		s.setColumnBreak((short) 6);
+
+		HSSFSheet clone = b.cloneSheet(0);
+		assertTrue(&quot;Row 3 not broken&quot;, clone.isRowBroken(3));
+		assertTrue(&quot;Column 6 not broken&quot;, clone.isColumnBroken((short) 6));
+
+		s.removeRowBreak(3);
+
+		assertTrue(&quot;Row 3 still should be broken&quot;, clone.isRowBroken(3));
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setColumnBreak(int column) {
+        if (! isColumnBroken(column)) {
+            CTPageBreak pgBreak = worksheet.isSetColBreaks() ? worksheet.getColBreaks() : worksheet.addNewColBreaks();
+            CTBreak brk = pgBreak.addNewBrk();
+            brk.setId(column + 1);  // this is id of the row element which is 1-based: &lt;row r=&quot;1&quot; ... &gt;
+            brk.setMan(true);
+            brk.setMax(SpreadsheetVersion.EXCEL2007.getLastRowIndex()); //end row of the break
+
+            pgBreak.setCount(pgBreak.sizeOfBrkArray());
+            pgBreak.setManualBreakCount(pgBreak.sizeOfBrkArray());
+        }
+    }
+</code></pre>
+</body>

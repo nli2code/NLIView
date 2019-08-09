@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setUserStyleName(String styleName) {
+    	StyleRecord sr = _workbook.getStyleRecord(_index);
+    	if(sr == null) {
+    		sr = _workbook.createStyleRecord(_index);
+    	}
+    	// All Style records start as &quot;builtin&quot;, but generally
+    	//  only 20 and below really need to be
+    	if(sr.isBuiltin() &amp;&amp; _index &lt;= 20) {
+    		throw new IllegalArgumentException(&quot;Unable to set user specified style names for built in styles!&quot;);
+    	}
+    	sr.setName(styleName);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String getUserStyleName() {
+    	StyleRecord sr = _workbook.getStyleRecord(_index);
+    	if(sr == null) {
+    		return null;
+    	}
+    	if(sr.isBuiltin()) {
+    		return null;
+    	}
+    	return sr.getName();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public StyleRecord getStyleRecord(int xfIndex) {
+        // Style records always follow after
+        //  the ExtendedFormat records
+        for(int i=records.getXfpos(); i&lt;records.size(); i++) {
+            Record r = records.get(i);
+            if(r instanceof ExtendedFormatRecord) {
+                continue;
+            }
+            if(!(r instanceof StyleRecord)) {
+                continue;
+            }
+            StyleRecord sr = (StyleRecord)r;
+            if(sr.getXFIndex() == xfIndex) {
+                return sr;
+            }
+        }
+        return null;
+    }
+</code></pre>
+</body>

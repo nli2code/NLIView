@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		public ExternalBookBlock(RecordStream rs) {
+			_externalBookRecord = (SupBookRecord) rs.getNext();
+			List&lt;Object&gt; temp = new ArrayList&lt;Object&gt;();
+			while(rs.peekNextClass() == ExternalNameRecord.class) {
+			   temp.add(rs.getNext());
+			}
+			_externalNameRecords = new ExternalNameRecord[temp.size()];
+			temp.toArray(_externalNameRecords);
+
+			temp.clear();
+
+			while(rs.peekNextClass() == CRNCountRecord.class) {
+				temp.add(new CRNBlock(rs));
+			}
+			_crnBlocks = new CRNBlock[temp.size()];
+			temp.toArray(_crnBlocks);
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testMCTable_bug46009() {
+		MergedCellsTable mct = new MergedCellsTable();
+		List recList = new ArrayList();
+		CellRangeAddress[] cras = new CellRangeAddress[] {
+				new CellRangeAddress(0, 0, 0, 3), 
+		};
+		recList.add(new MergeCellsRecord(cras, 0, 1));
+		RecordStream rs = new RecordStream(recList, 0);
+		mct.read(rs);
+		try {
+			mct.visitContainedRecords(dummyRecordVisitor);
+		} catch (ArrayStoreException e) {
+			throw new AssertionFailedError(&quot;Identified bug 46009&quot;);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public ConditionalFormattingTable(RecordStream rs) {
+
+		List temp = new ArrayList();
+		while (rs.peekNextClass() == CFHeaderRecord.class) {
+			temp.add(CFRecordsAggregate.createCFAggregate(rs));
+		}
+		_cfHeaders = temp;
+	}
+</code></pre>
+</body>

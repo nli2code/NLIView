@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void ungroupRow(int fromRow, int toRow) {
+        for (int i = fromRow; i &lt;= toRow; i++) {
+            XSSFRow xrow = getRow(i);
+            if (xrow != null) {
+                CTRow ctRow = xrow.getCTRow();
+                int outlineLevel = ctRow.getOutlineLevel();
+                ctRow.setOutlineLevel((short) (outlineLevel - 1));
+                //remove a row only if the row has no cell and if the outline level is 0
+                if (outlineLevel == 1 &amp;&amp; xrow.getFirstCellNum() == -1) {
+                    removeRow(xrow);
+                }
+            }
+        }
+        setSheetFormatPrOutlineLevelRow();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testGetLastCellNum() {
+		assertEquals( -1, valueRecord.getLastCellNum() );
+		valueRecord.insertCell( newBlankRecord( 2, 2 ) );
+		assertEquals( 2, valueRecord.getLastCellNum() );
+		valueRecord.insertCell( newBlankRecord( 3, 3 ) );
+		assertEquals( 3, valueRecord.getLastCellNum() );
+
+		// Note: Removal doesn&#x27;t currently reset the last column.  It probably should but it doesn&#x27;t.
+		valueRecord.removeCell( newBlankRecord( 3, 3 ) );
+		assertEquals( 3, valueRecord.getLastCellNum() );
+
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static boolean checkIfRowIsEmpty(Row row){
+        if(row == null)
+            return true;
+        if(row.getLastCellNum() &lt;= 0)
+            return true;
+        boolean isEmptyRow = true;
+        for(int cellNum = row.getFirstCellNum(); cellNum &lt; row.getLastCellNum(); cellNum++){
+            Cell cell = row.getCell(cellNum);
+            if(cell != null &amp;&amp; cell.getCellType() != Cell.CELL_TYPE_BLANK ){
+                isEmptyRow = false;
+            }
+        }
+        return isEmptyRow;
+    }
+</code></pre>
+</body>

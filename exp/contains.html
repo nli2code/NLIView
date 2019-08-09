@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testLongSheetNames() {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        final String SAME_PREFIX = &quot;A123456789B123456789C123456789&quot;; // 30 chars
+
+        wb.createSheet(SAME_PREFIX + &quot;Dxxxx&quot;);
+        try {
+            wb.createSheet(SAME_PREFIX + &quot;Dyyyy&quot;); // identical up to the 32nd char
+            throw new AssertionFailedError(&quot;Expected exception not thrown&quot;);
+        } catch (IllegalArgumentException e) {
+            assertEquals(&quot;The workbook already contains a sheet of this name&quot;, e.getMessage());
+        }
+        wb.createSheet(SAME_PREFIX + &quot;Exxxx&quot;); // OK - differs in the 31st char
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testWithSomeNulls() throws Exception {
+      OPCPackage pkg = OPCPackage.open(
+            _slSamples.openResourceAsStream(&quot;49386-null_dates.pptx&quot;)
+      );
+      XSLFSlideShow sl = new XSLFSlideShow(pkg);
+   
+      POIXMLPropertiesTextExtractor ext = new POIXMLPropertiesTextExtractor(sl);
+      ext.getText();
+      
+      String text = ext.getText();
+      assertFalse(text.contains(&quot;Created =&quot;)); // With date is null
+      assertTrue(text.contains(&quot;CreatedString = &quot;)); // Via string is blank
+      assertTrue(text.contains(&quot;LastModifiedBy = IT Client Services&quot;));
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testHeaderFooter() {
+		String[] files = new String[] {
+			&quot;45540_classic_Header.xlsx&quot;, &quot;45540_form_Header.xlsx&quot;,
+			&quot;45540_classic_Footer.xlsx&quot;, &quot;45540_form_Footer.xlsx&quot;,
+		};
+		for(String sampleName : files) {
+			XSSFExcelExtractor extractor = getExtractor(sampleName);
+			String text = extractor.getText();
+			
+			assertTrue(&quot;Unable to find expected word in text from &quot; + sampleName + &quot;\n&quot; + text, text.contains(&quot;testdoc&quot;));
+			assertTrue(&quot;Unable to find expected word in text\n&quot; + text, text.contains(&quot;test phrase&quot;)); 
+		}
+	}
+</code></pre>
+</body>

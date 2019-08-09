@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private CTTwoCellAnchor createTwoCellAnchor(XSSFClientAnchor anchor) {
+        CTTwoCellAnchor ctAnchor = drawing.addNewTwoCellAnchor();
+        ctAnchor.setFrom(anchor.getFrom());
+        ctAnchor.setTo(anchor.getTo());
+        ctAnchor.addNewClientData();
+        anchor.setTo(ctAnchor.getTo());
+        anchor.setFrom(ctAnchor.getFrom());
+        STEditAs.Enum aditAs;
+        switch(anchor.getAnchorType()) {
+            case ClientAnchor.DONT_MOVE_AND_RESIZE: aditAs = STEditAs.ABSOLUTE; break;
+            case ClientAnchor.MOVE_AND_RESIZE: aditAs = STEditAs.TWO_CELL; break;
+            case ClientAnchor.MOVE_DONT_RESIZE: aditAs = STEditAs.ONE_CELL; break;
+            default: aditAs = STEditAs.ONE_CELL;
+        }
+        ctAnchor.setEditAs(aditAs);
+        return ctAnchor;
+    }
+</code></pre>
+</body>

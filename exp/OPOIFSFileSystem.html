@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testFATandDIFATsectors() throws Exception {
+      // Open the file up
+      try {
+         POIFSFileSystem fs = new POIFSFileSystem(
+             _samples.openResourceAsStream(&quot;ReferencesInvalidSectors.mpp&quot;)
+         );
+         fail(&quot;File is corrupt and shouldn&#x27;t have been opened&quot;);
+      } catch(IOException e) {
+         String msg = e.getMessage();
+         assertTrue(msg.startsWith(&quot;Your file contains 695 sectors&quot;));
+      }
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testFileCorruptionOPOIFS() throws Exception {
+        
+        // create test InputStream
+        byte[] testData = { (byte)1, (byte)2, (byte)3 };
+        InputStream testInput = new ByteArrayInputStream(testData);
+        
+        // detect header
+        InputStream in = new PushbackInputStream(testInput, 10);
+        assertFalse(OPOIFSFileSystem.hasPOIFSHeader(in));
+
+        // check if InputStream is still intact
+        byte[] test = new byte[3];
+        in.read(test);
+        assertTrue(Arrays.equals(testData, test));
+        assertEquals(-1, in.read());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testShortLastBlock() throws Exception {
+		String[] files = new String[] {
+			&quot;ShortLastBlock.qwp&quot;, &quot;ShortLastBlock.wps&quot;
+		};
+
+		for(int i=0; i&lt;files.length; i++) {
+			// Open the file up
+			POIFSFileSystem fs = new POIFSFileSystem(
+			    _samples.openResourceAsStream(files[i])
+			);
+
+			// Write it into a temp output array
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			fs.writeFilesystem(baos);
+
+			// Check sizes
+		}
+	}
+</code></pre>
+</body>

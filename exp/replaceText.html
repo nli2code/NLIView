@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void replaceText(String pPlaceHolder, String pValue) {
+		boolean keepLooking = true;
+		while (keepLooking) {
+
+			String text = text();
+			int offset = text.indexOf(pPlaceHolder);
+			if (offset &gt;= 0)
+				replaceText(pPlaceHolder, pValue, offset);
+			else
+				keepLooking = false;
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testReplaceTextBefore()
+    {
+        HWPFDocument doc = HWPFTestDataSamples.openSampleFile( &quot;pageref.doc&quot; );
+        Bookmark bookmark = doc.getBookmarks().getBookmark( 0 );
+        Range range = new Range( bookmark.getStart(), bookmark.getEnd(), doc );
+        range.replaceText( &quot;1destin2ation3&quot;, false );
+
+        bookmark = doc.getBookmarks().getBookmark( 0 );
+        assertEquals( &quot;userref&quot;, bookmark.getName() );
+        assertEquals( 27, bookmark.getStart() );
+        assertEquals( 41, bookmark.getEnd() );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void replaceText(String pPlaceHolder, String pValue, int pOffset) {
+		int absPlaceHolderIndex = getStartOffset() + pOffset;
+
+		Range subRange = new Range(absPlaceHolderIndex, (absPlaceHolderIndex + pPlaceHolder
+				.length()), this);
+		subRange.insertBefore(pValue);
+
+		// re-create the sub-range so we can delete it
+		subRange = new Range((absPlaceHolderIndex + pValue.length()), (absPlaceHolderIndex
+				+ pPlaceHolder.length() + pValue.length()), this);
+
+		// deletes are automagically propagated
+		subRange.delete();
+	}
+</code></pre>
+</body>

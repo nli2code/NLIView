@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testStringInsensitive_bug46613() {
+		if (!evalStringCmp(&quot;abc&quot;, &quot;aBc&quot;, EI.Equal)) {
+			throw new AssertionFailedError(&quot;Identified bug 46613&quot;);
+		}
+		assertTrue(evalStringCmp(&quot;abc&quot;, &quot;aBc&quot;, EI.Equal));
+		assertTrue(evalStringCmp(&quot;ABC&quot;, &quot;azz&quot;, EI.LessThan));
+		assertTrue(evalStringCmp(&quot;abc&quot;, &quot;AZZ&quot;, EI.LessThan));
+		assertTrue(evalStringCmp(&quot;ABC&quot;, &quot;aaa&quot;, EI.GreaterThan));
+		assertTrue(evalStringCmp(&quot;abc&quot;, &quot;AAA&quot;, EI.GreaterThan));
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static void confirm(ValueEval a, ValueEval b, boolean expectedResult, Function cmpOp) {
+		ValueEval[] args = { a, b, };
+		ValueEval result = evaluate(cmpOp, args, 10, 20);
+		assertEquals(BoolEval.class, result.getClass());
+		assertEquals(expectedResult, ((BoolEval) result).getBooleanValue());
+	}
+</code></pre>
+</body>

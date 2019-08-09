@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testBasics() {
+		confirmSubtotal(FUNCTION_SUM, 55.0);
+		confirmSubtotal(FUNCTION_AVERAGE, 5.5);
+		confirmSubtotal(FUNCTION_COUNT, 10.0);
+		confirmSubtotal(FUNCTION_MAX, 10.0);
+		confirmSubtotal(FUNCTION_MIN, 1.0);
+		confirmSubtotal(FUNCTION_PRODUCT, 3628800.0);
+		confirmSubtotal(FUNCTION_STDEV, 3.0276503540974917);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static void confirmSubtotal(int function, double expected) {
+		ValueEval[] values = new ValueEval[TEST_VALUES0.length];
+		for (int i = 0; i &lt; TEST_VALUES0.length; i++) {
+			values[i] = new NumberEval(TEST_VALUES0[i]);
+		}
+
+		AreaEval arg1 = EvalFactory.createAreaEval(&quot;C1:D5&quot;, values);
+		ValueEval args[] = { new NumberEval(function), arg1 };
+
+		ValueEval result = new Subtotal().evaluate(args, 0, 0);
+
+		assertEquals(NumberEval.class, result.getClass());
+		assertEquals(expected, ((NumberEval) result).getNumberValue(), 0.0);
+	}
+</code></pre>
+</body>

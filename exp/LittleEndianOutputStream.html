@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test_LbsDropData(){
+        byte[] data = HexRead.readFromString(
+                                 //LbsDropData
+                                 &quot;0A, 00, &quot; + //flags
+                                 &quot;14, 00, &quot; + //the number of lines to be displayed in the dropdown
+                                 &quot;6C, 00, &quot; + //the smallest width in pixels allowed for the dropdown window
+                                 &quot;00, 00, &quot; +  //num chars
+                                 &quot;00, &quot; +      //compression flag
+                                 &quot;00&quot;);        //padding byte
+
+        LittleEndianInputStream in = new LittleEndianInputStream(new ByteArrayInputStream(data));
+
+        LbsDataSubRecord.LbsDropData lbs = new LbsDataSubRecord.LbsDropData(in);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        lbs.serialize(new LittleEndianOutputStream(baos));
+
+        assertTrue(Arrays.equals(data, baos.toByteArray()));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public byte[] serialize() {
+		int size = getDataSize() + 4;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(size);
+		serialize(new LittleEndianOutputStream(baos));
+		if (baos.size() != size) {
+			throw new RuntimeException(&quot;write size mismatch&quot;);
+		}
+		return baos.toByteArray();
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	RC4 createRC4(int keyBlockNo) {
+		MessageDigest md5;
+		try {
+			md5 = MessageDigest.getInstance(&quot;MD5&quot;);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+
+		md5.update(_keyDigest);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(4);
+		new LittleEndianOutputStream(baos).writeInt(keyBlockNo);
+		md5.update(baos.toByteArray());
+
+		byte[] digest = md5.digest();
+		return new RC4(digest);
+	}
+</code></pre>
+</body>

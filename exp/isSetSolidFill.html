@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public Color getFillColor(){
+        CTTableCellProperties spPr = getCellProperties(false);
+        if (spPr == null || !spPr.isSetSolidFill()) return null;
+
+        CTSolidColorFillProperties fill = spPr.getSolidFill();
+        if (!fill.isSetSrgbClr()) {
+            // TODO for now return null for all colors except explicit RGB
+            return null;
+        }
+        byte[] val = fill.getSrgbClr().getVal();
+        return new Color(0xFF &amp; val[0], 0xFF &amp; val[1], 0xFF &amp; val[2]);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setFontColor(Color color){
+        CTTextCharacterProperties rPr = getRPr();
+        CTSolidColorFillProperties fill = rPr.isSetSolidFill() ? rPr.getSolidFill() : rPr.addNewSolidFill();
+        CTSRgbColor clr = fill.isSetSrgbClr() ? fill.getSrgbClr() : fill.addNewSrgbClr();
+        clr.setVal(new byte[]{(byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue()});
+
+        if(fill.isSetHslClr()) fill.unsetHslClr();
+        if(fill.isSetPrstClr()) fill.unsetPrstClr();
+        if(fill.isSetSchemeClr()) fill.unsetSchemeClr();
+        if(fill.isSetScrgbClr()) fill.unsetScrgbClr();
+        if(fill.isSetSysClr()) fill.unsetSysClr();
+
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public LineDash getBorderDash(BorderEdge edge) {
+        CTLineProperties ln = getCTLine(edge, false);
+        if (ln == null || ln.isSetNoFill() || !ln.isSetSolidFill() || !ln.isSetPrstDash()) {
+            return null;
+        }
+
+        return LineDash.fromOoxmlId(ln.getPrstDash().getVal().intValue());
+    }
+</code></pre>
+</body>

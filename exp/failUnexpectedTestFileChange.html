@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static RuntimeException failUnexpectedTestFileChange() {
+		String msg = &quot;Test file &#x27;&quot; + ABNORMAL_SHARED_FORMULA_FLAG_TEST_FILE + &quot;&#x27; has changed.  &quot;
+			+ &quot;This junit may not be properly testing for the target bug.  &quot;
+			+ &quot;Either revert the test file or ensure that the new version &quot;
+			+ &quot;has the right characteristics to test the target bug.&quot;;
+		// A breakpoint in ValueRecordsAggregate.handleMissingSharedFormulaRecord(FormulaRecord)
+		// should get hit during parsing of Sheet1.
+		// If the test spreadsheet is created as directed, this condition should occur.
+		// It is easy to upset the test spreadsheet (for example re-saving will destroy the
+		// peculiar condition we are testing for).
+		throw new RuntimeException(msg);
+	}
+</code></pre>
+</body>

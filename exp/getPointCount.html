@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private static void fillNumCache(CTNumData cache, ChartDataSource&lt;?&gt; dataSource) {
+        int numOfPoints = dataSource.getPointCount();
+        cache.addNewPtCount().setVal(numOfPoints);
+        for (int i = 0; i &lt; numOfPoints; ++i) {
+            Number value = (Number) dataSource.getPointAt(i);
+            if (value != null) {
+                CTNumVal ctNumVal = cache.addNewPt();
+                ctNumVal.setIdx(i);
+                ctNumVal.setV(value.toString());
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private &lt;T&gt; void assertDataSourceIsEqualToArray(ChartDataSource&lt;T&gt; ds, T[] array) {
+        assertEquals(ds.getPointCount(), array.length);
+        for (int i = 0; i &lt; array.length; ++i) {
+            assertEquals(ds.getPointAt(i), array[i]);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testStringCellDataSource() {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = new SheetBuilder(wb, stringCells).build();
+        CellRangeAddress numCellRange = CellRangeAddress.valueOf(&quot;A2:E2&quot;);
+        ChartDataSource&lt;String&gt; numDataSource = DataSources.fromStringCellRange(sheet, numCellRange);
+        assertTrue(numDataSource.isReference());
+        assertFalse(numDataSource.isNumeric());
+        assertEquals(numericCells[0].length, numDataSource.getPointCount());
+        for (int i = 0; i &lt; stringCells[1].length; ++i) {
+            assertEquals(stringCells[1][i], numDataSource.getPointAt(i));
+        }
+    }
+</code></pre>
+</body>

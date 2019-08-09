@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private static WindowTwoRecord createWindowTwo() {
+        WindowTwoRecord retval = new WindowTwoRecord();
+
+        retval.setOptions(( short ) 0x6b6);
+        retval.setTopRow(( short ) 0);
+        retval.setLeftCol(( short ) 0);
+        retval.setHeaderColor(0x40);
+        retval.setPageBreakZoom(( short ) 0);
+        retval.setNormalZoom(( short ) 0);
+        return retval;
+    }
+</code></pre>
+</body>

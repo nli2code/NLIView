@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static PackagePartName getRelationshipPartName(PackagePart part)
+			throws InvalidOperationException {
+		PackagePartName partName;
+		if (part == null) {
+			partName = PackagingURIHelper.PACKAGE_ROOT_PART_NAME;
+		} else {
+			partName = part.getPartName();
+		}
+		return PackagingURIHelper.getRelationshipPartName(partName);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testPartNameDerivationAdditionFailure() {
+		OPCPackage pkg = OPCPackage.create(&quot;TODELETEIFEXIST.docx&quot;);
+		try {
+			PackagePartName name = PackagingURIHelper
+					.createPartName(&quot;/word/document.xml&quot;);
+			PackagePartName nameDerived = PackagingURIHelper
+					.createPartName(&quot;/word/document.xml/image1.gif&quot;);
+			pkg.createPart(name, ContentTypes.XML);
+			pkg.createPart(nameDerived, ContentTypes.EXTENSION_GIF);
+		} catch (InvalidOperationException e) {
+			pkg.revert();
+			return;
+		} catch (InvalidFormatException e) {
+			fail(e.getMessage());
+		}
+		fail(&quot;A package implementer shall neither create nor recognize a part with a&quot;
+				+ &quot; part name derived from another part name by appending segments to it.&quot;
+				+ &quot; [M1.11]&quot;);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	void throwExceptionIfWriteOnly() throws InvalidOperationException {
+		if (packageAccess == PackageAccess.WRITE) {
+			throw new InvalidOperationException(
+					&quot;Operation not allowed, document open in write only mode!&quot;);
+		}
+	}
+</code></pre>
+</body>

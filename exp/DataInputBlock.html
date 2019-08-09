@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public int readInt() {
+		checkAvaliable(SIZE_INT);
+		int blockAvailable = _currentBlock.available();
+		int result;
+		if (blockAvailable &gt; SIZE_INT) {
+			result = _currentBlock.readIntLE();
+		} else {
+			DataInputBlock nextBlock = getDataInputBlock(_current_offset + blockAvailable);
+			if (blockAvailable == SIZE_INT) {
+				result = _currentBlock.readIntLE();
+			} else {
+				result = nextBlock.readIntLE(_currentBlock, blockAvailable);
+			}
+			_currentBlock = nextBlock;
+		}
+		_current_offset += SIZE_INT;
+		return result;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	DataInputBlock getDataInputBlock(int offset) {
+		if (offset &gt;= _size) {
+			if (offset &gt; _size) {
+				throw new RuntimeException(&quot;Request for Offset &quot; + offset + &quot; doc size is &quot; + _size);
+			}
+			return null;
+		}
+		if (_property.shouldUseSmallBlocks()) {
+			return SmallDocumentBlock.getDataInputBlock(_small_store.getBlocks(), offset);
+		}
+		return DocumentBlock.getDataInputBlock(_big_store.getBlocks(), offset);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static DataInputBlock getDataInputBlock(DocumentBlock[] blocks, int offset) {
+        if(blocks == null || blocks.length == 0) {
+           return null;
+        }
+        
+        // Key things about the size of the block
+        POIFSBigBlockSize bigBlockSize = blocks[0].bigBlockSize;
+        int BLOCK_SHIFT = bigBlockSize.getHeaderValue();
+        int BLOCK_SIZE = bigBlockSize.getBigBlockSize();
+        int BLOCK_MASK = BLOCK_SIZE - 1;
+
+        // Now do the offset lookup
+        int firstBlockIndex = offset &gt;&gt; BLOCK_SHIFT;
+        int firstBlockOffset= offset &amp; BLOCK_MASK;
+        return new DataInputBlock(blocks[firstBlockIndex]._data, firstBlockOffset);
+    }
+</code></pre>
+</body>

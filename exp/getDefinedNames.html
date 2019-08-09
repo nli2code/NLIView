@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    XSSFName createBuiltInName(String builtInName, int sheetNumber) {
+        validateSheetIndex(sheetNumber);
+
+        CTDefinedNames names = workbook.getDefinedNames() == null ? workbook.addNewDefinedNames() : workbook.getDefinedNames();
+        CTDefinedName nameRecord = names.addNewDefinedName();
+        nameRecord.setName(builtInName);
+        nameRecord.setLocalSheetId(sheetNumber);
+
+        XSSFName name = new XSSFName(nameRecord, this);
+        for (XSSFName nr : namedRanges) {
+            if (nr.equals(name))
+                throw new POIXMLException(&quot;Builtin (&quot; + builtInName
+                        + &quot;) already exists for sheet (&quot; + sheetNumber + &quot;)&quot;);
+        }
+
+        namedRanges.add(name);
+        return name;
+    }
+</code></pre>
+</body>

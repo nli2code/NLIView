@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void copyLayout(XSLFSlide slide) {
+        for (XSLFShape sh : getShapes()) {
+            if (sh instanceof XSLFTextShape) {
+                XSLFTextShape tsh = (XSLFTextShape) sh;
+                Placeholder ph = tsh.getTextType();
+                if (ph == null) continue;
+
+                switch (ph) {
+                    // these are special and not copied by default
+                    case DATETIME:
+                    case SLIDE_NUMBER:
+                    case FOOTER:
+                        break;
+                    default:
+                        slide.getSpTree().addNewSp().set(tsh.getXmlObject().copy());
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected CTGroupShape getSpTree(){
+        if(_spTree == null) {
+            XmlObject root = getXmlObject();
+            XmlObject[] sp = root.selectPath(
+                    &quot;declare namespace p=&#x27;http://schemas.openxmlformats.org/presentationml/2006/main&#x27; .//*/p:spTree&quot;);
+            if(sp.length == 0) throw new IllegalStateException(&quot;CTGroupShape was not found&quot;);
+            _spTree = (CTGroupShape)sp[0];
+        }
+        return _spTree;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public boolean removeShape(XSLFShape xShape) {
+        XmlObject obj = xShape.getXmlObject();
+        CTGroupShape spTree = getSpTree();
+        if(obj instanceof CTShape){
+            spTree.getSpList().remove(obj);
+        } else if (obj instanceof CTGroupShape){
+            spTree.getGrpSpList().remove(obj);
+        } else if (obj instanceof CTConnector){
+            spTree.getCxnSpList().remove(obj);
+        } else {
+            throw new IllegalArgumentException(&quot;Unsupported shape: &quot; + xShape);
+        }
+        return getShapeList().remove(xShape);
+    }
+</code></pre>
+</body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static boolean isIgnoredFormulaTestCase(String cellFormula) {
+		if (&quot;COLUMN(1:2)&quot;.equals(cellFormula) || &quot;ROW(2:3)&quot;.equals(cellFormula)) {
+			// full row ranges are not parsed properly yet.
+			// These cases currently work in svn trunk because of another bug which causes the 
+			// formula to get rendered as COLUMN($A$1:$IV$2) or ROW($A$2:$IV$3) 
+			return true;
+		}
+		if (&quot;ISREF(currentcell())&quot;.equals(cellFormula)) {
+			// currently throws NPE because unknown function &quot;currentcell&quot; causes name lookup 
+			// Name lookup requires some equivalent object of the Workbook within xSSFWorkbook.
+			return true;
+		}
+		return false;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testReadFormulaContainingExternalFunction() {
+		HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;externalFunctionExample.xls&quot;);
+		
+		String expectedFormula = &quot;YEARFRAC(B1,C1)&quot;;
+		HSSFSheet sht = wb.getSheetAt(0);
+		String cellFormula = sht.getRow(0).getCell(0).getCellFormula();
+		assertEquals(expectedFormula, cellFormula);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    /* package */ void setCellArrayFormula(String formula, CellRangeAddress range) {
+        setFormula(formula, FormulaType.ARRAY);
+        CTCellFormula cellFormula = _cell.getF();
+        cellFormula.setT(STCellFormulaType.ARRAY);
+        cellFormula.setRef(range.formatAsString());
+    }
+</code></pre>
+</body>

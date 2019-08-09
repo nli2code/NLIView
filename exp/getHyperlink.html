@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected void removeHyperlink(HyperlinkRecord link) {
+        for (Iterator&lt;RecordBase&gt; it = _sheet.getRecords().iterator(); it.hasNext();) {
+            RecordBase rec = it.next();
+            if (rec instanceof HyperlinkRecord) {
+                HyperlinkRecord recLink = (HyperlinkRecord) rec;
+                if (link == recLink) {
+                    it.remove();
+                    // if multiple HSSFHyperlinks refer to the same record
+                    return;
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testWithHyperlink() {
+
+		HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;WithHyperlink.xls&quot;);
+
+		HSSFSheet sheet = wb.getSheetAt(0);
+		HSSFCell cell = sheet.getRow(4).getCell(0);
+		HSSFHyperlink link = cell.getHyperlink();
+		assertNotNull(link);
+
+		assertEquals(&quot;Foo&quot;, link.getLabel());
+		assertEquals(&quot;http://poi.apache.org/&quot;, link.getAddress());
+		assertEquals(4, link.getFirstRow());
+		assertEquals(0, link.getFirstColumn());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void test53734() {
+        XSSFWorkbook wb = XSSFTestDataSamples.openSampleWorkbook(&quot;53734.xlsx&quot;);
+        XSSFHyperlink link = wb.getSheetAt(0).getRow(0).getCell(0).getHyperlink();
+        assertEquals(&quot;javascript:///&quot;, link.getAddress());
+
+        wb = XSSFTestDataSamples.writeOutAndReadBack(wb);
+        link = wb.getSheetAt(0).getRow(0).getCell(0).getHyperlink();
+        assertEquals(&quot;javascript:///&quot;, link.getAddress());
+    }
+</code></pre>
+</body>

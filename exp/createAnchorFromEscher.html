@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testChildAnchorFromEscher(){
+        EscherChildAnchorRecord escher = new EscherChildAnchorRecord();
+        escher.setDx1((short) 15);
+        escher.setDx2((short) 16);
+        escher.setDy1((short) 17);
+        escher.setDy2((short) 18);
+
+        HSSFChildAnchor anchor = new HSSFChildAnchor(escher);
+        assertEquals(anchor.getDx1(), 15);
+        assertEquals(escher.getDx1(), 15);
+        assertEquals(anchor.getDx2(), 16);
+        assertEquals(escher.getDx2(), 16);
+        assertEquals(anchor.getDy1(), 17);
+        assertEquals(escher.getDy1(), 17);
+        assertEquals(anchor.getDy2(), 18);
+        assertEquals(escher.getDy2(), 18);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static HSSFAnchor createAnchorFromEscher(EscherContainerRecord container){
+        if (null != container.getChildById(EscherChildAnchorRecord.RECORD_ID)){
+            return new HSSFChildAnchor((EscherChildAnchorRecord) container.getChildById(EscherChildAnchorRecord.RECORD_ID));
+        } else {
+            if (null != container.getChildById(EscherClientAnchorRecord.RECORD_ID)){
+                return new HSSFClientAnchor((EscherClientAnchorRecord) container.getChildById(EscherClientAnchorRecord.RECORD_ID));
+            }
+            return null;
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public HSSFShape(EscherContainerRecord spContainer, ObjRecord objRecord) {
+        this._escherContainer = spContainer;
+        this._objRecord = objRecord;
+        this._optRecord = spContainer.getChildById(EscherOptRecord.RECORD_ID);
+        this.anchor = HSSFAnchor.createAnchorFromEscher(spContainer);
+    }
+</code></pre>
+</body>

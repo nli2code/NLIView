@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testFillExtras() {
+
+		byte[] examples = HexRead.readFromString(&quot;&quot;
+				+ &quot;88 03 67 06 07 00 00 00 00 00 00 23 00 00 00 4D &quot;
+				+ &quot;61 63 72 6F 31 3A 01 00 00 00 11 00 00 4D 61 63 &quot;
+				+ &quot;72 6F 20 72 65 63 6F 72 64 65 64 20 32 37 2D 53 &quot;
+				+ &quot;65 70 2D 39 33 20 62 79 20 41 4C 4C 57 4F 52&quot;);
+
+		NameRecord name = new NameRecord(TestcaseRecordInputStream.create(NameRecord.sid, examples));
+		String description = name.getDescriptionText();
+		assertNotNull(description);
+		assertTrue(description.endsWith(&quot;Macro recorded 27-Sep-93 by ALLWOR&quot;));
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String getComment() {
+        if(_commentRec != null) {
+           // Prefer the comment record if it has text in it
+           if(_commentRec.getCommentText() != null &amp;&amp;
+                 _commentRec.getCommentText().length() &gt; 0) {
+              return _commentRec.getCommentText();
+           }
+        }
+        return _definedNameRec.getDescriptionText();
+    }
+</code></pre>
+</body>

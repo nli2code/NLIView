@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testTargetWithSpecialChars() throws Exception{
+
+        OPCPackage pkg;
+
+        String filepath = OpenXML4JTestDataSamples.getSampleFileName(&quot;50154.xlsx&quot;);
+        pkg = OPCPackage.open(filepath);
+        assert_50154(pkg);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        pkg.save(baos);
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        pkg = OPCPackage.open(bais);
+
+        assert_50154(pkg);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testGetPropertiesLO() throws Exception {
+        // Open the package
+        OPCPackage pkg1 = OPCPackage.open(OpenXML4JTestDataSamples.openSampleStream(&quot;51444.xlsx&quot;));
+        PackageProperties props1 = pkg1.getPackageProperties();
+        assertEquals(null, props1.getTitleProperty().getValue());
+        props1.setTitleProperty(&quot;Bug 51444 fixed&quot;);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        pkg1.save(out);
+        out.close();
+
+        OPCPackage pkg2 = OPCPackage.open(new ByteArrayInputStream(out.toByteArray()));
+        PackageProperties props2 = pkg2.getPackageProperties();
+        props2.setTitleProperty(&quot;Bug 51444 fixed&quot;);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	void throwExceptionIfWriteOnly() throws InvalidOperationException {
+		if (packageAccess == PackageAccess.WRITE) {
+			throw new InvalidOperationException(
+					&quot;Operation not allowed, document open in write only mode!&quot;);
+		}
+	}
+</code></pre>
+</body>

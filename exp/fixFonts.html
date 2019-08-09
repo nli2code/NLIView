@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testMergedCells(){
+        Workbook workbook = _testDataProvider.createWorkbook();
+        Sheet sheet = workbook.createSheet();
+
+        Row row = sheet.createRow(0);
+        sheet.addMergedRegion(CellRangeAddress.valueOf(&quot;A1:B1&quot;));
+
+        Cell cell0 = row.createCell(0);
+        cell0.setCellValue(&quot;Apache Software Foundation&quot;);
+
+        int defaulWidth = sheet.getColumnWidth(0);
+        sheet.autoSizeColumn(0);
+        // column is unchanged if merged regions are ignored (Excel like behavior)
+        assertEquals(defaulWidth, sheet.getColumnWidth(0));
+
+        sheet.autoSizeColumn(0, true);
+        assertTrue(sheet.getColumnWidth(0) &gt; defaulWidth);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public double getTextHeight(){
+        // dry-run in a 1x1 image and return the vertical advance
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = img.createGraphics();
+        breakText(graphics);
+        return drawParagraphs(graphics, 0, 0);
+    }
+</code></pre>
+</body>

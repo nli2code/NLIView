@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toString() {
+        StringBuffer results = new StringBuffer();
+        results.append(&quot;    {EscherArrayProperty:&quot; + &#x27;\n&#x27;);
+        results.append(&quot;     Num Elements: &quot; + getNumberOfElementsInArray() + &#x27;\n&#x27;);
+        results.append(&quot;     Num Elements In Memory: &quot; + getNumberOfElementsInMemory() + &#x27;\n&#x27;);
+        results.append(&quot;     Size of elements: &quot; + getSizeOfElements() + &#x27;\n&#x27;);
+        for (int i = 0; i &lt; getNumberOfElementsInArray(); i++) {
+            results.append(&quot;     Element &quot; + i + &quot;: &quot; + HexDump.toHex(getElement(i)) + &#x27;\n&#x27;);
+        }
+        results.append(&quot;}&quot; + &#x27;\n&#x27;);
+
+        return &quot;propNum: &quot; + getPropertyNumber()
+                + &quot;, propName: &quot; + EscherProperties.getPropertyName( getPropertyNumber() )
+                + &quot;, complex: &quot; + isComplex()
+                + &quot;, blipId: &quot; + isBlipId()
+                + &quot;, data: &quot; + &#x27;\n&#x27; + results.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String toXml(String tab) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(tab).append(formatXmlRecordHeader(getClass().getSimpleName(),
+                HexDump.toHex(getRecordId()), HexDump.toHex(getVersion()), HexDump.toHex(getInstance())));
+        for (EscherProperty property: getEscherProperties()){
+            builder.append(property.toXml(tab+&quot;\t&quot;));
+        }
+        builder.append(tab).append(&quot;&lt;/&quot;).append(getClass().getSimpleName()).append(&quot;&gt;\n&quot;);
+        return builder.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public int[] getYPoints() {
+        EscherArrayProperty verticesProp = getOptRecord().lookup(EscherProperties.GEOMETRY__VERTICES);
+        if (null == verticesProp){
+            return new int[]{};
+        }
+        int []array = new int[verticesProp.getNumberOfElementsInArray()-1];
+        for (int i=0; i&lt; verticesProp.getNumberOfElementsInArray()-1; i++){
+            byte[] property = verticesProp.getElement(i);
+            short x = LittleEndian.getShort(property, 2);
+            array[i] = x;
+        }
+        return array;
+    }
+</code></pre>
+</body>

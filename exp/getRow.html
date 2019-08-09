@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static NumberRecord convertToNumberRecord(RKRecord rk) {
+		NumberRecord num = new NumberRecord();
+
+		num.setColumn(rk.getColumn());
+		num.setRow(rk.getRow());
+		num.setXFIndex(rk.getXFIndex());
+		num.setValue(rk.getRKNumber());
+		return num;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test29942() {
+        HSSFWorkbook wb = openSample(&quot;29942.xls&quot;);
+
+        HSSFSheet sheet = wb.getSheetAt(0);
+        int count = 0;
+        for (int i = sheet.getFirstRowNum(); i &lt;= sheet.getLastRowNum(); i++) {
+            HSSFRow row =  sheet.getRow(i);
+            if (row != null) {
+                HSSFCell cell = row .getCell(0);
+                assertEquals(HSSFCell.CELL_TYPE_STRING, cell.getCellType());
+                count++;
+            }
+        }
+        assertEquals(85, count); //should read 85 rows
+
+        writeOutAndReadBack(wb);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void addImageToSheet(String cellNumber, HSSFSheet sheet,
+            String imageFile, double reqImageWidthMM, double reqImageHeightMM,
+            int resizeBehaviour) throws IOException, IllegalArgumentException {
+        // Convert the String into column and row indices then chain the
+        // call to the overridden addImageToSheet() method.
+        CellReference cellRef = new CellReference(cellNumber);
+        this.addImageToSheet(cellRef.getCol(), cellRef.getRow(), sheet,
+                imageFile, reqImageWidthMM, reqImageHeightMM,resizeBehaviour);
+    }
+</code></pre>
+</body>

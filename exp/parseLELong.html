@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		private static long parseLELong(char[] cc, int startIndex) {
+			long acc = 0;
+			for (int i = startIndex + 14; i &gt;= startIndex; i -= 2) {
+				acc &lt;&lt;= 4;
+				acc += parseHexChar(cc[i + 0]);
+				acc &lt;&lt;= 4;
+				acc += parseHexChar(cc[i + 1]);
+			}
+			return acc;
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		public static GUID parse(String rep) {
+			char[] cc = rep.toCharArray();
+			if (cc.length != TEXT_FORMAT_LENGTH) {
+				throw new RecordFormatException(&quot;supplied text is the wrong length for a GUID&quot;);
+			}
+			int d0 = (parseShort(cc, 0) &lt;&lt; 16) + (parseShort(cc, 4) &lt;&lt; 0);
+			int d1 = parseShort(cc, 9);
+			int d2 = parseShort(cc, 14);
+			for (int i = 23; i &gt; 19; i--) {
+				cc[i] = cc[i - 1];
+			}
+			long d3 = parseLELong(cc, 20);
+
+			return new GUID(d0, d1, d2, d3);
+		}
+</code></pre>
+</body>

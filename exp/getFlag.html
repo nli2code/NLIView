@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toString(){
+        StringBuffer buf = new StringBuffer();
+        buf.append(&quot;ExMediaAtom\n&quot;);
+        buf.append(&quot;\tObjectId: &quot; + getObjectId() + &quot;\n&quot;);
+        buf.append(&quot;\tMask    : &quot; + getMask() + &quot;\n&quot;);
+        buf.append(&quot;\t  fLoop        : &quot; + getFlag(fLoop) + &quot;\n&quot;);
+        buf.append(&quot;\t  fRewind   : &quot; + getFlag(fRewind) + &quot;\n&quot;);
+        buf.append(&quot;\t  fNarration    : &quot; + getFlag(fNarration) + &quot;\n&quot;);
+        return buf.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public boolean  isAutoPlay(){
+        AnimationInfo an = getClientDataRecord(RecordTypes.AnimationInfo.typeID);
+        if(an != null){
+            return an.getAnimationInfoAtom().getFlag(AnimationInfoAtom.Automatic);
+        }
+        return false;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static HSSFClientAnchor toClientAnchor(EscherClientAnchorRecord anchorRecord){
+        HSSFClientAnchor anchor = new HSSFClientAnchor();
+        anchor.setAnchorType(anchorRecord.getFlag());
+        anchor.setCol1( anchorRecord.getCol1() );
+        anchor.setCol2( anchorRecord.getCol2() );
+        anchor.setDx1( anchorRecord.getDx1() );
+        anchor.setDx2( anchorRecord.getDx2() );
+        anchor.setDy1( anchorRecord.getDy1() );
+        anchor.setDy2( anchorRecord.getDy2() );
+        anchor.setRow1( anchorRecord.getRow1() );
+        anchor.setRow2( anchorRecord.getRow2() );
+        return anchor;
+    }
+</code></pre>
+</body>

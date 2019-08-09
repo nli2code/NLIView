@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setRandomAccessWindowSize(int value)
+    {
+         if(value == 0 || value &lt; -1) {
+             throw new IllegalArgumentException(&quot;RandomAccessWindowSize must be either -1 or a positive integer&quot;);
+         }
+         _randomAccessWindowSize=value;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public SXSSFWorkbook(XSSFWorkbook workbook, int rowAccessWindowSize, boolean compressTmpFiles){
+    	setRandomAccessWindowSize(rowAccessWindowSize);
+    	setCompressTempFiles(compressTmpFiles);
+    	if (workbook == null)
+    	{
+    		_wb=new XSSFWorkbook();
+    	}
+    	else
+    	{
+    		_wb=workbook;
+            for ( int i = 0; i &lt; _wb.getNumberOfSheets(); i++ )
+            {
+                XSSFSheet sheet = _wb.getSheetAt( i );
+                createAndRegisterSXSSFSheet( sheet );
+            }
+    	}
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private void setRandomAccessWindowSize(int rowAccessWindowSize)
+    {
+        if(rowAccessWindowSize == 0 || rowAccessWindowSize &lt; -1) {
+            throw new IllegalArgumentException(&quot;rowAccessWindowSize must be greater than 0 or -1&quot;);
+        }
+        _randomAccessWindowSize = rowAccessWindowSize;
+    }
+</code></pre>
+</body>

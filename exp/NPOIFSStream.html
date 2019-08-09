@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public NPropertyTable(final HeaderBlock headerBlock,
+                          final NPOIFSFileSystem filesystem)
+        throws IOException
+    {
+        super(
+              headerBlock,
+              buildProperties(
+                    (new NPOIFSStream(filesystem, headerBlock.getPropertyStart())).iterator(),
+                    headerBlock.getBigBlockSize()
+              )
+        );
+        _bigBigBlockSize = headerBlock.getBigBlockSize();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void write(NPOIFSStream stream) throws IOException {
+       // TODO - Use a streaming write
+       ByteArrayOutputStream baos = new ByteArrayOutputStream();
+       for(Property property : _properties) {
+          if(property != null) {
+             property.writeData(baos);
+          }
+       }
+       stream.updateContents(baos.toByteArray());
+       
+       // Update the start position if needed
+       if(getStartBlock() != stream.getStartBlock()) {
+          setStartBlock(stream.getStartBlock());
+       }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>   public NPOIFSDocument(DocumentProperty property, NPOIFSFileSystem filesystem) 
+      throws IOException
+   {
+      this._property = property;
+      this._filesystem = filesystem;
+
+      if(property.getSize() &lt; POIFSConstants.BIG_BLOCK_MINIMUM_DOCUMENT_SIZE) {
+         _stream = new NPOIFSStream(_filesystem.getMiniStore(), property.getStartBlock());
+         _block_size = _filesystem.getMiniStore().getBlockStoreBlockSize();
+      } else {
+         _stream = new NPOIFSStream(_filesystem, property.getStartBlock());
+         _block_size = _filesystem.getBlockStoreBlockSize();
+      }
+   }
+</code></pre>
+</body>

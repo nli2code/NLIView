@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toString()
+    {
+        StringBuilder b = new StringBuilder();
+	b.append(&quot;[DCONREF]\n&quot;);
+        b.append(&quot;    .ref\n&quot;);
+        b.append(&quot;        .firstrow   = &quot;).append(firstRow).append(&quot;\n&quot;);
+        b.append(&quot;        .lastrow    = &quot;).append(lastRow).append(&quot;\n&quot;);
+        b.append(&quot;        .firstcol   = &quot;).append(firstCol).append(&quot;\n&quot;);
+        b.append(&quot;        .lastcol    = &quot;).append(lastCol).append(&quot;\n&quot;);
+        b.append(&quot;    .cch            = &quot;).append(charCount).append(&quot;\n&quot;);
+	b.append(&quot;    .stFile\n&quot;);
+	b.append(&quot;        .h          = &quot;).append(charType).append(&quot;\n&quot;);
+	b.append(&quot;        .rgb        = &quot;).append(getReadablePath()).append(&quot;\n&quot;);
+	b.append(&quot;[/DCONREF]\n&quot;);
+
+        return b.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String getReadablePath()
+    {
+        if (path != null)
+        {
+            //all of the path strings start with either 0x02 or 0x01 followed by zero or
+            //more of 0x01..0x08
+            int offset = 1;
+            while (path[offset] &lt; 0x20 &amp;&amp; offset &lt; path.length)
+            {
+                offset++;
+            }
+            String out = new String(ArrayUtil.copyOfRange(path, offset, path.length));
+            //UNC paths have \u0003 chars as path separators.
+            out = out.replaceAll(&quot;\u0003&quot;, &quot;/&quot;);
+            return out;
+        }
+        return null;
+    }
+</code></pre>
+</body>

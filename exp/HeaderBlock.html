@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public NPropertyTable(final HeaderBlock headerBlock,
+                          final NPOIFSFileSystem filesystem)
+        throws IOException
+    {
+        super(
+              headerBlock,
+              buildProperties(
+                    (new NPOIFSStream(filesystem, headerBlock.getPropertyStart())).iterator(),
+                    headerBlock.getBigBlockSize()
+              )
+        );
+        _bigBigBlockSize = headerBlock.getBigBlockSize();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private NPOIFSFileSystem(boolean newFS)
+    {
+        _header         = new HeaderBlock(bigBlockSize);
+        _property_table = new NPropertyTable(_header);
+        _mini_store     = new NPOIFSMiniStore(this, _property_table.getRoot(), new ArrayList&lt;BATBlock&gt;(), _header);
+        _xbat_blocks    = new ArrayList&lt;BATBlock&gt;();
+        _bat_blocks     = new ArrayList&lt;BATBlock&gt;();
+        _root           = null;
+        
+        if(newFS) {
+           // Data needs to initially hold just the header block,
+           //  a single bat block, and an empty properties section
+           _data        = new ByteArrayBackedDataSource(new byte[bigBlockSize.getBigBlockSize()*3]);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public HeaderBlock(InputStream stream) throws IOException {
+		// Grab the first 512 bytes
+	   // (For 4096 sized blocks, the remaining 3584 bytes are zero)
+		// Then, process the contents
+		this(readFirst512(stream));
+		
+		// Fetch the rest of the block if needed
+		if(bigBlockSize.getBigBlockSize() != 512) {
+		   int rest = bigBlockSize.getBigBlockSize() - 512;
+		   byte[] tmp = new byte[rest];
+		   IOUtils.readFully(stream, tmp);
+		}
+	}
+</code></pre>
+</body>

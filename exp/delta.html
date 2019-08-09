@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testConvertTime() {
+
+        final double delta = 1E-7; // a couple of digits more accuracy than strictly required
+        assertEquals(0.5, HSSFDateUtil.convertTime(&quot;12:00&quot;), delta);
+        assertEquals(2.0/3, HSSFDateUtil.convertTime(&quot;16:00&quot;), delta);
+        assertEquals(0.0000116, HSSFDateUtil.convertTime(&quot;0:00:01&quot;), delta);
+        assertEquals(0.7330440, HSSFDateUtil.convertTime(&quot;17:35:35&quot;), delta);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>            void equivalent(String expected, String actual,
+                    CellFormatPart format) {
+                double expectedVal = extractNumber(expected);
+                double actualVal = extractNumber(actual);
+                // equal within 1%
+                double delta = expectedVal / 100;
+                assertEquals(&quot;format \&quot;&quot; + format + &quot;\&quot;,&quot; + expected + &quot; ~= &quot; +
+                        actual, expectedVal, actualVal, delta);
+            }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>            public int compare( Object o1, Object o2 ) {
+                Rectangle anchor1 = ((Shape)o1).getAnchor();
+                Rectangle anchor2 = ((Shape)o2).getAnchor();
+                int delta = anchor1.y - anchor2.y;
+                if(delta == 0) delta = anchor1.x - anchor2.x;
+                return delta;
+            }
+</code></pre>
+</body>

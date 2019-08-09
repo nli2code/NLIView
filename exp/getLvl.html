@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>   public void testBasics() {
+      HWPFDocument doc = HWPFTestDataSamples.openSampleFile(&quot;Lists.doc&quot;);
+      Range r = doc.getRange();
+      
+      assertEquals(40, r.numParagraphs());
+      assertEquals(&quot;Heading Level 1\r&quot;, r.getParagraph(0).text());
+      assertEquals(&quot;This document has different lists in it for testing\r&quot;, r.getParagraph(1).text());
+      assertEquals(&quot;The end!\r&quot;, r.getParagraph(38).text());
+      assertEquals(&quot;\r&quot;, r.getParagraph(39).text());
+      
+      assertEquals(0, r.getParagraph(0).getLvl());
+      assertEquals(9, r.getParagraph(1).getLvl());
+      assertEquals(9, r.getParagraph(38).getLvl());
+      assertEquals(9, r.getParagraph(39).getLvl());
+   }
+</code></pre>
+</body>

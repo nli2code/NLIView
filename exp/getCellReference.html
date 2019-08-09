@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static AreaReference createAreaRef(SimpleRangePart part1, SimpleRangePart part2) {
+		if (!part1.isCompatibleForArea(part2)) {
+			throw new FormulaParseException(&quot;has incompatible parts: &#x27;&quot;
+					+ part1.getRep() + &quot;&#x27; and &#x27;&quot; + part2.getRep() + &quot;&#x27;.&quot;);
+		}
+		if (part1.isRow()) {
+			return AreaReference.getWholeRow(part1.getRep(), part2.getRep());
+		}
+		if (part1.isColumn()) {
+			return AreaReference.getWholeColumn(part1.getRep(), part2.getRep());
+		}
+		return new AreaReference(part1.getCellReference(), part2.getCellReference());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static CellReference getCellReference(Workbook workbook, String cellName) {
+		CellReference cellReference = null;
+		int namedCellIndex = workbook.getNameIndex(cellName);
+		if (namedCellIndex &gt;= 0) {
+			cellReference =
+					new AreaReference(workbook.getNameAt(namedCellIndex).getRefersToFormula()).getFirstCell();
+		}
+		return cellReference;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static List&lt;Map&lt;String, Cell&gt;&gt; cellArea (Sheet sheet, String colArea, String rowArea){
+        List&lt;Map&lt;String, CellReference&gt;&gt; rows = cellAreaRefs(colArea, rowArea);
+        List&lt;Map&lt;String, Cell&gt;&gt; matrix = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; rows.size(); i++) {
+            Map&lt;String, CellReference&gt; row = rows.get(i);
+            Map&lt;String, Cell&gt; record = new TreeMap&lt;&gt;();
+            row.forEach((key, ref) -&gt; record.put(key, CellRefBuilder.getCellByReference(sheet, ref)));
+            matrix.add(record);
+        }
+        return matrix;
+    }
+</code></pre>
+</body>

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void fixTabIdRecord() {
+        TabIdRecord tir = ( TabIdRecord ) records.get(records.getTabpos());
+        short[]     tia = new short[ boundsheets.size() ];
+
+        for (short k = 0; k &lt; tia.length; k++) {
+            tia[ k ] = k;
+        }
+        tir.setTabIdArray(tia);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void preSerialize(){
+        // Ensure we have enough tab IDs
+        // Can be a few short if new sheets were added
+        if(records.getTabpos() &gt; 0) {
+            TabIdRecord tir = ( TabIdRecord ) records.get(records.getTabpos());
+            if(tir._tabids.length &lt; boundsheets.size()) {
+                fixTabIdRecord();
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private void checkSheets(int sheetnum) {
+        if ((boundsheets.size()) &lt;= sheetnum) {   // if we&#x27;re short one add another..
+            if ((boundsheets.size() + 1) &lt;= sheetnum) {
+                throw new RuntimeException(&quot;Sheet number out of bounds!&quot;);
+            }
+            BoundSheetRecord bsr = createBoundSheet(sheetnum);
+
+            records.add(records.getBspos()+1, bsr);
+            records.setBspos( records.getBspos() + 1 );
+            boundsheets.add(bsr);
+            getOrCreateLinkTable().checkExternSheet(sheetnum);
+            fixTabIdRecord();
+        }
+    }
+</code></pre>
+</body>

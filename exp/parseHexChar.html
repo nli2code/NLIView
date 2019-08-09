@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		private static long parseLELong(char[] cc, int startIndex) {
+			long acc = 0;
+			for (int i = startIndex + 14; i &gt;= startIndex; i -= 2) {
+				acc &lt;&lt;= 4;
+				acc += parseHexChar(cc[i + 0]);
+				acc &lt;&lt;= 4;
+				acc += parseHexChar(cc[i + 1]);
+			}
+			return acc;
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		private static int parseHexChar(char c) {
+			if (c &gt;= &#x27;0&#x27; &amp;&amp; c &lt;= &#x27;9&#x27;) {
+				return c - &#x27;0&#x27;;
+			}
+			if (c &gt;= &#x27;A&#x27; &amp;&amp; c &lt;= &#x27;F&#x27;) {
+				return c - &#x27;A&#x27; + 10;
+			}
+			if (c &gt;= &#x27;a&#x27; &amp;&amp; c &lt;= &#x27;f&#x27;) {
+				return c - &#x27;a&#x27; + 10;
+			}
+			throw new RecordFormatException(&quot;Bad hex char &#x27;&quot; + c + &quot;&#x27;&quot;);
+		}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		private static int parseShort(char[] cc, int startIndex) {
+			int acc = 0;
+			for (int i = 0; i &lt; 4; i++) {
+				acc &lt;&lt;= 4;
+				acc += parseHexChar(cc[startIndex + i]);
+			}
+			return acc;
+		}
+</code></pre>
+</body>

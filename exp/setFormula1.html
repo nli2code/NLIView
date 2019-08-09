@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public XSSFDataValidationConstraint(int validationType, int operator,String formula1, String formula2) {
+		super();
+		setFormula1(formula1);
+		setFormula2(formula2);
+		this.validationType = validationType;
+		this.operator = operator;
+		
+		validate();
+		
+		//FIXME: Need to confirm if this is not a formula.
+		if( ValidationType.LIST==validationType) {
+			explicitListOfValues = formula1.split(&quot;,&quot;);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void setExplicitListValues(String[] explicitListValues) {
+		this.explicitListOfValues = explicitListValues;
+		if( explicitListOfValues!=null &amp;&amp; explicitListOfValues.length &gt; 0 ) {
+			StringBuilder builder = new StringBuilder(&quot;\&quot;&quot;);
+			for (int i = 0; i &lt; explicitListValues.length; i++) {
+				String string = explicitListValues[i];
+				if( builder.length() &gt; 1) {
+					builder.append(&quot;,&quot;);
+				}
+				builder.append(string);
+			}
+			builder.append(&quot;\&quot;&quot;);
+			setFormula1(builder.toString());			
+		}
+	}
+</code></pre>
+</body>

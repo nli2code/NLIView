@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testLoad() {
+        AxisLineFormatRecord record = new AxisLineFormatRecord(TestcaseRecordInputStream.create(0x1021, data));
+        assertEquals( AxisLineFormatRecord.AXIS_TYPE_MAJOR_GRID_LINE, record.getAxisType());
+
+        assertEquals( 6, record.getRecordSize() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testStore()
+    {
+        SeriesChartGroupIndexRecord record = new SeriesChartGroupIndexRecord();
+        record.setChartGroupIndex( (short)0 );
+
+
+        byte [] recordBytes = record.serialize();
+        assertEquals(recordBytes.length - 4, data.length);
+        for (int i = 0; i &lt; data.length; i++)
+            assertEquals(&quot;At offset &quot; + i, data[i], recordBytes[i+4]);
+    }
+</code></pre>
+</body>

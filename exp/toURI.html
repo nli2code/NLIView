@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testCreateURIFromString() throws Exception {
+        String[] href = {
+                &quot;..\\\\\\cygwin\\home\\yegor\\.vim\\filetype.vim&quot;,
+                &quot;..\\Program%20Files\\AGEIA%20Technologies\\v2.3.3\\NxCooking.dll&quot;,
+                &quot;file:///D:\\seva\\1981\\r810102ns.mp3&quot;,
+                &quot;..\\cygwin\\home\\yegor\\dinom\\%5baccess%5d.2010-10-26.log&quot;,
+                &quot;#&#x27;Instructions (Text)&#x27;!B21&quot;
+        };
+        for(String s : href){
+            try {
+                URI uri = PackagingURIHelper.toURI(s);
+            } catch (URISyntaxException e){
+                fail(&quot;Failed to create URI from &quot; + s);
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static URI getURIFromPath(String path) {
+		URI retUri;
+		try {
+			retUri = toURI(path);
+		} catch (URISyntaxException e) {
+			throw new IllegalArgumentException(&quot;path&quot;);
+		}
+		return retUri;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static PackagePartName createPartName(String partName)
+			throws InvalidFormatException {
+		URI partNameURI;
+		try {
+			partNameURI = toURI(partName);
+		} catch (URISyntaxException e) {
+			throw new InvalidFormatException(e.getMessage());
+		}
+		return createPartName(partNameURI);
+	}
+</code></pre>
+</body>

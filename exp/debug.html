@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testExclyIntegerSetCell() throws Exception {
+		Row row = sheet.createRow(0);
+
+		integerOne.setCell(row.createCell(0));
+		log.debug(row.getCell(0).getNumericCellValue() + &quot; / &quot; + 5);
+		assertTrue(row.getCell(0).getNumericCellValue() == 5);
+
+		integerError.setCell(row.createCell(1));
+		log.debug(row.getCell(1).getStringCellValue() + &quot; / &quot; + &quot;###ERROR###&quot;);
+		assertEquals(row.getCell(1).getStringCellValue(), &quot;###ERROR###&quot;);
+
+		integerBlank.setCell(row.createCell(2));
+		log.debug(row.getCell(2).getStringCellValue() + &quot; / &quot; + &quot;&quot;);
+		assertEquals(row.getCell(2).getStringCellValue(), &quot;&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public StreamingReader read(InputStream is) {
+      File f = null;
+      try {
+        f = writeInputStreamToFile(is, bufferSize);
+        log.debug(&quot;Created temp file [&quot; + f.getAbsolutePath() + &quot;]&quot;);
+
+        StreamingReader r = read(f);
+        r.tmp = f;
+        return r;
+      } catch(IOException e) {
+        throw new ReadException(&quot;Unable to read input stream&quot;, e);
+      } catch(RuntimeException e) {
+        if(f != null) {
+          f.delete();
+        }
+        throw e;
+      }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testExclyIntegerAdd() throws Exception {
+		ExclyInteger addOneTwo = ExclyInteger.add(integerOne, integerTwo);
+		log.debug(15 + &quot; / &quot; + addOneTwo);
+		assertTrue(15 == addOneTwo.getData());
+
+		ExclyInteger addOneTwoThree = ExclyInteger.add(integerOne, integerTwo, integerThree);
+		log.debug(30 + &quot; / &quot; + addOneTwoThree);
+		assertTrue(30 == addOneTwoThree.getData());
+
+		ExclyInteger addOneError = ExclyInteger.add(integerOne, integerError);
+		log.debug(&quot;Error: true / &quot; + addOneError.isError());
+		assertTrue(addOneError.isError());
+
+		ExclyInteger addOneBlank = ExclyInteger.add(integerOne, integerBlank);
+		log.debug(5 + &quot; / &quot; + addOneBlank);
+		assertTrue(5 == addOneBlank.getData());
+	}
+</code></pre>
+</body>

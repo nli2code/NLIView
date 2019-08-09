@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static PageItemRecord confirmSerialize(String hexDump) {
+		byte[] data = HexRead.readFromString(hexDump);
+		RecordInputStream in = TestcaseRecordInputStream.create(PageItemRecord.sid, data);
+		PageItemRecord rec = new PageItemRecord(in);
+		assertEquals(0, in.remaining());
+		assertEquals(4+data.length, rec.getRecordSize());
+		byte[] data2 = rec.serialize();
+		TestcaseRecordInputStream.confirmRecordEncoding(PageItemRecord.sid, data, data2);
+		return rec;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testSerialize() {
+		// This hex data was produced by changing the &#x27;Custom Name&#x27; property, 
+		// available under &#x27;Field Settings&#x27; from the &#x27;PivotTable Field List&#x27; (Excel 2007)
+		confirmSerialize(&quot;00 00 01 00 01 00 00 00 FF FF&quot;);
+		confirmSerialize(&quot;01 00 01 00 01 00 04 00 05 00 00 6D 61 72 63 6F&quot;);
+		confirmSerialize(&quot;01 00 01 00 01 00 04 00 0A 00 01 48 00 69 00 73 00 74 00 6F 00 72 00 79 00 2D 00 82 69 81 89&quot;);
+	}
+</code></pre>
+</body>

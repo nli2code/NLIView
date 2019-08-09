@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private void assertBytesSame(byte[] a, byte[] b) {
+		assertEquals(a.length, b.length);
+		for(int i=0; i&lt;a.length; i++) {
+			assertEquals(a[i],b[i]);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void BROKENtestEscherDrawing() {
+		HWPFDocument docD = HWPFTestDataSamples.openSampleFile(docDFile);
+		List&lt;Picture&gt; allPictures = docD.getPicturesTable().getAllPictures();
+
+		assertEquals(1, allPictures.size());
+
+		Picture pic = allPictures.get(0);
+		assertNotNull(pic);
+		byte[] picD = readFile(imgDFile);
+
+		assertEquals(picD.length, pic.getContent().length);
+
+		assertBytesSame(picD, pic.getContent());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testCompressedImageData() {
+		HWPFDocument docC = HWPFTestDataSamples.openSampleFile(docCFile);
+		PicturesTable picC = docC.getPicturesTable();
+		List&lt;Picture&gt; picturesC = picC.getAllPictures();
+
+		assertEquals(1, picturesC.size());
+
+		Picture pic = picturesC.get(0);
+		assertNotNull(pic);
+
+		// Check the same
+		byte[] picBytes = readFile(imgCFile);
+
+		assertEquals(picBytes.length, pic.getContent().length);
+		assertBytesSame(picBytes, pic.getContent());
+	}
+</code></pre>
+</body>

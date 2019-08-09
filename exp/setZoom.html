@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static void main(String[] args) throws Exception
+	{
+		String dataPath = &quot;src/featurescomparison/workingwithworksheets/zoomfactor/data/&quot;;
+		
+		Workbook wb = new HSSFWorkbook();
+	    Sheet sheet1 = wb.createSheet(&quot;new sheet&quot;);
+	    sheet1.setZoom(3,4);   // 75 percent magnification
+	    
+	    // Write the output to a file
+	    FileOutputStream fileOut = new FileOutputStream(dataPath + &quot;ApacheZoom_Out.xls&quot;);
+	    wb.write(fileOut);
+	    fileOut.close();	
+
+	    System.out.println(&quot;Process Completed Successfully.&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setZoom( int numerator, int denominator)
+    {
+        if (numerator &lt; 1 || numerator &gt; 65535)
+            throw new IllegalArgumentException(&quot;Numerator must be greater than 1 and less than 65536&quot;);
+        if (denominator &lt; 1 || denominator &gt; 65535)
+            throw new IllegalArgumentException(&quot;Denominator must be greater than 1 and less than 65536&quot;);
+
+        SCLRecord sclRecord = new SCLRecord();
+        sclRecord.setNumerator((short)numerator);
+        sclRecord.setDenominator((short)denominator);
+        getSheet().setSCLRecord(sclRecord);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testSetZoom() {
+        XSSFWorkbook workBook = new XSSFWorkbook();
+        XSSFSheet sheet1 = workBook.createSheet(&quot;new sheet&quot;);
+        sheet1.setZoom(3, 4);   // 75 percent magnification
+        long zoom = sheet1.getCTWorksheet().getSheetViews().getSheetViewArray(0).getZoomScale();
+        assertEquals(zoom, 75);
+
+        sheet1.setZoom(200);
+        zoom = sheet1.getCTWorksheet().getSheetViews().getSheetViewArray(0).getZoomScale();
+        assertEquals(zoom, 200);
+
+        try {
+            sheet1.setZoom(500);
+            fail(&quot;Expecting exception&quot;);
+        } catch (IllegalArgumentException e) {
+            assertEquals(&quot;Valid scale values range from 10 to 400&quot;, e.getMessage());
+        }
+    }
+</code></pre>
+</body>

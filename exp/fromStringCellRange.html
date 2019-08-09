@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testMixedCellDataSource() {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = new SheetBuilder(wb, mixedCells).build();
+        CellRangeAddress mixedCellRange = CellRangeAddress.valueOf(&quot;A1:F1&quot;);
+        ChartDataSource&lt;String&gt; strDataSource = DataSources.fromStringCellRange(sheet, mixedCellRange);
+        ChartDataSource&lt;Number&gt; numDataSource = DataSources.fromNumericCellRange(sheet, mixedCellRange);
+        for (int i = 0; i &lt; mixedCells[0].length; ++i) {
+            if (i % 2 == 0) {
+                assertNull(strDataSource.getPointAt(i));
+                assertEquals(((Number) mixedCells[0][i]).doubleValue(),
+                        numDataSource.getPointAt(i).doubleValue(), 0.00001);
+            } else {
+                assertNull(numDataSource.getPointAt(i));
+                assertEquals(mixedCells[0][i], strDataSource.getPointAt(i));
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testStringCellDataSource() {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = new SheetBuilder(wb, stringCells).build();
+        CellRangeAddress numCellRange = CellRangeAddress.valueOf(&quot;A2:E2&quot;);
+        ChartDataSource&lt;String&gt; numDataSource = DataSources.fromStringCellRange(sheet, numCellRange);
+        assertTrue(numDataSource.isReference());
+        assertFalse(numDataSource.isNumeric());
+        assertEquals(numericCells[0].length, numDataSource.getPointCount());
+        for (int i = 0; i &lt; stringCells[1].length; ++i) {
+            assertEquals(stringCells[1][i], numDataSource.getPointAt(i));
+        }
+    }
+</code></pre>
+</body>

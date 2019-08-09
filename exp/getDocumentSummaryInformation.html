@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private static DocumentSummaryInformation getDocumentSummaryInformation(NPOIFSFileSystem poifs) throws Exception {
+        DocumentInputStream dis = poifs.createDocumentInputStream(DocumentSummaryInformation.DEFAULT_STREAM_NAME);
+        PropertySet ps = new PropertySet(dis);
+        DocumentSummaryInformation dsi = new DocumentSummaryInformation(ps);
+        dis.close();
+        return dsi;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  private Result extractInfoFromValidDoc(HWPFDocument doc) {
+    Result res = new Result();
+    res.setValid(true);
+    WordInfo word = new WordInfo();
+    word.addDocumentSummaryInformation(doc.getDocumentSummaryInformation());
+    res.setWord(word);
+    return res;
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void readProperties2() {
+        // Check again on the word one
+        assertNotNull(doc2.getDocumentSummaryInformation());
+        assertNotNull(doc2.getSummaryInformation());
+
+        assertEquals(&quot;Avik Sengupta&quot;, doc2.getSummaryInformation().getAuthor());
+        assertEquals(null, doc2.getSummaryInformation().getKeywords());
+        assertEquals(0, doc2.getDocumentSummaryInformation().getByteCount());
+    }
+</code></pre>
+</body>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public OPOIFSDocument(String name, SmallDocumentBlock[] blocks, int length) {
+		_size = length;
+		
+		if(blocks.length == 0) {
+		   _bigBigBlockSize = POIFSConstants.SMALLER_BIG_BLOCK_SIZE_DETAILS;
+		} else {
+		   _bigBigBlockSize = blocks[0].getBigBlockSize();
+		}
+
+		_big_store = new BigBlockStore(_bigBigBlockSize, EMPTY_BIG_BLOCK_ARRAY);
+		_property = new DocumentProperty(name, _size);
+		_small_store = new SmallBlockStore(_bigBigBlockSize, blocks);
+		_property.setDocument(this);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public POIFSDocument(String name, int size, POIFSBigBlockSize bigBlockSize, POIFSDocumentPath path, POIFSWriterListener writer) {
+		_size = size;
+		_bigBigBlockSize = bigBlockSize;
+		_property = new DocumentProperty(name, _size);
+		_property.setDocument(this);
+		if (_property.shouldUseSmallBlocks()) {
+			_small_store = new SmallBlockStore(_bigBigBlockSize, path, name, size, writer);
+			_big_store = new BigBlockStore(_bigBigBlockSize, EMPTY_BIG_BLOCK_ARRAY);
+		} else {
+			_small_store = new SmallBlockStore(_bigBigBlockSize, EMPTY_SMALL_BLOCK_ARRAY);
+			_big_store = new BigBlockStore(_bigBigBlockSize, path, name, size, writer);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public POIFSDocument(String name, POIFSBigBlockSize bigBlockSize, ListManagedBlock[] blocks, int length) throws IOException {
+		_size = length;
+		_bigBigBlockSize = bigBlockSize;
+		_property = new DocumentProperty(name, _size);
+		_property.setDocument(this);
+		if (Property.isSmall(_size)) {
+			_big_store = new BigBlockStore(bigBlockSize,EMPTY_BIG_BLOCK_ARRAY);
+			_small_store = new SmallBlockStore(bigBlockSize,convertRawBlocksToSmallBlocks(blocks));
+		} else {
+			_big_store = new BigBlockStore(bigBlockSize,convertRawBlocksToBigBlocks(blocks));
+			_small_store = new SmallBlockStore(bigBlockSize,EMPTY_SMALL_BLOCK_ARRAY);
+		}
+	}
+</code></pre>
+</body>

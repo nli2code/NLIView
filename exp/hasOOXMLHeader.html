@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static Workbook create(InputStream inp, String password) throws IOException, InvalidFormatException, EncryptedDocumentException {
+        // If clearly doesn&#x27;t do mark/reset, wrap up
+        if (! inp.markSupported()) {
+            inp = new PushbackInputStream(inp, 8);
+        }
+
+        // Ensure that there is at least some data there
+        byte[] header8 = IOUtils.peekFirst8Bytes(inp);
+
+        // Try to create
+        if (NPOIFSFileSystem.hasPOIFSHeader(header8)) {
+            NPOIFSFileSystem fs = new NPOIFSFileSystem(inp);
+            return create(fs, password);
+        }
+        if (POIXMLDocument.hasOOXMLHeader(inp)) {
+            return new XSSFWorkbook(OPCPackage.open(inp));
+        }
+        throw new InvalidFormatException(&quot;Your InputStream was neither an OLE2 stream, nor an OOXML stream&quot;);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testFileCorruptionOPOIFS() throws Exception {
+        
+        // create test InputStream
+        byte[] testData = { (byte)1, (byte)2, (byte)3 };
+        InputStream testInput = new ByteArrayInputStream(testData);
+        
+        // detect header
+        InputStream in = new PushbackInputStream(testInput, 10);
+        assertFalse(OPOIFSFileSystem.hasPOIFSHeader(in));
+
+        // check if InputStream is still intact
+        byte[] test = new byte[3];
+        in.read(test);
+        assertTrue(Arrays.equals(testData, test));
+        assertEquals(-1, in.read());
+    }
+</code></pre>
+</body>

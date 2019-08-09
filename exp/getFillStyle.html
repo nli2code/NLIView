@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    void slide1(XSLFSlide slide){
+        assertEquals(Color.white, slide.getBackground().getFillColor());
+
+        XSLFTheme theme = slide.getTheme();
+        assertEquals(&quot;Office Theme&quot;, theme.getName());
+
+        XSLFTextShape sh1 = (XSLFTextShape)getShape(slide, &quot;Rectangle 3&quot;);
+        RenderableShape rsh1 = new RenderableShape(sh1);
+        XSLFTextRun run1 = sh1.getTextParagraphs().get(0).getTextRuns().get(0);
+        assertEquals(Color.white, run1.getFontColor());
+        assertEquals(new Color(79, 129, 189), sh1.getFillColor());
+        assertTrue(rsh1.getFillPaint(null) instanceof Color) ;   // solid fill
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public Color getFillColor() {
+        XSLFTheme theme = getSheet().getTheme();
+        CTOuterShadowEffect ct = (CTOuterShadowEffect)getXmlObject();
+        if(ct == null) {
+            return null;
+        } else {
+            CTSchemeColor phClr = ct.getSchemeClr();
+            return new XSLFColor(ct, theme, phClr).getColor();
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    void slide10(XSLFSlide slide){
+        PaintStyle fs = slide.getBackground().getFillStyle().getPaint();
+        assertTrue(fs instanceof GradientPaint);
+
+        XSLFTextShape sh1 = (XSLFTextShape)getShape(slide, &quot;Title 3&quot;);
+        XSLFTextRun run1 = sh1.getTextParagraphs().get(0).getTextRuns().get(0);
+        assertTrue(sameColor(Color.white, run1.getFontColor()));
+        assertNull(sh1.getFillColor());  // no fill
+
+        XSLFTextShape sh2 = (XSLFTextShape)getShape(slide, &quot;Subtitle 4&quot;);
+        XSLFTextRun run2 = sh2.getTextParagraphs().get(0).getTextRuns().get(0);
+        assertTrue(sameColor(Color.white, run2.getFontColor()));
+        assertNull(sh2.getFillColor());  // no fill
+    }
+</code></pre>
+</body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private TextObjectRecord createTextObjectRecord( HSSFTextbox hssfShape, int shapeId )
+    {
+        HSSFTextbox shape = hssfShape;
+
+        TextObjectRecord obj = new TextObjectRecord();
+        obj.setHorizontalTextAlignment(hssfShape.getHorizontalAlignment());
+        obj.setVerticalTextAlignment(hssfShape.getVerticalAlignment());
+        obj.setTextLocked(true);
+        obj.setTextOrientation(TextObjectRecord.TEXT_ORIENTATION_NONE);
+        obj.setStr(shape.getString());
+
+        return obj;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testExistingFileWithText(){
+        HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;drawings.xls&quot;);
+        HSSFSheet sheet = wb.getSheet(&quot;text&quot;);
+        HSSFPatriarch drawing = sheet.getDrawingPatriarch();
+        assertEquals(1, drawing.getChildren().size());
+        HSSFTextbox textbox = (HSSFTextbox) drawing.getChildren().get(0);
+        assertEquals(textbox.getHorizontalAlignment(), HSSFTextbox.HORIZONTAL_ALIGNMENT_LEFT);
+        assertEquals(textbox.getVerticalAlignment(), HSSFTextbox.VERTICAL_ALIGNMENT_TOP);
+        assertEquals(textbox.getMarginTop(), 0);
+        assertEquals(textbox.getMarginBottom(), 3600000);
+        assertEquals(textbox.getMarginLeft(), 3600000);
+        assertEquals(textbox.getMarginRight(), 0);
+        assertEquals(textbox.getString().getString(), &quot;teeeeesssstttt&quot;);
+    }
+</code></pre>
+</body>

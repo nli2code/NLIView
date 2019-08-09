@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test46122() {
+        SlideShow ppt = new SlideShow();
+        Slide slide = ppt.createSlide();
+
+        Picture pict = new Picture(-1); //index to non-existing picture data
+        pict.setSheet(slide);
+        PictureData data = pict.getPictureData();
+        assertNull(data);
+
+        BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = img.createGraphics();
+        pict.draw(graphics);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testCreateShapes() {
+        XMLSlideShow ppt = new XMLSlideShow();
+        XSLFSlide slide = ppt.createSlide();
+        assertEquals(0, slide.getShapes().length);
+
+        XSLFTextBox textBox = slide.createTextBox();
+
+        assertEquals(1, slide.getShapes().length);
+        assertSame(textBox, slide.getShapes()[0]);
+
+        assertEquals(&quot;&quot;, textBox.getText());
+        assertEquals(0, textBox.getTextParagraphs().size());
+        textBox.addNewTextParagraph().addNewTextRun().setText(&quot;Apache&quot;);
+        textBox.addNewTextParagraph().addNewTextRun().setText(&quot;POI&quot;);
+        assertEquals(&quot;Apache\nPOI&quot;, textBox.getText());
+        assertEquals(2, textBox.getTextParagraphs().size());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static void main(String[] args) throws Exception
+	{
+		String dataPath = &quot;src/featurescomparison/workingwithpresentation/openandsave/data/&quot;;
+		
+		XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(dataPath + &quot;presentation.pptx&quot;));
+		
+		//append a new slide to the end
+		XSLFSlide blankSlide = ppt.createSlide();
+		
+		//save changes in a file
+		FileOutputStream out = new FileOutputStream(dataPath + &quot;EditedPPT_Apache_Out.pptx&quot;);
+		ppt.write(out);
+		out.close();
+
+		System.out.println(&quot;Presentation Edited and Saved.&quot;);
+	}
+</code></pre>
+</body>

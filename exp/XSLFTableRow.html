@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    /*package*/ XSLFTableRow(CTTableRow row, XSLFTable table){
+        _row = row;
+        _table = table;
+        _cells = new ArrayList&lt;XSLFTableCell&gt;(_row.sizeOfTcArray());
+        for(CTTableCell cell : _row.getTcList()) {
+            _cells.add(new XSLFTableCell(cell, table.getSheet()));
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSLFTableRow addRow(){
+        CTTableRow tr = _table.addNewTr();
+        XSLFTableRow row = new XSLFTableRow(tr, this);
+        row.setHeight(20.0);    // default height is 20 points
+        _rows.add(row);
+        return row;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSLFTable createTable(int numRows, int numCols){
+        if (numRows &lt; 1 || numCols &lt; 1) {
+            throw new IllegalArgumentException(&quot;numRows and numCols must be greater than 0&quot;);
+        }
+        XSLFTable sh = getDrawing().createTable();
+        _shapes.add(sh);
+        sh.setParent(this);
+        for (int r=0; r&lt;numRows; r++) {
+            XSLFTableRow row = sh.addRow();
+            for (int c=0; c&lt;numCols; c++) {
+                row.addCell();
+            }
+        }
+        return sh;
+    }
+</code></pre>
+</body>

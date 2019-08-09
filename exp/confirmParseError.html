@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void confirmParseError(HSSFWorkbook wb, String formula, String expectedMessage) {
+
+		try {
+			HSSFFormulaParser.parse(formula, wb);
+			throw new AssertionFailedError(&quot;Expected formula parse execption&quot;);
+		} catch (FormulaParseException e) {
+			confirmParseException(e, expectedMessage);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testEdgeCaseParserErrors() {
+		HSSFWorkbook wb = new HSSFWorkbook();
+		wb.createSheet(&quot;Sheet1&quot;);
+
+		confirmParseError(wb, &quot;A1:ROUND(B1,1)&quot;, &quot;The RHS of the range operator &#x27;:&#x27; at position 3 is not a proper reference.&quot;);
+
+		confirmParseError(wb, &quot;Sheet1!Sheet1&quot;, &quot;Cell reference expected after sheet name at index 8.&quot;);
+		confirmParseError(wb, &quot;Sheet1!F:Sheet1!G&quot;, &quot;&#x27;Sheet1!F&#x27; is not a proper reference.&quot;);
+		confirmParseError(wb, &quot;Sheet1!F..foobar&quot;, &quot;Complete area reference expected after sheet name at index 11.&quot;);
+		confirmParseError(wb, &quot;Sheet1!A .. B&quot;, &quot;Dotted range (full row or column) expression &#x27;A .. B&#x27; must not contain whitespace.&quot;);
+		confirmParseError(wb, &quot;Sheet1!A...B&quot;, &quot;Dotted range (full row or column) expression &#x27;A...B&#x27; must have exactly 2 dots.&quot;);
+		confirmParseError(wb, &quot;Sheet1!A foobar&quot;, &quot;Second part of cell reference expected after sheet name at index 10.&quot;);
+
+		confirmParseError(wb, &quot;foobar&quot;, &quot;Specified named range &#x27;foobar&#x27; does not exist in the current workbook.&quot;);
+		confirmParseError(wb, &quot;A1:1&quot;, &quot;The RHS of the range operator &#x27;:&#x27; at position 3 is not a proper reference.&quot;);
+	}
+</code></pre>
+</body>

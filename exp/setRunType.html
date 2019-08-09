@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static void slide12(SlideShow ppt) throws IOException {
+        Slide slide = ppt.createSlide();
+
+        TextBox box1 = new TextBox();
+        TextRun tr1 = box1.getTextRun();
+        tr1.setRunType(TextHeaderAtom.CENTER_TITLE_TYPE);
+        tr1.setText(&quot;Questions?&quot;);
+        box1.setAnchor(new Rectangle(54, 167, 612, 115));
+        slide.addShape(box1);
+
+        TextBox box2 = new TextBox();
+        TextRun tr2 = box2.getTextRun();
+        tr2.setRunType(TextHeaderAtom.CENTRE_BODY_TYPE);
+        tr2.setText(
+                &quot;http://poi.apache.org/hslf/\r&quot; +
+                &quot;http://people.apache.org/~yegor&quot;);
+        box2.setAnchor(new Rectangle(108, 306, 504, 138));
+        slide.addShape(box2);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public TextBox addTitle() {
+		Placeholder pl = new Placeholder();
+		pl.setShapeType(ShapeTypes.Rectangle);
+		pl.getTextRun().setRunType(TextHeaderAtom.TITLE_TYPE);
+		pl.setText(&quot;Click to edit title&quot;);
+		pl.setAnchor(new java.awt.Rectangle(54, 48, 612, 90));
+		addShape(pl);
+		return pl;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setRunType(int type) {
+        getEscherTextboxWrapper();
+        if (_txtbox == null) return;
+        List&lt;HSLFTextParagraph&gt; paras = HSLFTextParagraph.findTextParagraphs(_txtbox, getSheet());
+        if (!paras.isEmpty()) {
+            paras.get(0).setRunType(type);
+        }
+    }
+</code></pre>
+</body>

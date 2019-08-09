@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>  public void testQuotedStringFormattedFormulaCell() throws Exception {
+    try(Workbook workbook = openWorkbook(&quot;formula_cell.xlsx&quot;)) {
+      Sheet sheet = workbook.getSheetAt(0);
+      Iterator&lt;Row&gt; rowIterator = sheet.rowIterator();
+
+      nextRow(rowIterator);
+      Cell B2 = getCellFromNextRow(rowIterator, 1);
+      nextRow(rowIterator);
+      Cell B4 = getCellFromNextRow(rowIterator, 1);
+
+      expectType(B4, FORMULA);
+//      expectCachedType(B4, STRING); // this can&#x27;t return FUNCTION as cached type as per javadoc ! fix in future work
+//      expectFormula(B4, &quot;B2&quot;); // returning wrong forumla type? this needs to be fixed in future work
+      expectSameStringContent(B2, B4);
+      expectStringContent(B4, &quot;\&quot;a\&quot;&quot;);
+    }
+  }
+</code></pre>
+</body>

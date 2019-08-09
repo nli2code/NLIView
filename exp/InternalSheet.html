@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void checkSheetRecords(InternalSheet sheet) {
+        List&lt;RecordBase&gt; records = sheet.getRecords();
+        assertTrue(records.get(0) instanceof BOFRecord);
+        assertTrue(records.get(records.size() - 1) instanceof EOFRecord);
+
+        checkRecordOrder(records, sheetRecords);
+//        checkRecordsTogether(records, sheetRecords);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void confirmAggregatedRecords(List&lt;Record&gt; recordStream){
+        InternalSheet sheet = InternalSheet.createSheet();
+        sheet.getRecords().clear();
+        sheet.getRecords().addAll(recordStream);
+
+        List&lt;RecordBase&gt; sheetRecords = sheet.getRecords();
+
+        DrawingManager2 drawingManager = new DrawingManager2(new EscherDggRecord() );
+        sheet.aggregateDrawingRecords(drawingManager, false);
+
+        assertEquals(4, sheetRecords.size());
+        assertEquals(BOFRecord.sid, ((Record)sheetRecords.get(0)).getSid());
+        assertEquals(EscherAggregate.sid, ((Record)sheetRecords.get(1)).getSid());
+        assertEquals(WindowTwoRecord.sid, ((Record)sheetRecords.get(2)).getSid());
+        assertEquals(EOFRecord.sid, ((Record)sheetRecords.get(3)).getSid());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testGutsRecord_bug45640() {
+
+		InternalSheet sheet = InternalSheet.createSheet();
+		sheet.addRow(new RowRecord(0));
+		sheet.addRow(new RowRecord(1));
+		sheet.groupRowRange( 0, 1, true );
+		sheet.toString();
+		List&lt;RecordBase&gt; recs = sheet.getRecords();
+		int count=0;
+		for(int i=0; i&lt; recs.size(); i++) {
+			if (recs.get(i) instanceof GutsRecord) {
+				count++;
+			}
+		}
+		if (count == 2) {
+			throw new AssertionFailedError(&quot;Identified bug 45640&quot;);
+		}
+		assertEquals(1, count);
+	}
+</code></pre>
+</body>

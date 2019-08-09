@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setActiveXIndex(int idx){
+        EscherContainerRecord spContainer = getSpContainer();
+        for (Iterator&lt;EscherRecord&gt; it = spContainer.getChildIterator(); it.hasNext();) {
+            EscherRecord obj = it.next();
+            if (obj.getRecordId() == EscherClientDataRecord.RECORD_ID) {
+                EscherClientDataRecord clientRecord = (EscherClientDataRecord)obj;
+                byte[] recdata = clientRecord.getRemainingData();
+                LittleEndian.putInt(recdata, 8, idx);
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testFillFields() {
+        String hexData = &quot;02 00 &quot; +
+                &quot;11 F0 &quot; +
+                &quot;00 00 00 00 &quot;;
+        byte[] data = HexRead.readFromString( hexData );
+        EscherClientDataRecord r = new EscherClientDataRecord();
+        int bytesWritten = r.fillFields( data, new DefaultEscherRecordFactory() );
+
+        assertEquals( 8, bytesWritten );
+        assertEquals( (short)0xF011, r.getRecordId() );
+        assertEquals( &quot;[]&quot;, HexDump.toHex(r.getRemainingData()) );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public String toString()
+    {
+        String nl = System.getProperty( &quot;line.separator&quot; );
+
+        String extraData = HexDump.dump(this.field_pictureData, 0, 0);
+
+        return getClass().getName() + &quot;:&quot; + nl +
+                &quot;  RecordId: 0x&quot; + HexDump.toHex( getRecordId() ) + nl +
+                &quot;  Version: 0x&quot; + HexDump.toHex( getVersion() ) + nl +
+                &quot;  Instance: 0x&quot; + HexDump.toHex( getInstance() ) + nl +
+                &quot;  UID: 0x&quot; + HexDump.toHex( field_1_UID ) + nl +
+                &quot;  Marker: 0x&quot; + HexDump.toHex( field_2_marker ) + nl +
+                &quot;  Extra Data:&quot; + nl + extraData;
+    }
+</code></pre>
+</body>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testReadsAlignedWithBoundary() {
+		StreamTester st = createStreamTester(0x50, &quot;BA AD F0 0D 00&quot;, 0x96C66829);
+
+		st.rollForward(0x0004, 0x03FF);
+		st.confirmByte(0x3E);
+		st.confirmByte(0x28);
+		st.rollForward(0x0401, 0x07FE);
+		st.confirmShort(0x76CC);
+		st.confirmShort(0xD83E);
+		st.rollForward(0x0802, 0x0BFC);
+		st.confirmInt(0x25F280EB);
+		st.confirmInt(0xB549E99B);
+		st.rollForward(0x0C04, 0x0FF8);
+		st.confirmLong(0x6AA2D5F6B975D10CL);
+		st.confirmLong(0x34248ADF7ED4F029L);
+		st.assertNoErrors();
+	}
+</code></pre>
+</body>

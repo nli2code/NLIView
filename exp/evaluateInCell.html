@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testRounding_bug51339() {
+        Workbook wb = _testDataProvider.createWorkbook();
+        Sheet sheet = wb.createSheet(&quot;Sheet1&quot;);
+        Row row = sheet.createRow(0);
+        Cell cellA1 = row.createCell(0);
+        cellA1.setCellValue(2162.615d);
+        Cell cellB1 = row.createCell(1);
+        cellB1.setCellFormula(&quot;round(a1,2)&quot;);
+        Cell cellC1 = row.createCell(2);
+        cellC1.setCellFormula(&quot;roundup(a1,2)&quot;);
+        Cell cellD1 = row.createCell(3);
+        cellD1.setCellFormula(&quot;rounddown(a1,2)&quot;);
+        FormulaEvaluator fe = wb.getCreationHelper().createFormulaEvaluator();
+
+        assertEquals(2162.62, fe.evaluateInCell(cellB1).getNumericCellValue(), 0.0);
+        assertEquals(2162.62, fe.evaluateInCell(cellC1).getNumericCellValue(), 0.0);
+        assertEquals(2162.61, fe.evaluateInCell(cellD1).getNumericCellValue(), 0.0);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test49156() throws Exception {
+        Workbook wb = XSSFTestDataSamples.openSampleWorkbook(&quot;49156.xlsx&quot;);
+        FormulaEvaluator formulaEvaluator = wb.getCreationHelper().createFormulaEvaluator();
+
+        Sheet sheet = wb.getSheetAt(0);
+        for(Row row : sheet){
+            for(Cell cell : row){
+                if(cell.getCellType() == Cell.CELL_TYPE_FORMULA){
+                    formulaEvaluator.evaluateInCell(cell); // caused NPE on some cells
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testEvaluateBooleanInCell_bug44508() {
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet();
+		wb.setSheetName(0, &quot;Sheet1&quot;);
+		HSSFRow row = sheet.createRow(0);
+		HSSFCell cell = row.createCell(0);
+
+		cell.setCellFormula(&quot;1=1&quot;);
+
+		HSSFFormulaEvaluator fe = new HSSFFormulaEvaluator(wb);
+		try {
+			fe.evaluateInCell(cell);
+		} catch (NumberFormatException e) {
+			fail(&quot;Identified bug 44508&quot;);
+		}
+		assertEquals(true, cell.getBooleanCellValue());
+	}
+</code></pre>
+</body>

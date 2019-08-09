@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setLineStyle(int lineStyle) {
+        setPropertyValue(new EscherSimpleProperty(EscherProperties.LINESTYLE__LINEDASHING, lineStyle));
+        if (getLineStyle() != HSSFShape.LINESTYLE_SOLID) {
+            setPropertyValue(new EscherSimpleProperty(EscherProperties.LINESTYLE__LINEENDCAPSTYLE, 0));
+            if (getLineStyle() == HSSFShape.LINESTYLE_NONE){
+                setPropertyValue(new EscherBoolProperty( EscherProperties.LINESTYLE__NOLINEDRAWDASH, 0x00080000));
+            } else {
+                setPropertyValue( new EscherBoolProperty( EscherProperties.LINESTYLE__NOLINEDRAWDASH, 0x00080008));
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testToString() {
+        String nl = System.getProperty(&quot;line.separator&quot;);
+        EscherOptRecord r = new EscherOptRecord();
+        // don&#x27;t try to shoot in foot, please -- vlsergey
+        // r.setOptions((short)0x000F);
+        r.setRecordId(EscherOptRecord.RECORD_ID);
+        EscherProperty prop1 = new EscherBoolProperty((short)1, 1);
+        r.addEscherProperty(prop1);
+        String expected = &quot;org.apache.poi.ddf.EscherOptRecord:&quot; + nl +
+                &quot;  isContainer: false&quot; + nl +
+                &quot;  version: 0x0003&quot; + nl +
+                &quot;  instance: 0x0001&quot; + nl +
+                &quot;  recordId: 0x&quot; + HexDump.toHex(EscherOptRecord.RECORD_ID) + nl +
+                &quot;  numchildren: 0&quot; + nl +
+                &quot;  properties:&quot; + nl +
+                &quot;    propNum: 1, RAW: 0x0001, propName: unknown, complex: false, blipId: false, value: 1 (0x00000001)&quot; + nl;
+        assertEquals( expected, r.toString());
+    }
+</code></pre>
+</body>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void assertMSCompatibility(OPCPackage pkg) throws Exception {
+        PackagePartName relName = PackagingURIHelper.createPartName(PackageRelationship.getContainerPartRelationship());
+        PackagePart relPart = pkg.getPart(relName);
+        SAXReader reader = new SAXReader();
+        Document xmlRelationshipsDoc = reader
+                .read(relPart.getInputStream());
+
+        Element root = xmlRelationshipsDoc.getRootElement();
+        for (Iterator i = root
+                .elementIterator(PackageRelationship.RELATIONSHIP_TAG_NAME); i
+                .hasNext();) {
+            Element element = (Element) i.next();
+            String value = element.attribute(
+                    PackageRelationship.TARGET_ATTRIBUTE_NAME)
+                    .getValue();
+            assertTrue(&quot;Root target must not start with a leadng slash (&#x27;/&#x27;): &quot; + value, value.charAt(0) != &#x27;/&#x27;);
+        }
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static int[] getResolution(ImageReader r) throws IOException {
+        int hdpi=96, vdpi=96;
+        double mm2inch = 25.4;
+
+        NodeList lst;
+        Element node = (Element)r.getImageMetadata(0).getAsTree(&quot;javax_imageio_1.0&quot;);
+        lst = node.getElementsByTagName(&quot;HorizontalPixelSize&quot;);
+        if(lst != null &amp;&amp; lst.getLength() == 1) hdpi = (int)(mm2inch/Float.parseFloat(((Element)lst.item(0)).getAttribute(&quot;value&quot;)));
+
+        lst = node.getElementsByTagName(&quot;VerticalPixelSize&quot;);
+        if(lst != null &amp;&amp; lst.getLength() == 1) vdpi = (int)(mm2inch/Float.parseFloat(((Element)lst.item(0)).getAttribute(&quot;value&quot;)));
+
+        return new int[]{hdpi, vdpi};
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void dumpBit(QCBit bit, int index) {
+		System.out.println(&quot;&quot;);
+		System.out.println(&quot;Dumping &quot; + bit.getBitType() + &quot; bit at &quot; + index);
+		System.out.println(&quot;  Is a &quot; + bit.getThingType() + &quot;, number is &quot; + bit.getOptA());
+		System.out.println(&quot;  Starts at &quot; + bit.getDataOffset() + &quot; (0x&quot; + Integer.toHexString(bit.getDataOffset()) + &quot;)&quot;);
+		System.out.println(&quot;  Runs for  &quot; + bit.getLength() + &quot; (0x&quot; + Integer.toHexString(bit.getLength()) + &quot;)&quot;);
+
+		System.out.println(HexDump.dump(bit.getData(), 0, 0));
+	}
+</code></pre>
+</body>

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>            public void write(LittleEndianByteArrayOutputStream bos) {
+                bos.writeShort(info.getVersionMajor());
+                bos.writeShort(info.getVersionMinor());
+                bos.writeInt(info.getEncryptionFlags());
+                header.write(bos);
+                verifier.write(bos);
+            }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static Decryptor getInstance(EncryptionInfo info) {
+        int major = info.getVersionMajor();
+        int minor = info.getVersionMinor();
+
+        if (major == 4 &amp;&amp; minor == 4)
+            return new AgileDecryptor(info);
+        else if (minor == 2 &amp;&amp; (major == 3 || major == 4))
+            return new EcmaDecryptor(info);
+        else
+            throw new EncryptedDocumentException(&quot;Unsupported version&quot;);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testEncryptionInfoSHA512() throws Exception {
+        POIFSFileSystem fs = new POIFSFileSystem(POIDataSamples.getPOIFSInstance().openResourceAsStream(&quot;protected_sha512.xlsx&quot;));
+
+        EncryptionInfo info = new EncryptionInfo(fs);
+
+        assertEquals(4, info.getVersionMajor());
+        assertEquals(4, info.getVersionMinor());
+
+        assertEquals(CipherAlgorithm.aes256, info.getHeader().getCipherAlgorithm());
+        assertEquals(HashAlgorithm.sha512, info.getHeader().getHashAlgorithmEx());
+        assertEquals(256, info.getHeader().getKeySize());
+        assertEquals(64, info.getVerifier().getEncryptedVerifierHash().length);
+        assertEquals(CipherProvider.aes, info.getHeader().getCipherProvider());                
+//        assertEquals(&quot;Microsoft Enhanced RSA and AES Cryptographic Provider&quot;, info.getHeader().getCspName());
+        
+        fs.close();
+    }
+</code></pre>
+</body>

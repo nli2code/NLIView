@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public XSLFPictureShape createPicture(PictureData pictureData){
+        if (!(pictureData instanceof XSLFPictureData)) {
+            throw new IllegalArgumentException(&quot;pictureData needs to be of type XSLFPictureData&quot;);
+        }
+        XSLFPictureData xPictureData = (XSLFPictureData)pictureData;
+        PackagePart pic = xPictureData.getPackagePart();
+
+        PackageRelationship rel = getSheet().getPackagePart().addRelationship(
+                pic.getPartName(), TargetMode.INTERNAL, XSLFRelation.IMAGES.getRelation());
+
+        XSLFPictureShape sh = getDrawing().createPicture(rel.getId());
+        new DrawPictureShape(sh).resize();
+        _shapes.add(sh);
+        sh.setParent(this);
+        return sh;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public HSSFPicture createPicture(HSSFChildAnchor anchor, int pictureIndex) {
+        HSSFPicture shape = new HSSFPicture(this, anchor);
+        shape.setParent(this);
+        shape.setAnchor(anchor);
+        shape.setPictureIndex(pictureIndex);
+        shapes.add(shape);
+        onCreate(shape);
+        EscherSpRecord sp = shape.getEscherContainer().getChildById(EscherSpRecord.RECORD_ID);
+        if (shape.getAnchor().isHorizontallyFlipped()){
+            sp.setFlags(sp.getFlags() | EscherSpRecord.FLAG_FLIPHORIZ);
+        }
+        if (shape.getAnchor().isVerticallyFlipped()){
+            sp.setFlags(sp.getFlags() | EscherSpRecord.FLAG_FLIPVERT);
+        }
+        return shape;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public HSSFPolygon createPolygon(HSSFChildAnchor anchor) {
+        HSSFPolygon shape = new HSSFPolygon(this, anchor);
+        shape.setParent(this);
+        shape.setAnchor(anchor);
+        shapes.add(shape);
+        onCreate(shape);
+        return shape;
+    }
+</code></pre>
+</body>

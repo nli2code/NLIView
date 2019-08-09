@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testStore() {
+		SeriesTextRecord record = new SeriesTextRecord();
+
+		record.setId(0);
+		record.setText(&quot;Value Number&quot;);
+
+		byte[] recordBytes = record.serialize();
+		TestcaseRecordInputStream.confirmRecordEncoding(SeriesTextRecord.sid, SIMPLE_DATA,
+				recordBytes);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testLoad() {
+		SeriesTextRecord record = new SeriesTextRecord(TestcaseRecordInputStream.create(0x100d, SIMPLE_DATA));
+
+		assertEquals((short) 0, record.getId());
+		assertEquals(&quot;Value Number&quot;, record.getText());
+
+		assertEquals(SIMPLE_DATA.length + 4, record.getRecordSize());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public SeriesTextRecord(RecordInputStream in) {
+		field_1_id = in.readUShort();
+		int field_2_textLength = in.readUByte();
+		is16bit = (in.readUByte() &amp; 0x01) != 0;
+		if (is16bit) {
+			field_4_text = in.readUnicodeLEString(field_2_textLength);
+		} else {
+			field_4_text = in.readCompressedUnicode(field_2_textLength);
+		}
+	}
+</code></pre>
+</body>

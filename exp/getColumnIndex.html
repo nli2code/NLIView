@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static Boolean isCombineCell(List&lt;CellRangeAddress&gt; listCombineCell, Cell cell) {
+		int firstC = 0;
+		int lastC = 0;
+		int firstR = 0;
+		int lastR = 0;
+		for (CellRangeAddress ca : listCombineCell) {
+			// 获得合并单元格的起始行, 结束行, 起始列, 结束列
+			firstC = ca.getFirstColumn();
+			lastC = ca.getLastColumn();
+			firstR = ca.getFirstRow();
+			lastR = ca.getLastRow();
+			if (cell.getColumnIndex() &lt;= lastC &amp;&amp; cell.getColumnIndex() &gt;= firstC) {
+				if (cell.getRowIndex() &lt;= lastR &amp;&amp; cell.getRowIndex() &gt;= firstR) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public List&lt;String&gt; readAcrossUntilBlank(String startingCell) {
+        List&lt;String&gt; values = newArrayList();
+        int rowIndex = getRowIndex(startingCell);
+        int colIndex = getColumnIndex(startingCell);
+        String value = getValue(colIndex, rowIndex);
+        while (isNotBlank(value)) {
+            values.add(value);
+            colIndex++;
+            value = getValue(colIndex, rowIndex);
+        }
+        return values;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public CellRange&lt;HSSFCell&gt; removeArrayFormula(Cell cell) {
+        if (cell.getSheet() != this) {
+            throw new IllegalArgumentException(&quot;Specified cell does not belong to this sheet.&quot;);
+        }
+        CellValueRecordInterface rec = ((HSSFCell) cell).getCellValueRecord();
+        if (!(rec instanceof FormulaRecordAggregate)) {
+            String ref = new CellReference(cell).formatAsString();
+            throw new IllegalArgumentException(&quot;Cell &quot; + ref + &quot; is not part of an array formula.&quot;);
+        }
+        FormulaRecordAggregate fra = (FormulaRecordAggregate) rec;
+        CellRangeAddress range = fra.removeArrayFormula(cell.getRowIndex(), cell.getColumnIndex());
+
+        CellRange&lt;HSSFCell&gt; result = getCellRange(range);
+        // clear all cells in the range
+        for (Cell c : result) {
+            c.setCellType(Cell.CELL_TYPE_BLANK);
+        }
+        return result;
+    }
+</code></pre>
+</body>

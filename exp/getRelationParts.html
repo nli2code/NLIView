@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test47504() {
+        XSSFWorkbook wb = XSSFTestDataSamples.openSampleWorkbook(&quot;47504.xlsx&quot;);
+        assertEquals(1, wb.getNumberOfSheets());
+        XSSFSheet sh = wb.getSheetAt(0);
+        XSSFDrawing drawing = sh.createDrawingPatriarch();
+        List&lt;POIXMLDocumentPart&gt; rels = drawing.getRelations();
+        assertEquals(1, rels.size());
+        assertEquals(&quot;Sheet1!A1&quot;, rels.get(0).getPackageRelationship().getTargetURI().getFragment());
+
+        // And again, just to be sure
+        wb = XSSFTestDataSamples.writeOutAndReadBack(wb);
+        assertEquals(1, wb.getNumberOfSheets());
+        sh = wb.getSheetAt(0);
+        drawing = sh.createDrawingPatriarch();
+        rels = drawing.getRelations();
+        assertEquals(1, rels.size());
+        assertEquals(&quot;Sheet1!A1&quot;, rels.get(0).getPackageRelationship().getTargetURI().getFragment());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private int getRelationIndex(XWPFRelation relation) {
+        int i = 1;
+        for (RelationPart rp : getRelationParts()) {
+            if (rp.getRelationship().getRelationshipType().equals(relation.getRelation())) {
+                i++;
+            }
+        }
+        return i;
+    }
+</code></pre>
+</body>

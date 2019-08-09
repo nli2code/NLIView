@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public Cell createCell(int column, int type)
+    {
+        checkBounds(column);
+
+        if(column&gt;=_cells.length)
+        {
+            StreamCell[] newCells=new StreamCell[Math.max(column+1,_cells.length*2)];
+            System.arraycopy(_cells,0,newCells,0,_cells.length);
+            _cells=newCells;
+        }
+        _cells[column]=new StreamCell(this,type);
+        if(column&gt;_maxColumn) _maxColumn=column;
+        return _cells[column];
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static void checkBounds(int cellIndex) {
+        SpreadsheetVersion v = SpreadsheetVersion.EXCEL2007;
+        int maxcol = SpreadsheetVersion.EXCEL2007.getLastColumnIndex();
+        if (cellIndex &lt; 0 || cellIndex &gt; maxcol) {
+            throw new IllegalArgumentException(&quot;Invalid column index (&quot; + cellIndex
+                    + &quot;).  Allowable column range for &quot; + v.name() + &quot; is (0..&quot;
+                    + maxcol + &quot;) or (&#x27;A&#x27;..&#x27;&quot; + v.getLastColumnName() + &quot;&#x27;)&quot;);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    protected HSSFCell(HSSFWorkbook book, HSSFSheet sheet, int row, short col,
+                       int type)
+    {
+        checkBounds(col);
+        _cellType     = -1; // Force &#x27;setCellType&#x27; to create a first Record
+        _stringValue  = null;
+        _book    = book;
+        _sheet   = sheet;
+
+        short xfindex = sheet.getSheet().getXFIndexForColAt(col);
+        setCellType(type,false,row,col,xfindex);
+    }
+</code></pre>
+</body>

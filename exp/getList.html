@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HWPFList getList()
+    {
+        if ( getIlfo() == 0x000 || getIlfo() == 0xF801 )
+        {
+            throw new IllegalStateException( &quot;Paragraph not in list&quot; );
+        }
+        HWPFList hwpfList = new HWPFList( getDocument().getStyleSheet(),
+                getDocument().getListTables(), getIlfo() );
+        return hwpfList;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static &lt;T&gt; ExcelImportResult&lt;T&gt; importExcelVerify(File file, Class&lt;?&gt; pojoClass,
+                                                             ImportParams params) {
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream(file);
+            return new ExcelImportServer().importExcelByIs(in, pojoClass, params);
+        } catch (ExcelImportException e) {
+            throw new ExcelImportException(e.getType(), e);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ExcelImportException(e.getMessage(), e);
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+    }
+</code></pre>
+</body>

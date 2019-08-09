@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected PPDrawingGroup(byte[] source, int start, int len) {
+        // Get the header
+        _header = new byte[8];
+        System.arraycopy(source,start,_header,0,8);
+
+        // Get the contents for now
+        byte[] contents = new byte[len];
+        System.arraycopy(source,start,contents,0,len);
+
+        DefaultEscherRecordFactory erf = new DefaultEscherRecordFactory();
+        EscherRecord child = erf.createRecord(contents, 0);
+        child.fillFields( contents, 0, erf );
+        dggContainer = (EscherContainerRecord)child.getChild(0);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	protected Range(int startIdx, int endIdx, int idxType, Range parent) {
+		_doc = parent._doc;
+		_sections = parent._sections;
+		_paragraphs = parent._paragraphs;
+		_characters = parent._characters;
+		_text = parent._text;
+		_parent = new WeakReference&lt;Range&gt;(parent);
+
+		sanityCheckStartEnd();
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private PlexOfCps readPLCF( byte[] tableStream, FileInformationBlock fib,
+            FieldsDocumentPart documentPart )
+    {
+        int start = fib.getFieldsPlcfOffset( documentPart );
+        int length = fib.getFieldsPlcfLength( documentPart );
+
+        if ( start &lt;= 0 || length &lt;= 0 )
+            return null;
+
+        return new PlexOfCps( tableStream, start, length, FLD_SIZE );
+    }
+</code></pre>
+</body>

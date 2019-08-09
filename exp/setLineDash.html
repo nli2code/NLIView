@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected void applyStroke(SimpleShape&lt;?,?&gt; shape) {
+        if (_stroke instanceof BasicStroke){
+            BasicStroke bs = (BasicStroke)_stroke;
+            shape.setStrokeStyle((double)bs.getLineWidth());
+            float[] dash = bs.getDashArray();
+            if (dash != null) {
+                //TODO: implement more dashing styles
+                shape.setStrokeStyle(StrokeStyle.LineDash.DASH);
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setBorderDash(BorderEdge edge, LineDash dash) {
+        if (edge == null || dash == null) {
+            throw new IllegalArgumentException(&quot;BorderEdge and/or LineDash need to be specified.&quot;);
+        }
+        
+        HSLFLine l = addLine(edge);
+        l.setLineDash(dash);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setLineDash(LineDash dash) {
+        CTShapeProperties spPr = getSpPr();
+        if (dash == null) {
+            if (spPr.isSetLn())
+                spPr.getLn().unsetPrstDash();
+        } else {
+            CTPresetLineDashProperties val = CTPresetLineDashProperties.Factory
+                    .newInstance();
+            val.setVal(STPresetLineDashVal.Enum.forInt(dash.ordinal() + 1));
+            CTLineProperties ln = spPr.isSetLn() ? spPr.getLn() : spPr
+                    .addNewLn();
+            ln.setPrstDash(val);
+        }
+    }
+</code></pre>
+</body>

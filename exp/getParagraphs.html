@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public XWPFParagraph getParagraph(CTP p) {
+        for (int i = 0; i &lt; getParagraphs().size(); i++) {
+            if (getParagraphs().get(i).getCTP() == p) {
+                return getParagraphs().get(i);
+            }
+        }
+        return null;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private void iterateParagraphs(XWPFDocument doc, Consumer&lt;XWPFParagraph&gt; consumer) {
+		for (XWPFParagraph p : doc.getParagraphs())
+			consumer.accept(p);
+		for (XWPFTable tbl : doc.getTables())
+			for (XWPFTableRow row : tbl.getRows())
+				for (XWPFTableCell cell : row.getTableCells())
+					for (XWPFParagraph p : cell.getParagraphs())
+						consumer.accept(p);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testBug51770() throws InvalidFormatException, IOException {
+        XWPFDocument doc = XWPFTestDataSamples.openSampleDocument(&quot;Bug51170.docx&quot;);
+        XWPFHeaderFooterPolicy policy = doc.getHeaderFooterPolicy();
+        XWPFHeader header = policy.getDefaultHeader();
+        for (XWPFParagraph paragraph : header.getParagraphs()) {
+            for (XWPFRun run : paragraph.getRuns()) {
+                for (XWPFPicture picture : run.getEmbeddedPictures()) {
+                    if (paragraph.getDocument() != null) {
+                        //System.out.println(picture.getCTPicture());
+                        XWPFPictureData data = picture.getPictureData();
+                        if(data != null) System.out.println(data.getFileName());
+                    }
+                }
+            }
+        }
+
+    }
+</code></pre>
+</body>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		if (args.length &lt; 2) {
+			return ErrorEval.VALUE_INVALID;
+		}
+
+		try {
+			int ix = evaluateFirstArg(args[0], srcRowIndex, srcColumnIndex);
+			if (ix &lt; 1 || ix &gt;= args.length) {
+				return ErrorEval.VALUE_INVALID;
+			}
+			ValueEval result = OperandResolver.getSingleValue(args[ix], srcRowIndex, srcColumnIndex);
+			if (result == MissingArgEval.instance) {
+				return BlankEval.instance;
+			}
+			return result;
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1,
+			ValueEval arg2) {
+		boolean b;
+		try {
+			b = evaluateFirstArg(arg0, srcRowIndex, srcColumnIndex);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+		if (b) {
+			if (arg1 == MissingArgEval.instance) {
+				return BlankEval.instance;
+			}
+			return arg1;
+		}
+		if (arg2 == MissingArgEval.instance) {
+			return BlankEval.instance;
+		}
+		return arg2;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static boolean evaluateFirstArg(ValueEval arg, int srcCellRow, int srcCellCol)
+			throws EvaluationException {
+		ValueEval ve = OperandResolver.getSingleValue(arg, srcCellRow, srcCellCol);
+		Boolean b = OperandResolver.coerceValueToBoolean(ve, false);
+		if (b == null) {
+			return false;
+		}
+		return b.booleanValue();
+	}
+</code></pre>
+</body>

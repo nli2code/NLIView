@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void addRule(CFRuleRecord r) {
+		if (r == null) {
+			throw new IllegalArgumentException(&quot;r must not be null&quot;);
+		}
+		if(rules.size() &gt;= MAX_CONDTIONAL_FORMAT_RULES) {
+			throw new IllegalStateException(&quot;Cannot have more than &quot; 
+					+ MAX_CONDTIONAL_FORMAT_RULES + &quot; conditional format rules&quot;);
+		}
+		rules.add(r);
+		header.setNumberOfConditionalFormats(rules.size());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public CFRecordsAggregate cloneCFAggregate()
+	{
+	  
+		CFRuleRecord[] newRecs = new CFRuleRecord[rules.size()];
+		for (int i = 0; i &lt; newRecs.length; i++) {
+			newRecs[i] = (CFRuleRecord) getRule(i).clone();
+		}
+		return new CFRecordsAggregate((CFHeaderRecord) header.clone(), newRecs);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private CFRuleRecord(byte conditionType, byte comparisonOperation)
+	{
+		field_1_condition_type=conditionType;
+		field_2_comparison_operator=comparisonOperation;
+
+		// Set modification flags to 1: by default options are not modified
+		field_5_options = modificationBits.setValue(field_5_options, -1);
+		// Set formatting block flags to 0 (no formatting blocks)
+		field_5_options = fmtBlockBits.setValue(field_5_options, 0);
+		field_5_options = undocumented.clear(field_5_options);
+
+		field_6_not_used = (short)0x8002; // Excel seems to write this value, but it doesn&#x27;t seem to care what it reads
+		_fontFormatting=null;
+		_borderFormatting=null;
+		_patternFormatting=null;
+		field_17_formula1=Formula.create(Ptg.EMPTY_PTG_ARRAY);
+		field_18_formula2=Formula.create(Ptg.EMPTY_PTG_ARRAY);
+	}
+</code></pre>
+</body>

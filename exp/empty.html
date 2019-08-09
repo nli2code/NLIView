@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test51671() throws Exception
+    {
+        InputStream is = POIDataSamples.getDocumentInstance()
+                .openResourceAsStream( &quot;empty.doc&quot; );
+        NPOIFSFileSystem npoifsFileSystem = new NPOIFSFileSystem( is );
+        HWPFDocument hwpfDocument = new HWPFDocument(
+                npoifsFileSystem.getRoot() );
+        hwpfDocument.write( new ByteArrayOutputStream() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static final HSLFSlideShow create() {
+		InputStream is = HSLFSlideShow.class.getResourceAsStream(&quot;data/empty.ppt&quot;);
+		if (is == null) {
+			throw new RuntimeException(&quot;Missing resource &#x27;empty.ppt&#x27;&quot;);
+		}
+		try {
+			return new HSLFSlideShow(is);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		private String formatValue() {
+			int typeCode = getTypeCode();
+			switch (typeCode) {
+				case STRING:	 return &quot;&lt;string&gt;&quot;;
+				case BOOLEAN:	return getDataValue() == 0 ? &quot;FALSE&quot; : &quot;TRUE&quot;;
+				case ERROR_CODE: return ErrorEval.getText(getDataValue());
+				case EMPTY:	  return &quot;&lt;empty&gt;&quot;;
+			}
+			return &quot;#error(type=&quot; + typeCode + &quot;)#&quot;;
+		}
+</code></pre>
+</body>

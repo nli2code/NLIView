@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>        private Workbook createWorkbook() {
+            Workbook workbook = new XSSFWorkbook();
+            CreationHelper factory = workbook.getCreationHelper();
+            ClientAnchor anchor = factory.createClientAnchor();
+            Sheet sheet = workbook.createSheet();
+            Cell cell = sheet.createRow(0).createCell(0);
+            cell.setCellValue(1);
+            CellStyle style = workbook.createCellStyle();
+            style.setAlignment(CellStyle.ALIGN_CENTER);
+            cell.setCellStyle(style);
+            Drawing drawing = sheet.createDrawingPatriarch();
+            Comment comment = drawing.createCellComment(anchor);
+            comment.setString(factory.createRichTextString(&quot;Comment&quot;));
+            cell.setCellComment(comment);
+            Hyperlink link = factory.createHyperlink(Hyperlink.LINK_URL);
+            link.setAddress(&quot;https://github.com/RyoYamamotoJP&quot;);
+            cell.setHyperlink(link);
+            return workbook;
+        }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void newFileLink() {
+        _range = new CellRangeAddress(0, 0, 0, 0);
+        _guid = STD_MONIKER;
+        _linkOpts = HLINK_URL | HLINK_LABEL;
+        _fileOpts = 0;
+        setLabel(&quot;&quot;);
+        _moniker = FILE_MONIKER;
+        setAddress(null);
+        setShortFilename(&quot;&quot;);
+        _uninterpretedTail = FILE_TAIL;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public Object writeToCell(Cell cell, Context context) {
+        Workbook workbook = cell.getSheet().getWorkbook();
+        CreationHelper createHelper = workbook.getCreationHelper();
+        Hyperlink hyperlink = createHelper.createHyperlink(linkType);
+        hyperlink.setAddress(address);
+        cell.setHyperlink(hyperlink);
+        if( linkStyle == null ){
+            linkStyle = cell.getCellStyle();
+        }
+        cell.setCellStyle(linkStyle);
+        return cell;
+    }
+</code></pre>
+</body>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testReadWrite_tRefN_bug45091() {
+    	LittleEndianInput in = TestcaseRecordInputStream.createLittleEndian(tRefN_data);
+        Ptg[] ptgs = Ptg.readTokens(tRefN_data.length, in);
+        byte[] outData = new byte[5];
+        Ptg.serializePtgs(ptgs, outData, 0);
+        if (outData[0] == 0x24) {
+            throw new AssertionFailedError(&quot;Identified bug 45091&quot;);
+        }
+        assertTrue(Arrays.equals(tRefN_data, outData));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testConvertSharedFormulasOperandClasses_bug45123() {
+
+		LittleEndianInput in = TestcaseRecordInputStream.createLittleEndian(SHARED_FORMULA_WITH_REF_ARRAYS_DATA);
+		int encodedLen = in.readUShort();
+		Ptg[] sharedFormula = Ptg.readTokens(encodedLen, in);
+
+        SharedFormula sf = new SharedFormula(SpreadsheetVersion.EXCEL97);
+		Ptg[] convertedFormula = sf.convertSharedFormulas(sharedFormula, 100, 200);
+
+		RefPtg refPtg = (RefPtg) convertedFormula[1];
+		assertEquals(&quot;$C101&quot;, refPtg.toFormulaString());
+		if (refPtg.getPtgClass() == Ptg.CLASS_REF) {
+			throw new AssertionFailedError(&quot;Identified bug 45123&quot;);
+		}
+
+		confirmOperandClasses(sharedFormula, convertedFormula);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static void confirmOperandClassDecoding(byte operandClass) {
+		byte[] fullData = concat(ENCODED_PTG_DATA, ENCODED_CONSTANT_DATA);
+
+		// Force encoded operand class for tArray
+		fullData[0] = (byte) (ArrayPtg.sid + operandClass);
+
+		LittleEndianInput in = TestcaseRecordInputStream.createLittleEndian(fullData);
+
+		Ptg[] ptgs = Ptg.readTokens(ENCODED_PTG_DATA.length, in);
+		assertEquals(1, ptgs.length);
+		ArrayPtg aPtg = (ArrayPtg) ptgs[0];
+		assertEquals(operandClass, aPtg.getPtgClass());
+	}
+</code></pre>
+</body>

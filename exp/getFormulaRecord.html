@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HSSFRichTextString getRichStringCellValue() {
+
+        switch(_cellType) {
+            case CELL_TYPE_BLANK:
+                return new HSSFRichTextString(&quot;&quot;);
+            case CELL_TYPE_STRING:
+                return _stringValue;
+            default:
+                throw typeMismatch(CELL_TYPE_STRING, _cellType, false);
+            case CELL_TYPE_FORMULA:
+                break;
+        }
+        FormulaRecordAggregate fra = ((FormulaRecordAggregate)_record);
+        checkFormulaCachedValueType(CELL_TYPE_STRING, fra.getFormulaRecord());
+        String strVal = fra.getStringValue();
+        return new HSSFRichTextString(strVal == null ? &quot;&quot; : strVal);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void updateFormulasAfterRowShift(FormulaShifter shifter, int currentExternSheetIndex) {
+		for (int i = 0; i &lt; records.length; i++) {
+			CellValueRecordInterface[] rowCells = records[i];
+			if (rowCells == null) {
+				continue;
+			}
+			for (int j = 0; j &lt; rowCells.length; j++) {
+				CellValueRecordInterface cell = rowCells[j];
+				if (cell instanceof FormulaRecordAggregate) {
+					FormulaRecord fr = ((FormulaRecordAggregate)cell).getFormulaRecord();
+					Ptg[] ptgs = fr.getParsedExpression(); // needs clone() inside this getter?
+					if (shifter.adjustFormula(ptgs, currentExternSheetIndex)) {
+						fr.setParsedExpression(ptgs);
+					}
+				}
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public boolean getBooleanCellValue() {
+
+        switch(_cellType) {
+            case CELL_TYPE_BLANK:
+                return false;
+            case CELL_TYPE_BOOLEAN:
+                return (( BoolErrRecord ) _record).getBooleanValue();
+            default:
+                throw typeMismatch(CELL_TYPE_BOOLEAN, _cellType, false);
+            case CELL_TYPE_FORMULA:
+                break;
+        }
+        FormulaRecord fr = ((FormulaRecordAggregate)_record).getFormulaRecord();
+        checkFormulaCachedValueType(CELL_TYPE_BOOLEAN, fr);
+        return fr.getCachedBooleanValue();
+    }
+</code></pre>
+</body>

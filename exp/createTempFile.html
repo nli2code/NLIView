@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testOpenFileThenSaveDelete() throws Exception {
+        File tempFile = File.createTempFile(&quot;poiTesting&quot;,&quot;tmp&quot;);
+        File tempFile2 = File.createTempFile(&quot;poiTesting&quot;,&quot;tmp&quot;);
+        File origFile = OpenXML4JTestDataSamples.getSampleFile(&quot;TestPackageCommon.docx&quot;);
+        FileHelper.copyFile(origFile, tempFile);
+        
+        // Open the temp file
+        OPCPackage p = OPCPackage.open(tempFile.toString(), PackageAccess.READ_WRITE);
+
+        // Save it to a different file
+        p.save(tempFile2);
+        p.close();
+        
+        // Delete both the files
+        assertTrue(tempFile.delete());
+        assertTrue(tempFile2.delete());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  public void testStringsWrappedInFormatting() throws Exception {
+    File file = new File(&quot;src/test/resources/shared_styled_string.xlsx&quot;);
+    File sstCache = File.createTempFile(&quot;cache&quot;, &quot;.sst&quot;);
+    sstCache.deleteOnExit();
+    try (OPCPackage pkg = OPCPackage.open(file, PackageAccess.READ);
+         BufferedStringsTable sst = BufferedStringsTable.getSharedStringsTable(sstCache, 1000, pkg)) {
+      assertNotNull(sst);
+      assertEquals(&quot;shared styled string&quot;, sst.getItemAt(0).getString());
+    }
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void test27272_2() throws Exception {
+        HSSFWorkbook wb = openSample(&quot;27272_2.xls&quot;);
+        assertEquals(&quot;Reference for named range &quot;, &quot;LOAD.POD_HISTORIES!#REF!&quot;,wb.getNameAt(0).getRefersToFormula());
+        File outF = TempFile.createTempFile(&quot;bug27272_2&quot;,&quot;.xls&quot;);
+        FileOutputStream stream = new FileOutputStream(outF);
+        try {
+            wb.write(stream);
+        } finally {
+            stream.close();
+        }
+        System.out.println(&quot;Open &quot;+outF.getAbsolutePath()+&quot; in Excel&quot;);
+    }
+</code></pre>
+</body>

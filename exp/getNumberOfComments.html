@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test52716() {
+        XSSFWorkbook wb1 = XSSFTestDataSamples.openSampleWorkbook(&quot;52716.xlsx&quot;);
+        XSSFSheet sh1 = wb1.getSheetAt(0);
+
+        XSSFWorkbook wb2 = XSSFTestDataSamples.writeOutAndReadBack(wb1);
+        XSSFSheet sh2 = wb2.getSheetAt(0);
+
+        assertEquals(sh1.getNumberOfComments(), sh2.getNumberOfComments());
+        XSSFHyperlink l1 = sh1.getHyperlink(0, 1);
+        assertEquals(XSSFHyperlink.LINK_DOCUMENT, l1.getType());
+        assertEquals(&quot;B1&quot;, l1.getCellRef());
+        assertEquals(&quot;Sort on Titel&quot;, l1.getTooltip());
+
+        XSSFHyperlink l2 = sh2.getHyperlink(0, 1);
+        assertEquals(l1.getTooltip(), l2.getTooltip());
+        assertEquals(XSSFHyperlink.LINK_DOCUMENT, l2.getType());
+        assertEquals(&quot;B1&quot;, l2.getCellRef());
+    }
+</code></pre>
+</body>

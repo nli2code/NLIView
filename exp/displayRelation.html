@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private void displayRelation(PackageRelationship rel, String indent) {
+		disp.println(indent+&quot;Relationship:&quot;);
+		disp.println(indent+&quot;\tFrom: &quot;+ rel.getSourceURI());
+		disp.println(indent+&quot;\tTo:   &quot; + rel.getTargetURI());
+		disp.println(indent+&quot;\tID:   &quot; + rel.getId());
+		disp.println(indent+&quot;\tMode: &quot; + rel.getTargetMode());
+		disp.println(indent+&quot;\tType: &quot; + rel.getRelationshipType());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void displayParts() throws Exception {
+		ArrayList&lt;PackagePart&gt; parts = container.getParts();
+		for (PackagePart part : parts) {
+			disp.println(part.getPartName());
+			disp.println(&quot;\t&quot; + part.getContentType());
+			
+			if(! part.getPartName().toString().equals(&quot;/docProps/core.xml&quot;)) {
+				disp.println(&quot;\t&quot; + getSize(part) + &quot; bytes&quot;);
+			}
+			
+			if(! part.isRelationshipPart()) {
+				disp.println(&quot;\t&quot; + part.getRelationships().size() + &quot; relations&quot;);
+				for(PackageRelationship rel : part.getRelationships()) {
+					displayRelation(rel, &quot;\t  &quot;);
+				}
+			}
+		}
+	}
+</code></pre>
+</body>

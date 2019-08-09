@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static byte[] splitRGB(int rgb) {
+		byte[] ret = new byte[3];
+
+		// Serialise to bytes, then grab the right ones out
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			writeLittleEndian(rgb,baos);
+		} catch(IOException ie) {
+			// Should never happen
+			throw new RuntimeException(ie);
+		}
+		byte[] b = baos.toByteArray();
+		System.arraycopy(b,0,ret,0,3);
+
+		return ret;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void writeOut(OutputStream out) throws IOException {
+		// Header - size or type unchanged
+		out.write(_header);
+
+		// Write out the rgb values
+		writeLittleEndian(backgroundColourRGB,out);
+		writeLittleEndian(textAndLinesColourRGB,out);
+		writeLittleEndian(shadowsColourRGB,out);
+		writeLittleEndian(titleTextColourRGB,out);
+		writeLittleEndian(fillsColourRGB,out);
+		writeLittleEndian(accentColourRGB,out);
+		writeLittleEndian(accentAndHyperlinkColourRGB,out);
+		writeLittleEndian(accentAndFollowingHyperlinkColourRGB,out);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void writeOut(OutputStream out) throws IOException {
+		// Header - size or type unchanged
+		out.write(_header);
+
+		// Compute the flags part - only bit 3 is used
+		int flags = 0;
+		if(hasShapesOtherThanPlaceholders) {
+			flags = 4;
+		}
+
+		// Write out our fields
+		writeLittleEndian(refID,out);
+		writeLittleEndian(flags,out);
+		writeLittleEndian(numPlaceholderTexts,out);
+		writeLittleEndian(slideIdentifier,out);
+		out.write(reservedFields);
+	}
+</code></pre>
+</body>

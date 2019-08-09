@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(&quot;[DIMENSIONS]\n&quot;);
+        buffer.append(&quot;    .firstrow       = &quot;)
+            .append(Integer.toHexString(getFirstRow())).append(&quot;\n&quot;);
+        buffer.append(&quot;    .lastrow        = &quot;)
+            .append(Integer.toHexString(getLastRow())).append(&quot;\n&quot;);
+        buffer.append(&quot;    .firstcol       = &quot;)
+            .append(Integer.toHexString(getFirstCol())).append(&quot;\n&quot;);
+        buffer.append(&quot;    .lastcol        = &quot;)
+            .append(Integer.toHexString(getLastCol())).append(&quot;\n&quot;);
+        buffer.append(&quot;    .zero           = &quot;)
+            .append(Integer.toHexString(field_5_zero)).append(&quot;\n&quot;);
+        buffer.append(&quot;[/DIMENSIONS]\n&quot;);
+        return buffer.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		public String formatAsString() {
+
+			StringBuilder sb = new StringBuilder(36);
+
+			int PREFIX_LEN = &quot;0x&quot;.length();
+			sb.append(HexDump.intToHex(_d1), PREFIX_LEN, 8);
+			sb.append(&quot;-&quot;);
+			sb.append(HexDump.shortToHex(_d2), PREFIX_LEN, 4);
+			sb.append(&quot;-&quot;);
+			sb.append(HexDump.shortToHex(_d3), PREFIX_LEN, 4);
+			sb.append(&quot;-&quot;);
+			char[] d4Chars = HexDump.longToHex(getD4());
+			sb.append(d4Chars, PREFIX_LEN, 4);
+			sb.append(&quot;-&quot;);
+			sb.append(d4Chars, PREFIX_LEN + 4, 12);
+			return sb.toString();
+		}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(&quot;[SHARED FORMULA (&quot;).append(HexDump.intToHex(sid)).append(&quot;]\n&quot;);
+        buffer.append(&quot;    .range      = &quot;).append(getRange().toString()).append(&quot;\n&quot;);
+        buffer.append(&quot;    .reserved    = &quot;).append(HexDump.shortToHex(field_5_reserved)).append(&quot;\n&quot;);
+
+        Ptg[] ptgs = field_7_parsed_expr.getTokens();
+        for (int k = 0; k &lt; ptgs.length; k++ ) {
+           buffer.append(&quot;Formula[&quot;).append(k).append(&quot;]&quot;);
+           Ptg ptg = ptgs[k];
+           buffer.append(ptg.toString()).append(ptg.getRVAType()).append(&quot;\n&quot;);
+        }
+
+        buffer.append(&quot;[/SHARED FORMULA]\n&quot;);
+        return buffer.toString();
+    }
+</code></pre>
+</body>

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>   public String toString() {
+       DateFormatSymbols dfs = DateFormatSymbols.getInstance(Locale.ROOT);
+       DateFormat df = new SimpleDateFormat(&quot;EEE MMM dd HH:mm:ss zzz yyyy&quot;, dfs);
+       df.setTimeZone(LocaleUtil.TIMEZONE_UTC);
+       return getProperty().toString() + &quot; &quot; + df.format(data);
+   }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private Nullable&lt;Date&gt; setDateValue(String s) throws InvalidFormatException {
+		if (s == null || s.equals(&quot;&quot;)) {
+			return new Nullable&lt;Date&gt;();
+		}
+		SimpleDateFormat df = new SimpleDateFormat(
+				&quot;yyyy-MM-dd&#x27;T&#x27;HH:mm:ss&#x27;Z&#x27;&quot;);
+		df.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));
+		Date d = df.parse(s, new ParsePosition(0));
+		if (d == null) {
+			throw new InvalidFormatException(&quot;Date not well formated&quot;);
+		}
+		return new Nullable&lt;Date&gt;(d);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private String getDateValue(Nullable&lt;Date&gt; d) {
+		if (d == null) {
+			return &quot;&quot;;
+		}
+		Date date = d.getValue();
+		if (date == null) {
+		   return &quot;&quot;;
+		}
+		
+		SimpleDateFormat df = new SimpleDateFormat(
+				&quot;yyyy-MM-dd&#x27;T&#x27;HH:mm:ss&#x27;Z&#x27;&quot;);
+		df.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));
+		return df.format(date);
+	}
+</code></pre>
+</body>

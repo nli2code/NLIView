@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void replaceText(String pPlaceHolder, String pValue, int pOffset) {
+		int absPlaceHolderIndex = getStartOffset() + pOffset;
+
+		Range subRange = new Range(absPlaceHolderIndex, (absPlaceHolderIndex + pPlaceHolder
+				.length()), this);
+		subRange.insertBefore(pValue);
+
+		// re-create the sub-range so we can delete it
+		subRange = new Range((absPlaceHolderIndex + pValue.length()), (absPlaceHolderIndex
+				+ pPlaceHolder.length() + pValue.length()), this);
+
+		// deletes are automagically propagated
+		subRange.delete();
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void replaceText( String newText, boolean addAfter )
+    {
+        if ( addAfter )
+        {
+            int originalEnd = getEndOffset();
+            insertAfter( newText );
+            new Range( getStartOffset(), originalEnd, this ).delete();
+        }
+        else
+        {
+            int originalStart = getStartOffset();
+            int originalEnd = getEndOffset();
+
+            insertBefore( newText );
+            new Range( originalStart + newText.length(), originalEnd
+                    + newText.length(), this ).delete();
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testBug51890()
+    {
+        HWPFDocument doc = HWPFTestDataSamples.openSampleFile( &quot;Bug51890.doc&quot; );
+        for ( Picture picture : doc.getPicturesTable().getAllPictures() )
+        {
+            PictureType pictureType = picture.suggestPictureType();
+            logger.log( POILogger.DEBUG,
+                    &quot;Picture at offset &quot; + picture.getStartOffset()
+                            + &quot; has type &quot; + pictureType );
+        }
+    }
+</code></pre>
+</body>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void replaceTextTableRow(XWPFTableRow row, String[] values, String[] replaceValues) throws Exception {
+		//log.debug(TAG + &quot;.replaceTextTableRow&quot;);
+
+		for (XWPFTableCell cell : row.getTableCells())
+			replaceTextTableCell(cell, values, replaceValues);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void testsC( XWPFParagraph paragraph, XWPFStylesDocument stylesDocument )
+    {
+        // vertical aligment
+        XWPFTableCell cell = (XWPFTableCell) paragraph.getBody();
+        Enum jc = stylesDocument.getTableCellVerticalAlignment( cell );
+        Assert.assertNull( jc );
+
+        // text aligment
+        ParagraphAlignment alignment = stylesDocument.getParagraphAlignment( paragraph );
+        Assert.assertEquals( ParagraphAlignment.RIGHT, alignment );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void iterateParagraphs(XWPFDocument doc, Consumer&lt;XWPFParagraph&gt; consumer) {
+		for (XWPFParagraph p : doc.getParagraphs())
+			consumer.accept(p);
+		for (XWPFTable tbl : doc.getTables())
+			for (XWPFTableRow row : tbl.getRows())
+				for (XWPFTableCell cell : row.getTableCells())
+					for (XWPFParagraph p : cell.getParagraphs())
+						consumer.accept(p);
+	}
+</code></pre>
+</body>

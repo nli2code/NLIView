@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testExtraction() throws Exception {
+		VisioTextExtractor extractor =
+			new VisioTextExtractor(_dgTests.openResourceAsStream(defFilename));
+
+		// Check the array fetch
+		String[] text = extractor.getAllText();
+		assertNotNull(text);
+		assertEquals(defTextChunks, text.length);
+
+      assertEquals(&quot;text\n&quot;, text[0]);
+      assertEquals(&quot;View\n&quot;, text[1]);
+		assertEquals(&quot;Test View\n&quot;, text[2]);
+		assertEquals(&quot;I am a test view\n&quot;, text[3]);
+		assertEquals(&quot;Some random text, on a page\n&quot;, text[4]);
+
+		// And the all-in fetch
+		String textS = extractor.getText();
+		assertEquals(&quot;text\nView\nTest View\nI am a test view\nSome random text, on a page\n&quot;, textS);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testProblemFiles() throws Exception {
+		String[] files = {
+		      &quot;44594.vsd&quot;, &quot;44594-2.vsd&quot;, 
+		      &quot;ShortChunk1.vsd&quot;, &quot;ShortChunk2.vsd&quot;, &quot;ShortChunk3.vsd&quot;,
+		      &quot;NegativeChunkLength.vsd&quot;, &quot;NegativeChunkLength2.vsd&quot;
+		};
+        for(String file : files){
+            VisioTextExtractor ex = new VisioTextExtractor(_dgTests.openResourceAsStream(file));
+            ex.getText();
+        }
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testV6NonUtf16LE() throws Exception {
+   		fs = new POIFSFileSystem(_dgTests.openResourceAsStream(&quot;v6-non-utf16le.vsd&quot;));
+
+   		HDGFDiagram hdgf = new HDGFDiagram(fs);
+   		assertNotNull(hdgf);
+
+        VisioTextExtractor textExtractor = new VisioTextExtractor(hdgf);
+        String text = textExtractor.getText().replace(&quot;\u0000&quot;, &quot;&quot;).trim();
+
+        assertEquals(&quot;Table\n\n\nPropertySheet\n\n\n\nPropertySheetField&quot;, text);
+   	}
+</code></pre>
+</body>

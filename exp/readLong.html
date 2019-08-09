@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public int readInt() {
+		checkAvaliable(SIZE_INT);
+		int blockAvailable = _currentBlock.available();
+		int result;
+		if (blockAvailable &gt; SIZE_INT) {
+			result = _currentBlock.readIntLE();
+		} else {
+			DataInputBlock nextBlock = getDataInputBlock(_current_offset + blockAvailable);
+			if (blockAvailable == SIZE_INT) {
+				result = _currentBlock.readIntLE();
+			} else {
+				result = nextBlock.readIntLE(_currentBlock, blockAvailable);
+			}
+			_currentBlock = nextBlock;
+		}
+		_current_offset += SIZE_INT;
+		return result;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>   public void readValue(InputStream stream) throws IOException {
+      // 8 bytes of reserved zeros
+      LittleEndian.readLong(stream);
+      
+      // Nexts and counts
+      nextRecipientId = LittleEndian.readUInt(stream);
+      nextAttachmentId = LittleEndian.readUInt(stream);
+      recipientCount = LittleEndian.readUInt(stream);
+      attachmentCount = LittleEndian.readUInt(stream);
+      
+      // 8 bytes of reserved zeros
+      LittleEndian.readLong(stream);
+      
+      // Now properties
+      readProperties(stream);
+   }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public double readDouble() {
+		long valueLongBits = readLong();
+		double result = Double.longBitsToDouble(valueLongBits);
+		if (Double.isNaN(result)) {
+			throw new RuntimeException(&quot;Did not expect to read NaN&quot;); // (Because Excel typically doesn&#x27;t write NaN
+		}
+		return result;
+	}
+</code></pre>
+</body>

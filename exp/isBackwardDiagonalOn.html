@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(&quot;    [Border Formatting]\n&quot;);
+        buffer.append(&quot;          .lftln     = &quot;).append(Integer.toHexString(getBorderLeft())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .rgtln     = &quot;).append(Integer.toHexString(getBorderRight())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .topln     = &quot;).append(Integer.toHexString(getBorderTop())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .btmln     = &quot;).append(Integer.toHexString(getBorderBottom())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .leftborder= &quot;).append(Integer.toHexString(getLeftBorderColor())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .rghtborder= &quot;).append(Integer.toHexString(getRightBorderColor())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .topborder= &quot;).append(Integer.toHexString(getTopBorderColor())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .bottomborder= &quot;).append(Integer.toHexString(getBottomBorderColor())).append(&quot;\n&quot;);
+        buffer.append(&quot;          .fwdiag= &quot;).append(isForwardDiagonalOn()).append(&quot;\n&quot;);
+        buffer.append(&quot;          .bwdiag= &quot;).append(isBackwardDiagonalOn()).append(&quot;\n&quot;);
+        buffer.append(&quot;    [/Border Formatting]\n&quot;);
+        return buffer.toString();
+    }
+</code></pre>
+</body>

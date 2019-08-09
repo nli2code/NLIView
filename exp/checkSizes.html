@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void checkSizes(String path, DirectoryNode dir, Map&lt;String,Integer&gt; entries) {
+        for (Entry entry : dir) {
+            if (entry instanceof DirectoryNode) {
+                String ourPath = path + entry.getName() + &quot;/&quot;;
+                assertTrue(entries.containsKey(ourPath));
+                assertEquals(-1, entries.get(ourPath).intValue());
+                checkSizes(ourPath, (DirectoryNode)entry, entries);
+            } else {
+                DocumentNode doc = (DocumentNode)entry;
+                assertEquals(entries.get(path+entry.getName()).intValue(), doc.getSize());
+            }
+        }
+    }
+</code></pre>
+</body>

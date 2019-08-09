@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testTwoImages() {
+		HWPFDocument doc = HWPFTestDataSamples.openSampleFile(&quot;two_images.doc&quot;);
+		List&lt;Picture&gt; pics = doc.getPicturesTable().getAllPictures();
+
+		assertNotNull(pics);
+		assertEquals(pics.size(), 2);
+		for(int i=0; i&lt;pics.size(); i++) {
+			Picture pic = (Picture)pics.get(i);
+			assertNotNull(pic.suggestFileExtension());
+			assertNotNull(pic.suggestFullFileName());
+		}
+
+		Picture picA = pics.get(0);
+		Picture picB = pics.get(1);
+		assertEquals(&quot;jpg&quot;, picA.suggestFileExtension());
+		assertEquals(&quot;jpg&quot;, picA.suggestFileExtension());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected void processImageWithoutPicturesManager( Element currentBlock,
+            boolean inlined, Picture picture )
+    {
+        // no default implementation -- skip
+        currentBlock.appendChild( htmlDocumentFacade.document
+                .createComment( &quot;Image link to &#x27;&quot;
+                        + picture.suggestFullFileName() + &quot;&#x27; can be here&quot; ) );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testEquation()
+    {
+        HWPFDocument doc = HWPFTestDataSamples.openSampleFile( &quot;equation.doc&quot; );
+        PicturesTable pictures = doc.getPicturesTable();
+
+        final List&lt;Picture&gt; allPictures = pictures.getAllPictures();
+        assertEquals( 1, allPictures.size() );
+
+        Picture picture = allPictures.get( 0 );
+        assertNotNull( picture );
+        assertEquals( PictureType.EMF, picture.suggestPictureType() );
+        assertEquals( PictureType.EMF.getExtension(),
+                picture.suggestFileExtension() );
+        assertEquals( PictureType.EMF.getMime(), picture.getMimeType() );
+        assertEquals( &quot;0.emf&quot;, picture.suggestFullFileName() );
+    }
+</code></pre>
+</body>

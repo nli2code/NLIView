@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSheetSerializeSizeMismatch_bug45066() {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        InternalSheet sheet = wb.createSheet(&quot;Sheet1&quot;).getSheet();
+        List&lt;RecordBase&gt; sheetRecords = sheet.getRecords();
+        // one way (of many) to cause the discrepancy is with a badly behaved record:
+        sheetRecords.add(new BadlyBehavedRecord());
+        // There is also much logic inside Sheet that (if buggy) might also cause the discrepancy
+        try {
+            wb.getBytes();
+            throw new AssertionFailedError(&quot;Identified bug 45066 a&quot;);
+        } catch (IllegalStateException e) {
+            // Expected badly behaved sheet record to cause exception
+            assertTrue(e.getMessage().startsWith(&quot;Actual serialized sheet size&quot;));
+        }
+    }
+</code></pre>
+</body>

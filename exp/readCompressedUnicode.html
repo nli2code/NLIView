@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testReadString() {
+		byte[] changingFlagFullData = HexRead.readFromString(&quot;&quot;
+				+ &quot;AA AA &quot;  // fake SID
+				+ &quot;12 00 &quot;  // first rec len 18 (15 + next 3 bytes)
+				+ &quot;12 00 &quot;  // total chars 18
+				+ &quot;00 &quot;	 // this bit compressed
+				+ HED_DUMP2
+				);
+		RecordInputStream in = TestcaseRecordInputStream.create(changingFlagFullData);
+		String actual = in.readString();
+		assertEquals(&quot;Multilingual - \u591A\u8A00\u8A9E&quot;, actual);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static String readUnicodeString(LittleEndianInput in, int nChars) {
+        byte is16Bit = in.readByte();
+        if ((is16Bit &amp; 0x01) == 0) {
+            return readCompressedUnicode(in, nChars);
+        }
+        return readUnicodeLE(in, nChars);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public BoundSheetRecord(RecordInputStream in) {
+		field_1_position_of_BOF = in.readInt();
+		field_2_option_flags = in.readUShort();
+		int field_3_sheetname_length = in.readUByte();
+		field_4_isMultibyteUnicode = in.readByte();
+
+		if (isMultibyte()) {
+			field_5_sheetname = in.readUnicodeLEString(field_3_sheetname_length);
+		} else {
+			field_5_sheetname = in.readCompressedUnicode(field_3_sheetname_length);
+		}
+	}
+</code></pre>
+</body>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testReadExistingRectangle() {
+        HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;drawings.xls&quot;);
+        HSSFSheet sheet = wb.getSheet(&quot;rectangles&quot;);
+        HSSFPatriarch drawing = sheet.getDrawingPatriarch();
+        assertEquals(1, drawing.getChildren().size());
+
+        HSSFSimpleShape shape = (HSSFSimpleShape) drawing.getChildren().get(0);
+        assertEquals(shape.isNoFill(), false);
+        assertEquals(shape.getLineStyle(), HSSFShape.LINESTYLE_DASHDOTGEL);
+        assertEquals(shape.getLineStyleColor(), 0x616161);
+        assertEquals(HexDump.toHex(shape.getFillColor()), shape.getFillColor(), 0x2CE03D);
+        assertEquals(shape.getLineWidth(), HSSFShape.LINEWIDTH_ONE_PT * 2);
+        assertEquals(shape.getString().getString(), &quot;POItest&quot;);
+        assertEquals(shape.getRotationDegree(), 27);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testReadExistingImage() {
+        HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;drawings.xls&quot;);
+        HSSFSheet sheet = wb.getSheet(&quot;pictures&quot;);
+        HSSFPatriarch drawing = sheet.getDrawingPatriarch();
+        assertEquals(1, drawing.getChildren().size());
+        HSSFPicture picture = (HSSFPicture) drawing.getChildren().get(0);
+
+        assertEquals(picture.getPictureIndex(), 2);
+        assertEquals(picture.getLineStyleColor(), HSSFShape.LINESTYLE__COLOR_DEFAULT);
+        assertEquals(picture.getFillColor(), 0x5DC943);
+        assertEquals(picture.getLineWidth(), HSSFShape.LINEWIDTH_DEFAULT);
+        assertEquals(picture.getLineStyle(), HSSFShape.LINESTYLE_DEFAULT);
+        assertEquals(picture.isNoFill(), false);
+
+        picture.setPictureIndex(2);
+        assertEquals(picture.getPictureIndex(), 2);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testDefaultSettingsWithEmptyContainer() {
+        EscherContainerRecord container = new EscherContainerRecord();
+        EscherOptRecord opt = new EscherOptRecord();
+        opt.setRecordId(EscherOptRecord.RECORD_ID);
+        container.addChildRecord(opt);
+        ObjRecord obj = new ObjRecord();
+        CommonObjectDataSubRecord cod = new CommonObjectDataSubRecord();
+        cod.setObjectType(HSSFSimpleShape.OBJECT_TYPE_PICTURE);
+        obj.addSubRecord(cod);
+        HSSFPicture picture = new HSSFPicture(container, obj);
+
+        assertEquals(picture.getLineWidth(), HSSFShape.LINEWIDTH_DEFAULT);
+        assertEquals(picture.getFillColor(), HSSFShape.FILL__FILLCOLOR_DEFAULT);
+        assertEquals(picture.getLineStyle(), HSSFShape.LINESTYLE_DEFAULT);
+        assertEquals(picture.getLineStyleColor(), HSSFShape.LINESTYLE__COLOR_DEFAULT);
+        assertEquals(picture.isNoFill(), HSSFShape.NO_FILL_DEFAULT);
+        assertEquals(picture.getPictureIndex(), -1);//not set yet
+    }
+</code></pre>
+</body>

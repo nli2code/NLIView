@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testIncrementSheetId() {
+		XSSFWorkbook wb = new XSSFWorkbook();
+		int sheetId = (int)wb.createSheet().sheet.getSheetId();
+		assertEquals(1, sheetId);
+		sheetId = (int)wb.createSheet().sheet.getSheetId();
+		assertEquals(2, sheetId);
+
+		//test file with gaps in the sheetId sequence
+		wb = XSSFTestDataSamples.openSampleWorkbook(&quot;47089.xlsm&quot;);
+		int lastSheetId = (int)wb.getSheetAt(wb.getNumberOfSheets() - 1).sheet.getSheetId();
+		sheetId = (int)wb.createSheet().sheet.getSheetId();
+		assertEquals(lastSheetId+1, sheetId);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected CommentsTable getCommentsTable(boolean create) {
+        if(sheetComments == null &amp;&amp; create){
+           // Try to create a comments table with the same number as
+           //  the sheet has (i.e. sheet 1 -&gt; comments 1)
+           try {
+              sheetComments = (CommentsTable)createRelationship(
+                    XSSFRelation.SHEET_COMMENTS, XSSFFactory.getInstance(), (int)sheet.getSheetId());
+           } catch(PartAlreadyExistsException e) {
+              // Technically a sheet doesn&#x27;t need the same number as
+              //  it&#x27;s comments, and clearly someone has already pinched
+              //  our number! Go for the next available one instead
+              sheetComments = (CommentsTable)createRelationship(
+                    XSSFRelation.SHEET_COMMENTS, XSSFFactory.getInstance(), -1);
+           }
+        }
+        return sheetComments;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    protected void onDeleteFormula(XSSFCell cell){
+        if(calcChain != null) {
+            int sheetId = (int)cell.getSheet().sheet.getSheetId();
+            calcChain.removeItem(sheetId, cell.getReference());
+        }
+    }
+</code></pre>
+</body>

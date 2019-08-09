@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testLoad() {
+        RecordInputStream in = TestcaseRecordInputStream.create(0x1044, data);
+        SheetPropertiesRecord record = new SheetPropertiesRecord(in);
+        if (in.remaining() == 1) {
+            throw new AssertionFailedError(&quot;Identified bug 44693c&quot;);
+        }
+        assertEquals(0, in.remaining());
+        assertEquals( 10, record.getFlags());
+        assertEquals( false, record.isChartTypeManuallyFormatted() );
+        assertEquals( true, record.isPlotVisibleOnly() );
+        assertEquals( false, record.isDoNotSizeWithWindow() );
+        assertEquals( true, record.isDefaultPlotDimensions() );
+        assertEquals( false, record.isAutoPlotArea() );
+        assertEquals( 0, record.getEmpty());
+
+        assertEquals( 8, record.getRecordSize() );
+    }
+</code></pre>
+</body>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private ValueEval[] createMockNumberArray(int size, double value) {
+		ValueEval[] result = new ValueEval[size];
+		for (int i = 0; i &lt; result.length; i++) {
+			result[i] = new NumberEval(value);
+		}
+		return result;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testLargeArrays() {
+		ValueEval[] yValues = createMockNumberArray(100, 3); // [1,2,0,1,2,0,...,0,1]
+		yValues[0] = new NumberEval(2.0); // Changes first element to 2
+		ValueEval[] xValues = createMockNumberArray(100, 101); // [1,2,3,4,...,99,100]
+
+		confirm(INTERCEPT, createAreaEval(xValues), createAreaEval(yValues), 51.74384236453202);
+		// Excel 2010 gives 51.74384236453200
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testLargeArrays() {
+		ValueEval[] xValues = createMockNumberArray(100, 3);
+		ValueEval[] yValues = createMockNumberArray(100, 2);
+
+		confirm(SUM_SQUARES, createAreaEval(xValues), createAreaEval(yValues), 1300.0);
+		confirm(DIFF_SQUARES, createAreaEval(xValues), createAreaEval(yValues), 500.0);
+		confirm(SUM_SQUARES_OF_DIFFS, createAreaEval(xValues), createAreaEval(yValues), 100.0);
+	}
+</code></pre>
+</body>

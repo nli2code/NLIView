@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testIsSetPrintGridlines() {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFDialogsheet sheet = workbook.createDialogsheet(&quot;Dialogsheet 1&quot;, null);
+        assertFalse(sheet.isPrintGridlines());
+        sheet.setPrintGridlines(true);
+        assertTrue(sheet.isPrintGridlines());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static void main(String[]args) throws Exception {
+        Workbook wb = new XSSFWorkbook();  //or new HSSFWorkbook();
+        Sheet sheet = wb.createSheet(&quot;format sheet&quot;);
+        PrintSetup ps = sheet.getPrintSetup();
+
+        sheet.setAutobreaks(true);
+
+        ps.setFitHeight((short) 1);
+        ps.setFitWidth((short) 1);
+
+        // Create various cells and rows for spreadsheet.
+
+        FileOutputStream fileOut = new FileOutputStream(&quot;fitSheetToOnePage.xlsx&quot;);
+        wb.write(fileOut);
+        fileOut.close();
+
+    }
+</code></pre>
+</body>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void updateFormulasAfterRowShift(FormulaShifter shifter, int currentExternSheetIndex) {
+		for (int i = 0; i &lt; records.length; i++) {
+			CellValueRecordInterface[] rowCells = records[i];
+			if (rowCells == null) {
+				continue;
+			}
+			for (int j = 0; j &lt; rowCells.length; j++) {
+				CellValueRecordInterface cell = rowCells[j];
+				if (cell instanceof FormulaRecordAggregate) {
+					FormulaRecord fr = ((FormulaRecordAggregate)cell).getFormulaRecord();
+					Ptg[] ptgs = fr.getParsedExpression(); // needs clone() inside this getter?
+					if (shifter.adjustFormula(ptgs, currentExternSheetIndex)) {
+						fr.setParsedExpression(ptgs);
+					}
+				}
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testReserialize() {
+		FormulaRecord formulaRecord = new FormulaRecord();
+		formulaRecord.setRow(1);
+		formulaRecord.setColumn((short) 1);
+		formulaRecord.setParsedExpression(new Ptg[] { new RefPtg(&quot;B$5&quot;), });
+		formulaRecord.setValue(3.3);
+		byte[] ser = formulaRecord.serialize();
+		assertEquals(31, ser.length);
+
+		RecordInputStream in = TestcaseRecordInputStream.create(ser);
+		FormulaRecord fr2 = new FormulaRecord(in);
+		assertEquals(3.3, fr2.getValue(), 0.0);
+		Ptg[] ptgs = fr2.getParsedExpression();
+		assertEquals(1, ptgs.length);
+		RefPtg rp = (RefPtg) ptgs[0];
+		assertEquals(&quot;B$5&quot;, rp.toFormulaString());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    void setCellArrayFormula(CellRangeAddress range) {
+        int row = _record.getRow();
+        short col = _record.getColumn();
+        short styleIndex = _record.getXFIndex();
+        setCellType(CELL_TYPE_FORMULA, false, row, col, styleIndex);
+
+        // Billet for formula in rec
+        Ptg[] ptgsForCell = {new ExpPtg(range.getFirstRow(), range.getFirstColumn())};
+        FormulaRecordAggregate agg = (FormulaRecordAggregate) _record;
+        agg.setParsedExpression(ptgsForCell);
+    }
+</code></pre>
+</body>

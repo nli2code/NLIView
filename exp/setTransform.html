@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void draw(Graphics2D graphics){
+
+//        AffineTransform at = graphics.getTransform();
+        graphics.canvas.save();
+
+        Shape[] sh = getShapes();
+        for (int i = 0; i &lt; sh.length; i++) {
+            sh[i].draw(graphics);
+        }
+        
+        graphics.canvas.restore();
+
+//        graphics.setTransform(at);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void draw(Graphics2D graphics){
+        AffineTransform at = graphics.getTransform();
+        ShapePainter.paint(this, graphics);
+
+        PictureData data = getPictureData();
+        if(data != null) data.draw(graphics, this);
+
+        graphics.setTransform(at);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void draw(Graphics2D graphics){
+//        AffineTransform at = graphics.getTransform();
+        graphics.canvas.save();
+        ShapePainter.paint(this, graphics);
+        new TextPainter(this).paint(graphics);
+//        graphics.setTransform(at);
+        graphics.canvas.restore();
+    }
+</code></pre>
+</body>

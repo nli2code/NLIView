@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public ValueRangeRecord(RecordInputStream in)
+    {
+        field_1_minimumAxisValue       = in.readDouble();
+        field_2_maximumAxisValue       = in.readDouble();
+        field_3_majorIncrement         = in.readDouble();
+        field_4_minorIncrement         = in.readDouble();
+        field_5_categoryAxisCross      = in.readDouble();
+        field_6_options                = in.readShort();
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void outHex( int bytes, InputStream in, PrintStream out ) throws IOException, LittleEndian.BufferUnderrunException
+    {
+        switch ( bytes )
+        {
+            case 1:
+                out.print( HexDump.toHex( (byte) in.read() ) );
+                break;
+            case 2:
+                out.print( HexDump.toHex( LittleEndian.readShort( in ) ) );
+                break;
+            case 4:
+                out.print( HexDump.toHex( LittleEndian.readInt( in ) ) );
+                break;
+            default:
+                throw new IOException( &quot;Unable to output variable of that width&quot; );
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public SeriesListRecord(RecordInputStream in) {
+    	int nItems = in.readUShort();
+    	short[] ss = new short[nItems];
+    	for (int i = 0; i &lt; nItems; i++) {
+			ss[i] = in.readShort();
+			
+		}
+        field_1_seriesNumbers = ss;
+    }
+</code></pre>
+</body>

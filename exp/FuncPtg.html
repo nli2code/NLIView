@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static FuncPtg create(int functionIndex) {
+        FunctionMetadata fm = FunctionMetadataRegistry.getFunctionByIndex(functionIndex);
+        if(fm == null) {
+            throw new RuntimeException(&quot;Invalid built-in function index (&quot; + functionIndex + &quot;)&quot;);
+        }
+        return new FuncPtg(functionIndex, fm);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testParseErrorTypeFunction() {
+
+		Ptg[] ptgs;
+		try {
+			ptgs = parseFormula(&quot;error.type(A1)&quot;);
+		} catch (IllegalArgumentException e) {
+			if (e.getMessage().equals(&quot;Invalid Formula cell reference: &#x27;error&#x27;&quot;)) {
+				throw new AssertionFailedError(&quot;Identified bug 45334&quot;);
+			}
+			throw e;
+		}
+		confirmTokenClasses(ptgs, RefPtg.class, FuncPtg.class);
+		assertEquals(&quot;ERROR.TYPE&quot;, ((FuncPtg) ptgs[1]).getName());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testBuiltInFormulas() {
+        XSSFWorkbook wb = new XSSFWorkbook();
+        XSSFEvaluationWorkbook fpb = XSSFEvaluationWorkbook.create(wb);
+        Ptg[] ptgs;
+
+        ptgs = parse(fpb, &quot;LOG10&quot;);
+        assertEquals(1, ptgs.length);
+        assertTrue(&quot;&quot;,(ptgs[0] instanceof RefPtg));
+
+        ptgs = parse(fpb, &quot;LOG10(100)&quot;);
+        assertEquals(2, ptgs.length);
+        assertTrue(&quot;&quot;, ptgs[0] instanceof IntPtg);
+        assertTrue(&quot;&quot;, ptgs[1] instanceof FuncPtg);
+    }
+</code></pre>
+</body>

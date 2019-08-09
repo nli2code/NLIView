@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    CTRst buildCTRst(String text, TreeMap&lt;Integer, CTRPrElt&gt; formats){
+        if(text.length() != formats.lastKey()) {
+            throw new IllegalArgumentException(&quot;Text length was &quot; + text.length() +
+                    &quot; but the last format index was &quot; + formats.lastKey());
+        }
+        CTRst st = CTRst.Factory.newInstance();
+        int runStartIdx = 0;
+        for (Iterator&lt;Integer&gt; it = formats.keySet().iterator(); it.hasNext();) {
+            int runEndIdx = it.next();
+            CTRElt run = st.addNewR();
+            String fragment = text.substring(runStartIdx, runEndIdx);
+            run.setT(fragment);
+            preserveSpaces(run.xgetT());
+            CTRPrElt fmt = formats.get(runEndIdx);
+            if(fmt != null) run.setRPr(fmt);
+            runStartIdx = runEndIdx;
+        }
+        return st;
+    }
+</code></pre>
+</body>

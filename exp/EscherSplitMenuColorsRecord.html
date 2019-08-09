@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testToString() {
+        String expected = &quot;org.apache.poi.ddf.EscherSplitMenuColorsRecord:&quot; + &#x27;\n&#x27; +
+                &quot;  RecordId: 0xF11E&quot; + &#x27;\n&#x27; +
+                &quot;  Version: 0x0000&quot; + &#x27;\n&#x27; +
+                &quot;  Instance: 0x0004&quot; + &#x27;\n&#x27; +
+                &quot;  Color1: 0x00000402&quot; + &#x27;\n&#x27; +
+                &quot;  Color2: 0x00000002&quot; + &#x27;\n&#x27; +
+                &quot;  Color3: 0x00000002&quot; + &#x27;\n&#x27; +
+                &quot;  Color4: 0x00000001&quot; + &#x27;\n&#x27; +
+                &quot;&quot;;
+        assertEquals( expected, createRecord().toString() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testSerialize() {
+        EscherSpRecord r = createRecord();
+
+        byte[] data = new byte[16];
+        int bytesWritten = r.serialize( 0, data, new NullEscherSerializationListener() );
+        assertEquals( 16, bytesWritten );
+        assertEquals( &quot;[02, 00, &quot; +
+                &quot;0A, F0, &quot; +
+                &quot;08, 00, 00, 00, &quot; +
+                &quot;00, 04, 00, 00, &quot; +
+                &quot;05, 00, 00, 00]&quot;,
+                HexDump.toHex( data ) );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static EscherSplitMenuColorsRecord createRecord()
+    {
+        EscherSplitMenuColorsRecord r = new EscherSplitMenuColorsRecord();
+        r.setOptions( (short) 0x0040 );
+        r.setRecordId( EscherSplitMenuColorsRecord.RECORD_ID );
+        r.setColor1( 0x402  );
+        r.setColor2( 0x2 );
+        r.setColor3( 0x2 );
+        r.setColor4( 0x1 );
+        return r;
+    }
+</code></pre>
+</body>

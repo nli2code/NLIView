@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void read( byte[] tableStream, FileInformationBlock fib )
+    {
+        int referencesStart = fib.getNotesDescriptorsOffset( noteType );
+        int referencesLength = fib.getNotesDescriptorsSize( noteType );
+
+        if ( referencesStart != 0 &amp;&amp; referencesLength != 0 )
+            this.descriptors = new PlexOfCps( tableStream, referencesStart,
+                    referencesLength, FootnoteReferenceDescriptor.getSize() );
+
+        int textPositionsStart = fib.getNotesTextPositionsOffset( noteType );
+        int textPositionsLength = fib.getNotesTextPositionsSize( noteType );
+
+        if ( textPositionsStart != 0 &amp;&amp; textPositionsLength != 0 )
+            this.textPositions = new PlexOfCps( tableStream,
+                    textPositionsStart, textPositionsLength, 0 );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testReadFields()
+    {
+        FileInformationBlock fib = _hWPFDocFixture._fib;
+        byte[] tableStream = _hWPFDocFixture._tableStream;
+
+        FieldsTables fieldsTables = new FieldsTables( tableStream, fib );
+
+        for ( int i = 0; i &lt; FieldsDocumentPart.values().length; i++ )
+        {
+            FieldsDocumentPart part = FieldsDocumentPart.values()[i];
+
+            ArrayList&lt;PlexOfField&gt; fieldsPlexes = fieldsTables
+                    .getFieldsPLCF( part );
+            String result = dumpPlexes( fieldsPlexes );
+            assertEquals( EXPECTED[i], result );
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static List getTypes(InputStream istream) throws IOException
+    {
+        List results = new ArrayList(1);
+
+        //do Ole stuff
+        POIFSFileSystem filesystem = new POIFSFileSystem(istream);
+
+        DocumentEntry headerProps =
+            (DocumentEntry)filesystem.getRoot().getEntry(&quot;WordDocument&quot;);
+
+        byte[] mainDocument = new byte[headerProps.getSize()];
+        filesystem.createDocumentInputStream(&quot;WordDocument&quot;).read(mainDocument);
+
+        FileInformationBlock fib = new FileInformationBlock(mainDocument);
+
+
+        results.add(fib);
+        return results;
+    }
+</code></pre>
+</body>

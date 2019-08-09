@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private String tryColor(String desc, String cname, CellValue getter,
+            Object value, String expectedText, Color expectedColor) {
+
+        if (cname != null)
+            desc = &quot;[&quot; + cname + &quot;]&quot; + desc;
+        Color origColor = label.getForeground();
+        CellFormatPart format = new CellFormatPart(desc);
+        if (!format.apply(label, value).applies) {
+            // If this doesn&#x27;t apply, no color change is expected
+            expectedColor = origColor;
+        }
+
+        String actualText = label.getText();
+        Color actualColor = label.getForeground();
+        getter.equivalent(expectedText, actualText, format);
+        assertEquals(cname == null ? &quot;no color&quot; : &quot;color &quot; + cname,
+                expectedColor, actualColor);
+        return actualText;
+    }
+</code></pre>
+</body>

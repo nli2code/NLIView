@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testGetUsedStyles() throws IOException{
+		XWPFDocument sampleDoc = XWPFTestDataSamples.openSampleDocument(&quot;Styles.docx&quot;);
+		List&lt;XWPFStyle&gt; testUsedStyleList = new ArrayList&lt;XWPFStyle&gt;();
+		XWPFStyles styles = sampleDoc.getStyles();
+		XWPFStyle style = styles.getStyle(&quot;berschrift1&quot;);
+		testUsedStyleList.add(style);
+		testUsedStyleList.add(styles.getStyle(&quot;Standard&quot;));
+		testUsedStyleList.add(styles.getStyle(&quot;berschrift1Zchn&quot;));
+		testUsedStyleList.add(styles.getStyle(&quot;Absatz-Standardschriftart&quot;));
+		style.hasSameName(style);
+		
+		List&lt;XWPFStyle&gt; usedStyleList = styles.getUsedStyleList(style);
+		assertEquals(usedStyleList, testUsedStyleList);
+		
+		
+	}
+</code></pre>
+</body>

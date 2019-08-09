@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static void main(String[] args) {
+		if(args.length &lt;= 0) {
+			System.err.println(&quot;No files names provided&quot;);
+		} else {
+			for(int i = 0; i &lt; args.length; i++) {
+				try {
+					Msg2txt processor = new Msg2txt(args[i]);
+					processor.processMessage();
+				} catch (IOException e) {
+					System.err.println(&quot;Could not process &quot;+args[i]+&quot;: &quot;+e);
+				}
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    int getNameIndex(HSSFName name) {
+      for (int k = 0; k &lt; names.size(); k++) {
+        if (name == names.get(k)) {
+            return k;
+        }
+      }
+      return -1;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static void main(String[] params) throws IOException {
+        if (0 == params.length) {
+            System.out.println(&quot;Usage: BiffDrawingToXml [options] inputWorkbook&quot;);
+            System.out.println(&quot;Options:&quot;);
+            System.out.println(&quot;  -exclude-workbook            exclude workbook-level records&quot;);
+            System.out.println(&quot;  -sheet-indexes   &lt;indexes&gt;   output sheets with specified indexes&quot;);
+            System.out.println(&quot;  -sheet-namek  &lt;names&gt;        output sheets with specified name&quot;);
+            return;
+        }
+        String input = getInputFileName(params);
+        FileInputStream inp = new FileInputStream(input);
+        String output = getOutputFileName(input);
+        FileOutputStream outputStream = new FileOutputStream(output);
+        writeToFile(outputStream, inp, isExcludeWorkbookRecords(params), params);
+        inp.close();
+        outputStream.close();
+    }
+</code></pre>
+</body>

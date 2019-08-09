@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setLineWidth(double width) {
+        CTShapeProperties spPr = getSpPr();
+        if (width == 0.) {
+            if (spPr.isSetLn())
+                spPr.getLn().unsetW();
+        } else {
+            CTLineProperties ln = spPr.isSetLn() ? spPr.getLn() : spPr
+                    .addNewLn();
+            ln.setW(Units.toEMU(width));
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setPageSize(Dimension pgSize){
+        CTSlideSize sz = CTSlideSize.Factory.newInstance();
+        sz.setCx(Units.toEMU(pgSize.getWidth()));
+        sz.setCy(Units.toEMU(pgSize.getHeight()));
+        _presentation.setSldSz(sz);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSLFTableCell addCell(){
+        CTTableCell c = _row.addNewTc();
+        c.set(XSLFTableCell.prototype());
+        XSLFTableCell cell = new XSLFTableCell(c, _table.getSheet());
+        _cells.add(cell);
+
+        if(_table.getNumberOfColumns() &lt; _row.sizeOfTcArray()) {
+            _table.getCTTable().getTblGrid().addNewGridCol().setW(Units.toEMU(100.0));    
+        }
+        return cell;
+    }
+</code></pre>
+</body>

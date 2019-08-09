@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSetStyles_Bug57254() throws IOException {
+        XWPFDocument docOut = new XWPFDocument();
+        XWPFStyles styles = docOut.createStyles();
+
+        CTStyles ctStyles = CTStyles.Factory.newInstance();
+        String strStyleId = &quot;headline1&quot;;
+        CTStyle ctStyle = ctStyles.addNewStyle();
+
+        ctStyle.setStyleId(strStyleId);
+        styles.setStyles(ctStyles);
+
+        assertTrue(styles.styleExist(strStyleId));
+
+        XWPFDocument docIn = XWPFTestDataSamples.writeOutAndReadBack(docOut);
+
+        styles = docIn.getStyles();
+        assertTrue(styles.styleExist(strStyleId));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XWPFStyles createStyles() {
+       if(styles == null) {
+          StylesDocument stylesDoc = StylesDocument.Factory.newInstance();
+
+          XWPFRelation relation = XWPFRelation.STYLES;
+          int i = getRelationIndex(relation);
+
+          XWPFStyles wrapper = (XWPFStyles)createRelationship(relation, XWPFFactory.getInstance(), i);
+          wrapper.setStyles(stylesDoc.addNewStyles());
+          styles = wrapper;
+       }
+
+       return styles;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testLanguages(){
+        XWPFDocument docOut = new XWPFDocument();
+        XWPFStyles styles = docOut.createStyles();
+        styles.setEastAsia(&quot;Chinese&quot;);
+
+        styles.setSpellingLanguage(&quot;English&quot;);
+
+        CTFonts def = CTFonts.Factory.newInstance();
+        styles.setDefaultFonts(def);
+    }
+</code></pre>
+</body>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testBasic() {
+		FormulaRecord f = new FormulaRecord();
+		f.setCachedResultTypeString();
+		StringRecord s = new StringRecord();
+		s.setString(&quot;abc&quot;);
+		FormulaRecordAggregate fagg = new FormulaRecordAggregate(f, s, SharedValueManager.createEmpty());
+		assertEquals(&quot;abc&quot;, fagg.getStringValue());
+		assertFalse(fagg.isPartOfArrayFormula());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static void confirmStringRecord(HSSFSheet sheet, boolean isPresent) {
+		Record[] recs = RecordInspector.getRecords(sheet, 0);
+		assertEquals(isPresent ? 28 : 27, recs.length);
+		int index = 22;
+		Record fr = recs[index++];
+		assertEquals(FormulaRecord.class, fr.getClass());
+		if (isPresent) {
+			assertEquals(StringRecord.class, recs[index++].getClass());
+		} else {
+			assertFalse(StringRecord.class == recs[index].getClass());
+		}
+		Record dbcr = recs[index++];
+		assertEquals(DBCellRecord.class, dbcr.getClass());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testRowAggregation() {
+		List&lt;Record&gt; records = new ArrayList&lt;Record&gt;();
+
+		records.add(InternalSheet.createBOF());
+		records.add(new DimensionsRecord());
+		records.add(new RowRecord(0));
+		records.add(new RowRecord(1));
+		FormulaRecord formulaRecord = new FormulaRecord();
+		formulaRecord.setCachedResultTypeString();
+		records.add(formulaRecord);
+		records.add(new StringRecord());
+		records.add(new RowRecord(2));
+		records.add(createWindow2Record());
+		records.add(EOFRecord.instance);
+
+		InternalSheet sheet = createSheet(records);
+		assertNotNull(&quot;Row [2] was skipped&quot;, sheet.getRow(2));
+	}
+</code></pre>
+</body>

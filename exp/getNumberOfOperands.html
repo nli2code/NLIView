@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testRead() {
+    	// This function index represents the LEN() function
+        byte[] fakeData = { 0x20, 0x00,};
+
+        FuncPtg ptg = FuncPtg.create(TestcaseRecordInputStream.createLittleEndian(fakeData) );
+        assertEquals( &quot;Len formula index is not 32(20H)&quot;, 0x20, ptg.getFunctionIndex() );
+        assertEquals( &quot;Number of operands in the len formula&quot;, 1, ptg.getNumberOfOperands() );
+        assertEquals( &quot;Function Name&quot;, &quot;LEN&quot;, ptg.getName() );
+        assertEquals( &quot;Ptg Size&quot;, 3, ptg.getSize() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testIfSingleCondition(){
+		Ptg[] ptgs = parseFormula(&quot;IF(1=1,10)&quot;);
+		assertEquals(7, ptgs.length);
+
+		assertTrue(&quot;IF Attr set correctly&quot;, (ptgs[3] instanceof AttrPtg));
+		AttrPtg ifFunc = (AttrPtg)ptgs[3];
+		assertTrue(&quot;It is not an if&quot;, ifFunc.isOptimizedIf());
+
+		assertTrue(&quot;Single Value is not an IntPtg&quot;, (ptgs[4] instanceof IntPtg));
+		IntPtg intPtg = (IntPtg)ptgs[4];
+		assertEquals(&quot;Result&quot;, (short)10, intPtg.getValue());
+
+		assertTrue(&quot;Ptg is not a Variable Function&quot;, (ptgs[6] instanceof FuncVarPtg));
+		FuncVarPtg funcPtg = (FuncVarPtg)ptgs[6];
+		assertEquals(&quot;Arguments&quot;, 2, funcPtg.getNumberOfOperands());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static boolean isSimpleValueFunction(Ptg token) {
+		if (token instanceof AbstractFunctionPtg) {
+			AbstractFunctionPtg aptg = (AbstractFunctionPtg) token;
+			if (aptg.getDefaultOperandClass() != Ptg.CLASS_VALUE) {
+				return false;
+			}
+			int numberOfOperands = aptg.getNumberOfOperands();
+			for (int i=numberOfOperands-1; i&gt;=0; i--) {
+				if (aptg.getParameterClass(i) != Ptg.CLASS_VALUE) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+</code></pre>
+</body>

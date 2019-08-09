@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static void main(String[] args) throws IOException {
+        /* Apache POI Create Pivot Table Example Program */
+        /* Step -1: Create a workbook object to start with */
+        XSSFWorkbook new_workbook = new XSSFWorkbook(); //create a blank workbook object
+        /* Create a worksheet in the workbook. We will name it &quot;Pivot Table Example&quot; */
+        XSSFSheet sheet = new_workbook.createSheet(&quot;Pivot Table Example&quot;);  //create a worksheet with caption score_details
+        /* Add some Rows and Columns to explain Pivot Table  */         
+        /* Create the Header Row */
+        Row row1 = sheet.createRow(0);                
+        Cell cell11 = row1.createCell(0);
+        cell11.setCellValue(&quot;Student&quot;);
+        Cell cell12 = row1.createCell(1);
+        cell12.setCellValue(&quot;Subject&quot;);
+        Cell cell13 = row1.createCell(2);
+        cell13.setCellValue(&quot;Score&quot;);
+        /* Row #1 */
+        Row row2 = sheet.createRow(1);
+        Cell cell21 = row2.createCell(0);
+        cell21.setCellValue(&quot;Matt&quot;);
+        Cell cell22 = row2.createCell(1);
+        cell22.setCellValue(&quot;English&quot;);
+        Cell cell23 = row2.createCell(2);
+        cell23.setCellValue(67);
+        /* Row #2 */
+        Row row3 = sheet.createRow(2);
+        Cell cell31 = row3.createCell(0);
+        cell31.setCellValue(&quot;Pitt&quot;);
+        Cell cell32 = row3.createCell(1);
+        cell32.setCellValue(&quot;English&quot;);
+        Cell cell33 = row3.createCell(2);
+        cell33.setCellValue(90);
+        /* Row #3 */
+        Row row4 = sheet.createRow(3);
+        Cell cell41 = row4.createCell(0);
+        cell41.setCellValue(&quot;Pitt&quot;);
+        Cell cell42 = row4.createCell(1);
+        cell42.setCellValue(&quot;Biology&quot;);
+        Cell cell43 = row4.createCell(2);
+        cell43.setCellValue(90);
+        /* Row #4 */
+        Row row5 = sheet.createRow(4);
+        Cell cell51 = row5.createCell(0);
+        cell51.setCellValue(&quot;Matt&quot;);
+        Cell cell52 = row5.createCell(1);
+        cell52.setCellValue(&quot;Physics&quot;);
+        Cell cell53 = row5.createCell(2);
+        cell53.setCellValue(99);
+        /* Define an Area Reference for the Pivot Table */
+//        AreaReference a=new AreaReference(&quot;A1:C5&quot;);
+        /* Define the starting Cell Reference for the Pivot Table */
+        CellReference b=new CellReference(&quot;I5&quot;);
+        /* Create the Pivot Table */
+//        XSSFPivotTable pivotTable = sheet.createPivotTable(a,b);
+//        /* First Create Report Filter - We want to filter Pivot Table by Student Name */
+//        pivotTable.addReportFilter(0);
+         /* Second - Row Labels - Once a student is filtered all subjects to be displayed in pivot table */
+//        pivotTable.addRowLabel(1);
+        /* Define Column Label with Function, Sum of the marks obtained */
+//        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, 2);
+        /* Write output to file */ 
+        FileOutputStream output_file = new FileOutputStream(new File(&quot;POI_XLS_Pivot_Example.xlsx&quot;)); //create XLSX file
+        new_workbook.write(output_file);//write excel document to output stream
+        output_file.close(); //close the file
+
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static void main(String[] args) throws IOException, InvalidFormatException {
+
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet();
+
+		//Create some data to build the pivot table on
+		setCellData(sheet);
+
+		XSSFPivotTable pivotTable = sheet.createPivotTable(
+				new AreaReference(&quot;A1:C6&quot;, SpreadsheetVersion.EXCEL2007),
+				new CellReference(&quot;E3&quot;));
+
+		pivotTable.addRowLabel(1); // set second column as 1-th level of rows
+		setFormatPivotField(pivotTable, 1, 9); //set format numFmtId=9 0%
+		pivotTable.addRowLabel(0); // set first column as 2-th level of rows
+		pivotTable.addColumnLabel(DataConsolidateFunction.SUM, 2); // Sum up the second column
+		setFormatDataField(pivotTable, 2, 3); //numFmtId=3 # ##0
+
+		FileOutputStream fileOut = new FileOutputStream(&quot;stackoverflow-pivottable.xlsx&quot;);
+		wb.write(fileOut);
+		fileOut.close();
+		wb.close();
+	}
+</code></pre>
+</body>

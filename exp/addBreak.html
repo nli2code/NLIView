@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void addBreak(int main, int subFrom, int subTo) {
+
+        Integer key = Integer.valueOf(main);
+        Break region = _breakMap.get(key);
+        if(region == null) {
+            region = new Break(main, subFrom, subTo);
+            _breakMap.put(key, region);
+            _breaks.add(region);
+        } else {
+            region.main = main;
+            region.subFrom = subFrom;
+            region.subTo = subTo;
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testAddPageBreak() {
+	ctRun.addNewT().setStringValue(&quot;TEST STRING&quot;);
+	ctRun.addNewBr();
+	ctRun.addNewT().setStringValue(&quot;TEST2 STRING&quot;);
+	CTBr breac=ctRun.addNewBr();
+	breac.setClear(STBrClear.LEFT);
+	ctRun.addNewT().setStringValue(&quot;TEST3 STRING&quot;);
+        assertEquals(2, ctRun.sizeOfBrArray());
+        
+        XWPFRun run = new XWPFRun(CTR.Factory.newInstance(), p);
+        run.setText(&quot;TEXT1&quot;);
+        run.addBreak();
+        run.setText(&quot;TEXT2&quot;);
+        run.addBreak(BreakType.TEXT_WRAPPING);
+        assertEquals(2, run.getCTR().sizeOfBrArray());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void addSecondHeader(String secondHeaderContent, XWPFDocument doc) {
+		// Create Second Header
+		XWPFParagraph secondHeader = doc.createParagraph();
+		XWPFRun headerRun = secondHeader.createRun();
+		secondHeader.setAlignment(ParagraphAlignment.CENTER);
+		secondHeader.setBorderLeft(Borders.DOUBLE);
+		secondHeader.setBorderRight(Borders.DOUBLE);
+		headerRun.setBold(true);
+		headerRun.setFontSize(14);
+
+		headerRun.setText(secondHeaderContent);
+		headerRun.addBreak();
+	}
+</code></pre>
+</body>

@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public String getARGBHex() {
+	   StringBuffer sb = new StringBuffer();
+	   byte[] rgb = getARgb();
+	   if(rgb == null) {
+	      return null;
+	   }
+	   for(byte c : rgb) {
+	      int i = (int)c;
+	      if(i &lt; 0) {
+	         i += 256;
+	      }
+	      String cs = Integer.toHexString(i);
+	      if(cs.length() == 1) {
+	         sb.append(&#x27;0&#x27;);
+	      }
+	      sb.append(cs);
+	   }
+	   return sb.toString().toUpperCase();
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static String renderColor(Color color) {
+        if (color instanceof HSSFColor) {
+            return ((HSSFColor) color).getHexString();
+        } else if (color instanceof XSSFColor) {
+            return ((XSSFColor) color).getARGBHex();
+        } else {
+            return &quot;(none)&quot;;
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void test50786() throws Exception {
+       XSSFWorkbook wb = XSSFTestDataSamples.openSampleWorkbook(&quot;50786-indexed_colours.xlsx&quot;);
+       XSSFSheet s = wb.getSheetAt(0);
+       XSSFRow r = s.getRow(2);
+       
+       // Check we have the right cell
+       XSSFCell c = r.getCell(1);
+       assertEquals(&quot;test\u00a0&quot;, c.getRichStringCellValue().getString());
+       
+       // It should be light green
+       XSSFCellStyle cs = c.getCellStyle();
+       assertEquals(42, cs.getFillForegroundColor());
+       assertEquals(42, cs.getFillForegroundColorColor().getIndexed());
+       assertNotNull(cs.getFillForegroundColorColor().getRgb());
+       assertEquals(&quot;FFCCFFCC&quot;, cs.getFillForegroundColorColor().getARGBHex());
+    }
+</code></pre>
+</body>

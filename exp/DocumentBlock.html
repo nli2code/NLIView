@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public DocumentBlock(final InputStream stream, POIFSBigBlockSize bigBlockSize)
+        throws IOException
+    {
+        this(bigBlockSize);
+        int count = IOUtils.readFully(stream, _data);
+
+        _bytes_read = (count == -1) ? 0
+                                    : count;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	DataInputBlock getDataInputBlock(int offset) {
+		if (offset &gt;= _size) {
+			if (offset &gt; _size) {
+				throw new RuntimeException(&quot;Request for Offset &quot; + offset + &quot; doc size is &quot; + _size);
+			}
+			return null;
+		}
+		if (_property.shouldUseSmallBlocks()) {
+			return SmallDocumentBlock.getDataInputBlock(_small_store.getBlocks(), offset);
+		}
+		return DocumentBlock.getDataInputBlock(_big_store.getBlocks(), offset);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		DocumentBlock[] getBlocks() {
+			if (isValid() &amp;&amp; _writer != null) {
+				ByteArrayOutputStream stream = new ByteArrayOutputStream(_size);
+				DocumentOutputStream dstream = new DocumentOutputStream(stream, _size);
+
+				_writer.processPOIFSWriterEvent(new POIFSWriterEvent(dstream, _path, _name, _size));
+				bigBlocks = DocumentBlock.convert(_bigBlockSize, stream.toByteArray(), _size);
+			}
+			return bigBlocks;
+		}
+</code></pre>
+</body>

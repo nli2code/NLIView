@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public BoundSheetRecord(RecordInputStream in) {
+		field_1_position_of_BOF = in.readInt();
+		field_2_option_flags = in.readUShort();
+		int field_3_sheetname_length = in.readUByte();
+		field_4_isMultibyteUnicode = in.readByte();
+
+		if (isMultibyte()) {
+			field_5_sheetname = in.readUnicodeLEString(field_3_sheetname_length);
+		} else {
+			field_5_sheetname = in.readCompressedUnicode(field_3_sheetname_length);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int readInt(){
+        int ch1 = _in.readUByte();
+        int ch2 = _in.readUByte();
+        int ch3 = _in.readUByte();
+        int ch4 = _in.readUByte();
+        return (ch4 &lt;&lt; 24) + (ch3 &lt;&lt; 16) + (ch2 &lt;&lt; 8) + (ch1 &lt;&lt; 0);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public int read() throws IOException {
+		dieIfClosed();
+		if (atEOD()) {
+			return EOF;
+		}
+		int result = _currentBlock.readUByte();
+		_current_offset++;
+		if (_currentBlock.available() &lt; 1) {
+			_currentBlock = getDataInputBlock(_current_offset);
+		}
+		return result;
+	}
+</code></pre>
+</body>

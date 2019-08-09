@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void disabled_testHeaderParagraph() throws IOException {
+        XWPFDocument xml = XWPFTestDataSamples.openSampleDocument(&quot;ThreeColHead.docx&quot;);
+
+        XWPFHeader hdr = xml.getHeaderFooterPolicy().getDefaultHeader();
+        assertNotNull(hdr);
+
+       List&lt;XWPFParagraph&gt; ps =  hdr.getParagraphs();
+        assertEquals(1, ps.size());
+        XWPFParagraph p = ps.get(0);
+
+        assertEquals(5, p.getCTP().getRList().size());
+        assertEquals(&quot;First header column!\tMid header\tRight header!&quot;, p
+                .getText());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testPictureHandlingComplex() throws IOException, InvalidFormatException {
+	    XWPFDocument doc = XWPFTestDataSamples.openSampleDocument(&quot;issue_51265_3.docx&quot;);
+	    XWPFHeader xwpfHeader = doc.getHeaderList().get(0);
+
+	    assertEquals(3,doc.getAllPictures().size());
+        assertEquals(3,xwpfHeader.getAllPictures().size());
+	    assertEquals(5,doc.getAllPackagePictures().size());
+	    
+	    byte[] nature1 = XWPFTestDataSamples.getImage(&quot;nature1.jpg&quot;);
+	    String id = doc.addPictureData(nature1, Document.PICTURE_TYPE_JPEG);
+	    POIXMLDocumentPart part1 = xwpfHeader.getRelationById(&quot;rId1&quot;);
+	    XWPFPictureData part2 = (XWPFPictureData) doc.getRelationById(id);
+	    assertSame(part1,part2);
+	    
+	    doc.getPackage().revert();
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private void assignHeader(XWPFHeader hdr, Enum type) {
+        if(type == STHdrFtr.FIRST) {
+            firstPageHeader = hdr;
+        } else if(type == STHdrFtr.EVEN) {
+            evenPageHeader = hdr;
+        } else {
+            defaultHeader = hdr;
+        }
+    }
+</code></pre>
+</body>

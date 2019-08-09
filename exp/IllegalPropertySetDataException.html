@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static int writeUIntToStream( final OutputStream out, final long n )
+            throws IOException
+    {
+        long high = n &amp; 0xFFFFFFFF00000000L;
+        if ( high != 0 &amp;&amp; high != 0xFFFFFFFF00000000L )
+            throw new IllegalPropertySetDataException( &quot;Value &quot; + n
+                    + &quot; cannot be represented by 4 bytes.&quot; );
+        LittleEndian.putUInt( n, out );
+        return LittleEndian.INT_SIZE;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    UnicodeString( byte[] data, int offset )
+    {
+        int length = LittleEndian.getInt( data, offset );
+
+        if ( length == 0 )
+        {
+            _value = new byte[0];
+            return;
+        }
+
+        _value = LittleEndian.getByteArray( data, offset
+                + LittleEndian.INT_SIZE, length * 2 );
+
+        if ( _value[length * 2 - 1] != 0 || _value[length * 2 - 2] != 0 )
+            throw new IllegalPropertySetDataException(
+                    &quot;UnicodeString started at offset #&quot; + offset
+                            + &quot; is not NULL-terminated&quot; );
+    }
+</code></pre>
+</body>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testRightToLeft() throws IOException {
+        Workbook wb = _testDataProvider.createWorkbook();
+        Sheet sheet = wb.createSheet();
+
+        assertFalse(sheet.isRightToLeft());
+        sheet.setRightToLeft(true);
+        assertTrue(sheet.isRightToLeft());
+        sheet.setRightToLeft(false);
+        assertFalse(sheet.isRightToLeft());
+        
+        wb.close();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String toString() {
+        StringBuffer buffer = new StringBuffer(&quot;[Array Formula or Shared Formula]\n&quot;);
+        buffer.append(&quot;row = &quot;).append(getRow()).append(&quot;\n&quot;);
+        buffer.append(&quot;col = &quot;).append(getColumn()).append(&quot;\n&quot;);
+        return buffer.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void test35564() {
+        HSSFWorkbook wb = openSample(&quot;35564.xls&quot;);
+
+        HSSFSheet sheet = wb.getSheetAt( 0 );
+        assertEquals(false, sheet.isGridsPrinted());
+        assertEquals(false, sheet.getProtect());
+
+        writeOutAndReadBack(wb);
+    }
+</code></pre>
+</body>

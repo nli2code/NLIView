@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1,
+			ValueEval arg2) {
+		TwoDEval reference = convertFirstArg(arg0);
+
+		try {
+			int columnIx = resolveIndexArg(arg2, srcRowIndex, srcColumnIndex);
+			int rowIx = resolveIndexArg(arg1, srcRowIndex, srcColumnIndex);
+			return getValueFromArea(reference, rowIx, columnIx);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static AreaReference createAreaRef(SimpleRangePart part1, SimpleRangePart part2) {
+		if (!part1.isCompatibleForArea(part2)) {
+			throw new FormulaParseException(&quot;has incompatible parts: &#x27;&quot;
+					+ part1.getRep() + &quot;&#x27; and &#x27;&quot; + part2.getRep() + &quot;&#x27;.&quot;);
+		}
+		if (part1.isRow()) {
+			return AreaReference.getWholeRow(part1.getRep(), part2.getRep());
+		}
+		if (part1.isColumn()) {
+			return AreaReference.getWholeColumn(part1.getRep(), part2.getRep());
+		}
+		return new AreaReference(part1.getCellReference(), part2.getCellReference());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static ValueVector createVector(TwoDEval ae) {
+		if (ae.isColumn()) {
+			return createColumnVector(ae, 0);
+		}
+		if (ae.isRow()) {
+			return createRowVector(ae, 0);
+		}
+		return null;
+	}
+</code></pre>
+</body>

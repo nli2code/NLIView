@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test4BytePadding() {
+        // actual data from file saved by Excel 2007
+        byte[] data = HexRead.readFromString(&quot;&quot;
+                + &quot;15 00 12 00  1E 00 01 00  11 60 B4 6D  3C 01 C4 06 &quot;
+                + &quot;49 06 00 00  00 00 00 00  00 00 00 00&quot;);
+        // this data seems to have 2 extra bytes of padding more than usual
+        // the total may have been padded to the nearest quad-byte length
+        RecordInputStream in = TestcaseRecordInputStream.create(ObjRecord.sid, data);
+        // check read OK
+        ObjRecord record = new ObjRecord(in);
+        // check that it re-serializes to the same data
+        byte[] ser = record.serialize();
+        TestcaseRecordInputStream.confirmRecordEncoding(ObjRecord.sid, data, ser);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testUnexpectedBytes_bug47251(){
+        String hex = &quot;&quot; +
+                &quot;09 08 10 00 00 06 05 00 EC 15 CD 07 C1 C0 00 00 06 03 00 00 &quot; +   //BOF
+                &quot;E2 00 02 00 B0 04 &quot; + //INTERFACEEND with extra two bytes
+                &quot;0A 00 00 00&quot;;    // EOF
+        byte[] data = HexRead.readFromString(hex);
+        List&lt;Record&gt; records = RecordFactory.createRecords(new ByteArrayInputStream(data));
+        assertEquals(3, records.size());
+        Record rec1 = records.get(1);
+        assertEquals(InterfaceHdrRecord.class, rec1.getClass());
+        InterfaceHdrRecord r = (InterfaceHdrRecord)rec1;
+        assertEquals(&quot;[E1, 00, 02, 00, B0, 04]&quot;, HexDump.toHex(r.serialize()));
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testError() {
+		byte[] data = HexRead.readFromString(
+				&quot;00 00 00 00 0F 00 &quot; + // row, col, xfIndex
+				&quot;07 01 &quot; // #DIV/0!, isError
+				);
+
+		RecordInputStream in = TestcaseRecordInputStream.create(BoolErrRecord.sid, data);
+		BoolErrRecord ber = new BoolErrRecord(in);
+		assertTrue(ber.isError());
+		assertEquals(7, ber.getErrorValue());
+		
+		TestcaseRecordInputStream.confirmRecordEncoding(BoolErrRecord.sid, data, ber.serialize());
+	}
+</code></pre>
+</body>

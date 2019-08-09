@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static Map&lt;String, HashMap&gt; checkIfStringsExistInParagraph(XWPFParagraph p, List&lt;String&gt; sl) {
+        Map&lt;String, HashMap&gt; results = new HashMap();
+        for (String s: sl) {
+            results.put(s, new HashMap());
+            results.get(s).put(&quot;EXISTS&quot;, p.getParagraphText().contains(s));
+        }
+        return results;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test44431()
+    {
+        HWPFDocument doc1 = HWPFTestDataSamples.openSampleFile( &quot;Bug44431.doc&quot; );
+        WordExtractor extractor1 = new WordExtractor( doc1 );
+
+        HWPFDocument doc2 = HWPFTestDataSamples.writeOutAndReadBack( doc1 );
+        WordExtractor extractor2 = new WordExtractor( doc2 );
+
+        assertEquals( extractor1.getFooterText(), extractor2.getFooterText() );
+        assertEquals( extractor1.getHeaderText(), extractor2.getHeaderText() );
+        assertEquals( Arrays.toString( extractor1.getParagraphText() ),
+                Arrays.toString( extractor2.getParagraphText() ) );
+
+        assertEquals( extractor1.getText(), extractor2.getText() );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    protected static String[] getParagraphText( Range r )
+    {
+        String[] ret;
+        ret = new String[r.numParagraphs()];
+        for ( int i = 0; i &lt; ret.length; i++ )
+        {
+            Paragraph p = r.getParagraph( i );
+            ret[i] = p.text();
+
+            // Fix the line ending
+            if ( ret[i].endsWith( &quot;\r&quot; ) )
+            {
+                ret[i] = ret[i] + &quot;\n&quot;;
+            }
+        }
+        return ret;
+    }
+</code></pre>
+</body>

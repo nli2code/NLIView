@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testRightToLeft() throws IOException {
+        Workbook wb = _testDataProvider.createWorkbook();
+        Sheet sheet = wb.createSheet();
+
+        assertFalse(sheet.isRightToLeft());
+        sheet.setRightToLeft(true);
+        assertTrue(sheet.isRightToLeft());
+        sheet.setRightToLeft(false);
+        assertFalse(sheet.isRightToLeft());
+        
+        wb.close();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testProtectSheet_lowlevel() {
+
+    	XSSFWorkbook wb = new XSSFWorkbook();
+    	XSSFSheet sheet = wb.createSheet();
+        CTSheetProtection pr = sheet.getCTWorksheet().getSheetProtection();
+        assertNull(&quot;CTSheetProtection should be null by default&quot;, pr);
+        String password = &quot;Test&quot;;
+        sheet.protectSheet(password);
+        pr = sheet.getCTWorksheet().getSheetProtection();
+        assertNotNull(&quot;CTSheetProtection should be not null&quot;, pr);
+        assertTrue(&quot;sheet protection should be on&quot;, pr.isSetSheet());
+        assertTrue(&quot;object protection should be on&quot;, pr.isSetObjects());
+        assertTrue(&quot;scenario protection should be on&quot;, pr.isSetScenarios());
+        String hash = String.valueOf(HexDump.shortToHex(PasswordRecord.hashPassword(password))).substring(2);
+        assertEquals(&quot;well known value for top secret hash should be &quot;+ hash, hash, pr.xgetPassword().getStringValue());
+
+        sheet.protectSheet(null);
+        assertNull(&quot;protectSheet(null) should unset CTSheetProtection&quot;, sheet.getCTWorksheet().getSheetProtection());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testProtectSheet() {
+        int expectedHash = (short)0xfef1;
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet s = wb.createSheet();
+        s.protectSheet(&quot;abcdefghij&quot;);
+        WorksheetProtectionBlock pb = s.getSheet().getProtectionBlock();
+        assertTrue(&quot;protection should be on&quot;, pb.isSheetProtected());
+        assertTrue(&quot;object protection should be on&quot;,pb.isObjectProtected());
+        assertTrue(&quot;scenario protection should be on&quot;,pb.isScenarioProtected());
+        assertEquals(&quot;well known value for top secret hash should be &quot;+Integer.toHexString(expectedHash).substring(4), expectedHash, pb.getPasswordHash());
+    }
+</code></pre>
+</body>

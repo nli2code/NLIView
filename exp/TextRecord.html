@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public Object clone() {
+        TextRecord rec = new TextRecord();
+    
+        rec.field_1_horizontalAlignment = field_1_horizontalAlignment;
+        rec.field_2_verticalAlignment = field_2_verticalAlignment;
+        rec.field_3_displayMode = field_3_displayMode;
+        rec.field_4_rgbColor = field_4_rgbColor;
+        rec.field_5_x = field_5_x;
+        rec.field_6_y = field_6_y;
+        rec.field_7_width = field_7_width;
+        rec.field_8_height = field_8_height;
+        rec.field_9_options1 = field_9_options1;
+        rec.field_10_indexOfColorValue = field_10_indexOfColorValue;
+        rec.field_11_options2 = field_11_options2;
+        rec.field_12_textRotation = field_12_textRotation;
+        return rec;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public TextRecord(RecordInputStream in)
+    {
+        field_1_horizontalAlignment    = in.readByte();
+        field_2_verticalAlignment      = in.readByte();
+        field_3_displayMode            = in.readShort();
+        field_4_rgbColor               = in.readInt();
+        field_5_x                      = in.readInt();
+        field_6_y                      = in.readInt();
+        field_7_width                  = in.readInt();
+        field_8_height                 = in.readInt();
+        field_9_options1               = in.readShort();
+        field_10_indexOfColorValue     = in.readShort();
+        field_11_options2              = in.readShort();
+        field_12_textRotation          = in.readShort();
+    }
+</code></pre>
+</body>

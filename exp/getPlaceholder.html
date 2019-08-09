@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    XSLFSimpleShape getPlaceholder(CTPlaceholder ph) {
+        XSLFSimpleShape shape = null;
+        if(ph.isSetIdx()) shape = getPlaceholderById((int)ph.getIdx());
+
+        if (shape == null &amp;&amp; ph.isSetType()) {
+            shape = getPlaceholderByType(ph.getType().intValue());
+        }
+        return shape;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public Placeholder getTextType(){
+        CTPlaceholder ph = getCTPlaceholder();
+        if (ph == null) return null;
+
+        int val = ph.getType().intValue();
+        return Placeholder.lookupOoxml(val);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private String getPlaceholderText(int placeholderId, CString cs){
+        String text = null;
+        if(_ppt2007){
+            Sheet master = _sheet != null ? _sheet : _ppt.getSlidesMasters()[0];
+            TextShape placeholder = master.getPlaceholder(placeholderId);
+            if(placeholder != null) text = placeholder.getText();
+
+            //default text in master placeholders is not visible
+            if(&quot;*&quot;.equals(text)) text = null;
+        } else {
+            text = cs == null ? null : cs.getText();
+        }
+        return text;
+    }
+</code></pre>
+</body>

@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void writeProperties() throws Exception {
+        // Just check we can write them back out into a filesystem
+        NPOIFSFileSystem outFS = new NPOIFSFileSystem();
+        doc.readProperties();
+        doc.writeProperties(outFS);
+
+        // Should now hold them
+        assertNotNull(
+                outFS.createDocumentInputStream(&quot;\005SummaryInformation&quot;)
+        );
+        assertNotNull(
+                outFS.createDocumentInputStream(&quot;\005DocumentSummaryInformation&quot;)
+        );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected List&lt;PropertyValue&gt; writeHeaderData(OutputStream out) throws IOException {
+        //header of the top-level
+        //page 21, point 2.4.1.1
+        
+        // 8 bytes of reserved zeros
+        out.write(new byte[8]);
+
+        // Nexts and counts
+        LittleEndian.putUInt(nextRecipientId, out);
+        LittleEndian.putUInt(nextAttachmentId, out);
+        LittleEndian.putUInt(recipientCount, out);
+        LittleEndian.putUInt(attachmentCount, out);
+
+        // 8 bytes of reserved zeros
+        out.write(new byte[8]);
+        
+        return super.writeHeaderData(out);
+   }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	protected void writeProperties(POIFSFileSystem outFS, List&lt;String&gt; writtenEntries) throws IOException {
+        SummaryInformation si = getSummaryInformation();
+        if(si != null) {
+			writePropertySet(SummaryInformation.DEFAULT_STREAM_NAME, si, outFS);
+			if(writtenEntries != null) {
+				writtenEntries.add(SummaryInformation.DEFAULT_STREAM_NAME);
+			}
+		}
+        DocumentSummaryInformation dsi = getDocumentSummaryInformation();
+        if(dsi != null) {
+			writePropertySet(DocumentSummaryInformation.DEFAULT_STREAM_NAME, dsi, outFS);
+			if(writtenEntries != null) {
+				writtenEntries.add(DocumentSummaryInformation.DEFAULT_STREAM_NAME);
+			}
+		}
+	}
+</code></pre>
+</body>

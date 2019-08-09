@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private void constructValueRecord(List&lt;Record&gt; records) {
+		RowBlocksReader rbr = new RowBlocksReader(new RecordStream(records, 0));
+		SharedValueManager sfrh = rbr.getSharedFormulaManager();
+		RecordStream rs = rbr.getPlainRecordStream();
+		while(rs.hasNext()) {
+			Record rec = rs.getNext();
+			valueRecord.construct((CellValueRecordInterface)rec, rs, sfrh);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void construct(CellValueRecordInterface rec, RecordStream rs, SharedValueManager sfh) {
+		if (rec instanceof FormulaRecord) {
+			FormulaRecord formulaRec = (FormulaRecord)rec;
+			// read optional cached text value
+			StringRecord cachedText;
+			Class&lt;? extends Record&gt; nextClass = rs.peekNextClass();
+			if (nextClass == StringRecord.class) {
+				cachedText = (StringRecord) rs.getNext();
+			} else {
+				cachedText = null;
+			}
+			insertCell(new FormulaRecordAggregate(formulaRec, cachedText, sfh));
+		} else {
+			insertCell(rec);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		public Record create(RecordInputStream in) {
+			Object[] args = { in, };
+			try {
+				return _c.newInstance(args);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException(e);
+			} catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			} catch (InvocationTargetException e) {
+				throw new RecordFormatException(&quot;Unable to construct record instance&quot; , e.getTargetException());
+			}
+		}
+</code></pre>
+</body>

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static BoundSheetRecord[] orderByBofPosition(List&lt;BoundSheetRecord&gt; boundSheetRecords) {
+		BoundSheetRecord[] bsrs = new BoundSheetRecord[boundSheetRecords.size()];
+		boundSheetRecords.toArray(bsrs);
+		Arrays.sort(bsrs, BOFComparator);
+	 	return bsrs;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testOrdering() {
+		BoundSheetRecord bs1 = new BoundSheetRecord(&quot;SheetB&quot;);
+		BoundSheetRecord bs2 = new BoundSheetRecord(&quot;SheetC&quot;);
+		BoundSheetRecord bs3 = new BoundSheetRecord(&quot;SheetA&quot;);
+		bs1.setPositionOfBof(11);
+		bs2.setPositionOfBof(33);
+		bs3.setPositionOfBof(22);
+
+		List&lt;BoundSheetRecord&gt; l = new ArrayList&lt;BoundSheetRecord&gt;();
+		l.add(bs1);
+		l.add(bs2);
+		l.add(bs3);
+
+		BoundSheetRecord[] r = BoundSheetRecord.orderByBofPosition(l);
+		assertEquals(3, r.length);
+		assertEquals(bs1, r[0]);
+		assertEquals(bs3, r[1]);
+		assertEquals(bs2, r[2]);
+	}
+</code></pre>
+</body>

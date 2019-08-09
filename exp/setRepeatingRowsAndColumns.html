@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setRepeatingRowsAndColumns(int sheetIndex,
+                                           int startColumn, int endColumn,
+                                           int startRow, int endRow) {
+      XSSFSheet sheet = getSheetAt(sheetIndex);
+
+      CellRangeAddress rows = null;
+      CellRangeAddress cols = null;
+
+      if (startRow != -1) {
+        rows = new CellRangeAddress(startRow, endRow, -1, -1);
+      }
+      if (startColumn != -1) {
+        cols = new CellRangeAddress(-1, -1, startColumn, endColumn);
+      }
+
+      sheet.setRepeatingRows(rows);
+      sheet.setRepeatingColumns(cols);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testSetRepeatingRowsAnsColumns(){
+        Workbook wb = _testDataProvider.createWorkbook();
+        Sheet sheet1 = wb.createSheet();
+        wb.setRepeatingRowsAndColumns(wb.getSheetIndex(sheet1), 0, 0, 0, 3);
+        assertEquals(&quot;1:4&quot;, sheet1.getRepeatingRows().formatAsString());
+        assertEquals(&quot;A:A&quot;, sheet1.getRepeatingColumns().formatAsString());
+
+        //must handle sheets with quotas, see Bugzilla #47294
+        Sheet sheet2 = wb.createSheet(&quot;My&#x27; Sheet&quot;);
+        wb.setRepeatingRowsAndColumns(wb.getSheetIndex(sheet2), 0, 0, 0, 3);
+        assertEquals(&quot;1:4&quot;, sheet2.getRepeatingRows().formatAsString());
+        assertEquals(&quot;A:A&quot;, sheet1.getRepeatingColumns().formatAsString());
+    }
+</code></pre>
+</body>

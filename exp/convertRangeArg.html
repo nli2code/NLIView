@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+
+		AreaEval aeRange;
+		double result;
+		try {
+			ValueEval ve = OperandResolver.getSingleValue(arg0, srcRowIndex, srcColumnIndex);
+			result = OperandResolver.coerceValueToDouble(ve);
+			if (Double.isNaN(result) || Double.isInfinite(result)) {
+				throw new EvaluationException(ErrorEval.NUM_ERROR);
+			}
+			aeRange = convertRangeArg(arg1);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+		return eval(srcRowIndex, srcColumnIndex, result, aeRange, true);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static AreaEval convertRangeArg(ValueEval eval) throws EvaluationException {
+		if (eval instanceof AreaEval) {
+			return (AreaEval) eval;
+		}
+		if (eval instanceof RefEval) {
+			return ((RefEval)eval).offset(0, 0, 0, 0);
+		}
+		throw new EvaluationException(ErrorEval.VALUE_INVALID);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1,
+			ValueEval arg2) {
+
+		AreaEval aeRange;
+		AreaEval aeSum;
+		try {
+			aeRange = convertRangeArg(arg0);
+			aeSum = createSumRange(arg2, aeRange);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+		return eval(srcRowIndex, srcColumnIndex, arg1, aeRange, aeSum);
+	}
+</code></pre>
+</body>

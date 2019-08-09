@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testTitleMasterTextAttributes() throws Exception {
+        SlideShow ppt = new SlideShow(_slTests.openResourceAsStream(&quot;slide_master.ppt&quot;));
+        TitleMaster[] master = ppt.getTitleMasters();
+        assertEquals(1, master.length);
+
+        assertEquals(32, master[0].getStyleAttribute(TextHeaderAtom.CENTER_TITLE_TYPE, 0, &quot;font.size&quot;, true).getValue());
+        CharFlagsTextProp prop1 = (CharFlagsTextProp)master[0].getStyleAttribute(TextHeaderAtom.CENTER_TITLE_TYPE, 0, &quot;char_flags&quot;, true);
+        assertEquals(true, prop1.getSubValue(CharFlagsTextProp.BOLD_IDX));
+        assertEquals(false, prop1.getSubValue(CharFlagsTextProp.ITALIC_IDX));
+        assertEquals(true, prop1.getSubValue(CharFlagsTextProp.UNDERLINE_IDX));
+
+        assertEquals(20, master[0].getStyleAttribute(TextHeaderAtom.CENTRE_BODY_TYPE, 0, &quot;font.size&quot;, true).getValue());
+        CharFlagsTextProp prop2 = (CharFlagsTextProp)master[0].getStyleAttribute(TextHeaderAtom.CENTRE_BODY_TYPE, 0, &quot;char_flags&quot;, true);
+        assertEquals(true, prop2.getSubValue(CharFlagsTextProp.BOLD_IDX));
+        assertEquals(false, prop2.getSubValue(CharFlagsTextProp.ITALIC_IDX));
+        assertEquals(false, prop2.getSubValue(CharFlagsTextProp.UNDERLINE_IDX));
+    }
+</code></pre>
+</body>

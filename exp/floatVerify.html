@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private static void floatVerify(String operator, HSSFWorkbook wb) {
+
+        HSSFSheet        s      = wb.getSheetAt(0);
+
+        // don&#x27;t know how to check correct result .. for the moment, we just verify that the file can be read.
+
+        for (int x = 1; x &lt; Short.MAX_VALUE &amp;&amp; x &gt; 0; x=(short)(x*2)) {
+            HSSFRow r = s.getRow(x);
+
+            for (int y = 1; y &lt; 256 &amp;&amp; y &gt; 0; y=(short)(y+2)) {
+
+                HSSFCell c = r.getCell(y);
+                assertTrue(&quot;got a formula&quot;,c.getCellFormula()!=null);
+
+                assertTrue(&quot;loop Formula is as expected &quot;+x+&quot;.&quot;+y+operator+y+&quot;.&quot;+x+&quot;!=&quot;+c.getCellFormula(),(
+                (&quot;&quot;+x+&quot;.&quot;+y+operator+y+&quot;.&quot;+x).equals(c.getCellFormula()) ));
+            }
+        }
+    }
+</code></pre>
+</body>

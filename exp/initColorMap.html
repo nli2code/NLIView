@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public XSLFTheme getTheme(){
+        if(_theme == null){
+            for (POIXMLDocumentPart p : getRelations()) {
+                if (p instanceof XSLFTheme){
+                    _theme = (XSLFTheme)p;
+                    CTColorMapping cmap = _slide.getClrMap();
+                    if(cmap != null){
+                        _theme.initColorMap(cmap);
+                    }
+                    break;
+                }
+            }
+        }
+        return _theme;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    void initColorMap(CTColorMapping cmap) {
+        _schemeColors.put(&quot;bg1&quot;, _schemeColors.get(cmap.getBg1().toString()));
+        _schemeColors.put(&quot;bg2&quot;, _schemeColors.get(cmap.getBg2().toString()));
+        _schemeColors.put(&quot;tx1&quot;, _schemeColors.get(cmap.getTx1().toString()));
+        _schemeColors.put(&quot;tx2&quot;, _schemeColors.get(cmap.getTx2().toString()));
+    }
+</code></pre>
+</body>

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private Ptg adjustPtg(Ptg ptg, int currentExternSheetIx) {
+		switch(_mode){
+            case Row:
+                return adjustPtgDueToRowMove(ptg, currentExternSheetIx);
+            case Sheet:
+                return adjustPtgDueToShiftMove(ptg);
+            default:
+                throw new IllegalStateException(&quot;Unsupported shift mode: &quot; + _mode);
+        }
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void modifyFormatRun(short oldPos, short newLen) {
+		int shift = 0;
+		for(int i=0; i &lt; _formats.length; i++) {
+			CTFormat ctf = _formats[i];
+			if (shift != 0) {
+				ctf.setOffset(ctf.getOffset() + shift);
+			} else if (oldPos == ctf.getOffset() &amp;&amp; i &lt; _formats.length - 1){
+				CTFormat nextCTF = _formats[i + 1];
+				shift = newLen - (nextCTF.getOffset() - ctf.getOffset());
+			} 
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testEndnote() throws Exception
+    {
+        String result = getFoText( &quot;endingnote.doc&quot; );
+
+        assertContains( result,
+                &quot;&lt;fo:basic-link id=\&quot;endnote_back_1\&quot; internal-destination=\&quot;endnote_1\&quot;&gt;&quot; );
+        assertContains( result,
+                &quot;&lt;fo:inline baseline-shift=\&quot;super\&quot; font-size=\&quot;smaller\&quot;&gt;1&lt;/fo:inline&gt;&quot; );
+        assertContains( result,
+                &quot;&lt;fo:basic-link id=\&quot;endnote_1\&quot; internal-destination=\&quot;endnote_back_1\&quot;&gt;&quot; );
+        assertContains( result,
+                &quot;&lt;fo:inline baseline-shift=\&quot;super\&quot; font-size=\&quot;smaller\&quot;&gt;1 &lt;/fo:inline&gt;&quot; );
+        assertContains( result, &quot;Ending note text&quot; );
+    }
+</code></pre>
+</body>

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private EscherBSERecord createRecord() {
+        EscherBSERecord r = new EscherBSERecord();
+        r.setOptions( (short) 0x0001 );
+        r.setBlipTypeWin32( EscherBSERecord.BT_JPEG );
+        r.setBlipTypeMacOS( EscherBSERecord.BT_JPEG );
+        r.setUid( HexRead.readFromString( &quot;01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 00&quot; ) );
+        r.setTag( (short) 1 );
+        r.setRef( 2 );
+        r.setOffset( 3 );
+        r.setUsage( (byte) 4 );
+        r.setName( (byte) 5 );
+        r.setUnused2( (byte) 6 );
+        r.setUnused3( (byte) 7 );
+        r.setRemainingData( new byte[0] );
+        return r;
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setUid(byte[] uid) {
+        if (uid == null || uid.length != 16) {
+            throw new IllegalArgumentException(&quot;uid must be byte[16]&quot;);
+        }
+        System.arraycopy(uid, 0, field_3_uid, 0, field_3_uid.length);
+    }
+</code></pre>
+</body>

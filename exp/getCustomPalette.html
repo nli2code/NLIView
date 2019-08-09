@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>        public Body replaceColor(final IndexedColors color, final byte red,
+                                 final byte green, final byte blue) {
+            final HSSFWorkbook hssfwb = (HSSFWorkbook) wb;
+            final HSSFPalette palette = hssfwb.getCustomPalette();
+            palette.setColorAtIndex(color.index, red, green, blue);
+
+            return this;
+        }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public PaletteRecord getCustomPalette()
+    {
+      PaletteRecord palette;
+      int palettePos = records.getPalettepos();
+      if (palettePos != -1) {
+        Record rec = records.get(palettePos);
+        if (rec instanceof PaletteRecord) {
+          palette = (PaletteRecord) rec;
+        } else throw new RuntimeException(&quot;InternalError: Expected PaletteRecord but got a &#x27;&quot;+rec+&quot;&#x27;&quot;);
+      }
+      else
+      {
+          palette = createPalette();
+          //Add the palette record after the bof which is always the first record
+          records.add(1, palette);
+          records.setPalettepos(1);
+      }
+      return palette;
+    }
+</code></pre>
+</body>

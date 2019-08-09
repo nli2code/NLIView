@@ -19,31 +19,22 @@
 
 
     <section class="main-content">
+
       <h3>
-<a id="sypet" class="anchor" href="#sypet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
+      <a id="sypet" class="anchor" href="#sypet" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
+      <p>
+      LibNLI navigates the learning process of Java libraries.
+        Developers browse <a href="concept.html">domain concepts</a> and <a href="dual.html">programming tasks</a> in natural language for a given library.
+      Each concept or task is mapped to its implementation with illustrative examples.
+      </p>
 
-<p>
-
-SyPet is a novel type-directed tool for component-based synthesis. The key novelty of our
-approach is the use of a compact Petri-net representation to model
-relationships between methods in an API. Given a target method
-signature S, our approach performs reachability analysis on the underlying
-Petri-net model to identify sequences of method calls that
-could be used to synthesize an implementation of S. The programs
-synthesized by our algorithm are guaranteed to type check and pass
-all test cases provided by the user.</p>
-
-<!--h3>
-<a id="doc" class="anchor" href="#doc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
-
-<p>TBD.</p-->
-
-<h3>
-<a id="data-set" class="anchor" href="#data-set" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dataset</h3>
-
-<p>To reproduce the result in our paper, you need to download the <a href="./SyPet.tar.gz">zip file</a> which contains SyPet as well as 30 benchmarks that are used in our POPL paper. Please go through
-our README file before running the tool.</p>
-
+      <h3>
+      <a id="data-set" class="anchor" href="#data-set" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dataset</h3>
+      <p>To construct current version of LibNLI for Apache POI, we analyzed <a href="./SyPet.tar.gz">source code</a>
+        , <a href="./SyPet.tar.gz">related StackOverflow posts</a> and <a href="./SyPet.tar.gz">623 client repositories</a>.
+        We apply the novel code clone detector <a href="https://github.com/Mondego/SourcererCC">SourcererCC</a> tool
+        to cluster client code and present API examples.
+      </p>
 
     </section>
 

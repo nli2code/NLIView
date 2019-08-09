@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void setCellData(XSSFSheet sheet) {
+
+		String[] names = {&quot;Jane&quot;, &quot;Tarzan&quot;, &quot;Terk&quot;, &quot;Kate&quot;, &quot;Dmitry&quot;};
+		Double[] percents = {0.25, 0.5, 0.75, 0.25, 0.5};
+		Integer[] balances = {107634, 554234, 10234, 22350, 15234};
+
+		Row row = sheet.createRow(0);
+		row.createCell(0).setCellValue(&quot;Name&quot;);
+		row.createCell(1).setCellValue(&quot;Percents&quot;);
+		row.createCell(2).setCellValue(&quot;Balance&quot;);
+
+		for (int i = 0; i &lt; names.length; i++) {
+			row = sheet.createRow(i + 1);
+			row.createCell(0).setCellValue(names[i]);
+			row.createCell(1).setCellValue(percents[i]);
+			row.createCell(2).setCellValue(balances[i]);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>		 public void setCellData(String workBookName, int sheetNum, int rownum, int columnum, String value)  {
+			
+			 
+			        try {
+			        	
+			        	getCellObject(workBookName, sheetNum, rownum, columnum).setCellValue(value);
+						
+					} catch (Exception e) {
+					
+						e.printStackTrace();
+					}  
+			       
+			        updateFile(existence1);
+					
+				
+				
+			}
+</code></pre>
+</body>

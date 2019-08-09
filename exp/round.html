@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>        public static int widthUnits2Pixel(short widthUnits) {
+            int pixels = (widthUnits / EXCEL_COLUMN_WIDTH_FACTOR)
+                    * UNIT_OFFSET_LENGTH;
+            int offsetWidthUnits = widthUnits % EXCEL_COLUMN_WIDTH_FACTOR;
+            pixels += Math.round(offsetWidthUnits /
+                    ((float) EXCEL_COLUMN_WIDTH_FACTOR / UNIT_OFFSET_LENGTH));
+            return pixels;
+        }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testRounding_bug51339() {
+        Workbook wb = _testDataProvider.createWorkbook();
+        Sheet sheet = wb.createSheet(&quot;Sheet1&quot;);
+        Row row = sheet.createRow(0);
+        Cell cellA1 = row.createCell(0);
+        cellA1.setCellValue(2162.615d);
+        Cell cellB1 = row.createCell(1);
+        cellB1.setCellFormula(&quot;round(a1,2)&quot;);
+        Cell cellC1 = row.createCell(2);
+        cellC1.setCellFormula(&quot;roundup(a1,2)&quot;);
+        Cell cellD1 = row.createCell(3);
+        cellD1.setCellFormula(&quot;rounddown(a1,2)&quot;);
+        FormulaEvaluator fe = wb.getCreationHelper().createFormulaEvaluator();
+
+        assertEquals(2162.62, fe.evaluateInCell(cellB1).getNumericCellValue(), 0.0);
+        assertEquals(2162.62, fe.evaluateInCell(cellC1).getNumericCellValue(), 0.0);
+        assertEquals(2162.61, fe.evaluateInCell(cellD1).getNumericCellValue(), 0.0);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setCoordinates(Rectangle2D anchor){
+        EscherContainerRecord spContainer = (EscherContainerRecord)_escherContainer.getChild(0);
+        EscherSpgrRecord spgr = (EscherSpgrRecord)getEscherChild(spContainer, EscherSpgrRecord.RECORD_ID);
+
+        int x1 = (int)Math.round(anchor.getX()*MASTER_DPI/POINT_DPI);
+        int y1 = (int)Math.round(anchor.getY()*MASTER_DPI/POINT_DPI);
+        int x2 = (int)Math.round((anchor.getX() + anchor.getWidth())*MASTER_DPI/POINT_DPI);
+        int y2 = (int)Math.round((anchor.getY() + anchor.getHeight())*MASTER_DPI/POINT_DPI);
+
+        spgr.setRectX1(x1);
+        spgr.setRectY1(y1);
+        spgr.setRectX2(x2);
+        spgr.setRectY2(y2);
+
+    }
+</code></pre>
+</body>

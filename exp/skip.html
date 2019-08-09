@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>        private byte[] nextChunk() throws GeneralSecurityException, IOException {
+            int index = (int)(_pos &gt;&gt; 12);
+            byte[] blockKey = new byte[4];
+            LittleEndian.putInt(blockKey, 0, index);
+            byte[] iv = generateIv(_info.getHeader().getAlgorithm(),
+                                   _info.getHeader().getKeySalt(), blockKey);
+            _cipher.init(Cipher.DECRYPT_MODE, _secretKey, new IvParameterSpec(iv));
+            if (_lastIndex != index)
+                _stream.skip((index - _lastIndex) &lt;&lt; 12);
+
+            byte[] block = new byte[Math.min(_stream.available(), 4096)];
+            _stream.readFully(block);
+            _lastIndex = index + 1;
+            return _cipher.doFinal(block);
+        }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>   private static void skipToBoundary(int length, InputStream inp) throws IOException {
+      // Data is always padded out to a 4 byte boundary
+      if(length % 4 != 0) {
+         int skip = 4 - (length % 4);
+         byte[] padding = new byte[skip];
+         IOUtils.readFully(inp, padding);
+      }
+   }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private byte[] read(byte[] data, int pos) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayInputStream bis = new ByteArrayInputStream(data);
+        Header header = new Header();
+        header.read(data, pos);
+        bis.skip(pos + header.getSize());
+        InflaterInputStream inflater = new InflaterInputStream( bis );
+        byte[] chunk = new byte[4096];
+        int count;
+        while ((count = inflater.read(chunk)) &gt;=0 ) {
+            out.write(chunk,0,count);
+        }
+        inflater.close();
+        return out.toByteArray();
+    }
+</code></pre>
+</body>

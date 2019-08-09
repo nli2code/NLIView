@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testSerialize() {
+		byte[] expectedArray = HexRead.readFromString(&quot;&quot;
+				+ &quot;06 00 16 00 &quot; // Formula
+				+ &quot;01 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 &quot;
+				+ &quot;01 02 06 00 &quot; // Blank
+				+ &quot;02 00 02 00 00 00&quot;);
+		byte[] actualArray = new byte[expectedArray.length];
+		List&lt;Record&gt; records = testData();
+		constructValueRecord(records);
+
+		SerializerVisitor sv = new SerializerVisitor(actualArray);
+		valueRecord.visitCellsForRow(1, sv);
+		valueRecord.visitCellsForRow(2, sv);
+		assertEquals(actualArray.length, sv.getWriteIndex());
+		assertTrue(Arrays.equals(expectedArray, actualArray));
+	}
+</code></pre>
+</body>

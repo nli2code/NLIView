@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testStore()
+    {
+        SeriesChartGroupIndexRecord record = new SeriesChartGroupIndexRecord();
+        record.setChartGroupIndex( (short)0 );
+
+
+        byte [] recordBytes = record.serialize();
+        assertEquals(recordBytes.length - 4, data.length);
+        for (int i = 0; i &lt; data.length; i++)
+            assertEquals(&quot;At offset &quot; + i, data[i], recordBytes[i+4]);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public SeriesListRecord(RecordInputStream in) {
+    	int nItems = in.readUShort();
+    	short[] ss = new short[nItems];
+    	for (int i = 0; i &lt; nItems; i++) {
+			ss[i] = in.readShort();
+			
+		}
+        field_1_seriesNumbers = ss;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testLoad() {
+
+        SeriesListRecord record = new SeriesListRecord(TestcaseRecordInputStream.create(0x1016, data));
+        assertEquals( (short)0x2001, record.getSeriesNumbers()[0]);
+        assertEquals( (short)0xf0ff, record.getSeriesNumbers()[1]);
+        assertEquals( 2, record.getSeriesNumbers().length);
+
+        assertEquals( 4 + 6, record.getRecordSize() );
+    }
+</code></pre>
+</body>

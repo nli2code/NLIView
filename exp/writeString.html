@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private void populateglAccounts(Sheet GlAccountSheet, int rowIndex) {
+		for(GlAccount glAccount:glAccounts) {
+        	Row row = GlAccountSheet.createRow(rowIndex);
+        	writeInt(ID_COL, row, glAccount.getId());
+        	writeString(ACCOUNT_NAME_COL, row, glAccount.getName().trim().replaceAll(&quot;[ )(]&quot;, &quot;_&quot;));
+        	rowIndex++;
+        }
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void setLookupTable(Sheet groupSheet) {
+    	setOfficeDateLookupTable(groupSheet, officeSheetPopulator.getOffices(), LOOKUP_OFFICE_NAME_COL, LOOKUP_OFFICE_OPENING_DATE_COL);
+    	int rowIndex;
+    	for(rowIndex = 1; rowIndex &lt;= 11; rowIndex++) {
+    		Row row = groupSheet.getRow(rowIndex);
+    		if(row == null)
+    			row = groupSheet.createRow(rowIndex);
+    		writeInt(LOOKUP_REPEAT_MONTHLY_COL, row, rowIndex);
+    	}
+    	for(rowIndex = 1; rowIndex &lt;= 3; rowIndex++) 
+    		writeInt(LOOKUP_REPEAT_NORMAL_COL, groupSheet.getRow(rowIndex), rowIndex);
+    	String[] days = new String[]{&quot;Mon&quot;,&quot;Tue&quot;,&quot;Wed&quot;,&quot;Thu&quot;,&quot;Fri&quot;,&quot;Sat&quot;,&quot;Sun&quot;};
+    	for(rowIndex = 1; rowIndex &lt;= 7; rowIndex++) 
+    		writeString(LOOKUP_IF_REPEAT_WEEKLY_COL, groupSheet.getRow(rowIndex), days[rowIndex-1]);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void setLayout(Sheet worksheet) {
+		worksheet.setColumnWidth(ID_COL, 2000);
+        worksheet.setColumnWidth(ACCOUNT_NAME_COL, 7000);
+        Row rowHeader = worksheet.createRow(0);
+        rowHeader.setHeight((short)500);
+        writeString(ID_COL, rowHeader, &quot;Gl Account ID&quot;);
+        writeString(ACCOUNT_NAME_COL, rowHeader, &quot;Gl Account Name&quot;);
+    }
+</code></pre>
+</body>

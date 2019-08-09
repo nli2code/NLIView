@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public XSLFSlide importContent(XSLFSheet src){
+        super.importContent(src);
+
+        XSLFBackground bgShape = getBackground();
+        if(bgShape != null) {
+            CTBackground bg = (CTBackground)bgShape.getXmlObject();
+            if(bg.isSetBgPr() &amp;&amp; bg.getBgPr().isSetBlipFill()){
+                CTBlip blip = bg.getBgPr().getBlipFill().getBlip();
+                String blipId = blip.getEmbed();
+
+                String relId = importBlip(blipId, src.getPackagePart());
+                blip.setEmbed(relId);
+            }
+        }
+        return this;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testMergeSlides(){
+        XMLSlideShow ppt = new XMLSlideShow();
+        String[] pptx = {&quot;shapes.pptx&quot;, &quot;themes.pptx&quot;, &quot;layouts.pptx&quot;, &quot;backgrounds.pptx&quot;};
+
+        for(String arg : pptx){
+            XMLSlideShow  src = XSLFTestDataSamples.openSampleDocument(arg);
+
+            for(XSLFSlide srcSlide : src.getSlides()){
+                ppt.createSlide().importContent(srcSlide);
+            }
+        }
+        assertEquals(30, ppt.getSlides().length);
+    }    
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSLFSheet importContent(XSLFSheet src){
+        _shapes = null;
+        _spTree = null;
+        _drawing = null;
+        _spTree = null;
+        // first copy the source xml
+        getSpTree().set(src.getSpTree());
+
+        // recursively update each shape
+        List&lt;XSLFShape&gt; tgtShapes = getShapeList();
+        List&lt;XSLFShape&gt; srcShapes = src.getShapeList();
+        for(int i = 0; i &lt; tgtShapes.size(); i++){
+            XSLFShape s1 = srcShapes.get(i);
+            XSLFShape s2 = tgtShapes.get(i);
+
+            s2.copy(s1);
+        }
+        return this;
+    }
+</code></pre>
+</body>

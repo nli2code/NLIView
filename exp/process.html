@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static void main(String[] args) throws Exception {
+		if(args.length &lt; 1) {
+			System.err.println(&quot;Use:&quot;);
+			System.err.println(&quot;  XLS2CSVmra &lt;xls file&gt; [min columns]&quot;);
+			System.exit(1);
+		}
+
+		int minColumns = -1;
+		if(args.length &gt;= 2) {
+			minColumns = Integer.parseInt(args[1]);
+		}
+
+		XLS2CSVmra xls2csv = new XLS2CSVmra(args[0], minColumns);
+		xls2csv.process();
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static void main(String[] args) {
+		if(args.length &lt;= 0) {
+			System.err.println(&quot;No files names provided&quot;);
+		} else {
+			for(int i = 0; i &lt; args.length; i++) {
+				try {
+					Msg2txt processor = new Msg2txt(args[i]);
+					processor.processMessage();
+				} catch (IOException e) {
+					System.err.println(&quot;Could not process &quot;+args[i]+&quot;: &quot;+e);
+				}
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void processOneSheet(String filename,int sheetId) throws Exception{
+        OPCPackage pkg=OPCPackage.open(filename);
+        XSSFReader r=new XSSFReader(pkg);
+        SharedStringsTable sst=r.getSharedStringsTable();
+        XMLReader parser=fetchSheetParser(sst);
+        //根据rId或rSheet查找sheet
+        InputStream sheet=r.getSheet(&quot;rId&quot;+sheetId);
+        sheetIndex++;
+        InputSource sheetSource=new InputSource(sheet);
+        parser.parse(sheetSource);
+        sheet.close();
+    }
+</code></pre>
+</body>

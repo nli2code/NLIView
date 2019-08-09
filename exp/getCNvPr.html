@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testShapeId(){
+        XSSFWorkbook wb = new XSSFWorkbook();
+        XSSFSheet sheet = wb.createSheet();
+        XSSFDrawing drawing = sheet.createDrawingPatriarch();
+
+        XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, 1, 1, 10, 30);
+        byte[] jpegData = &quot;picture1&quot;.getBytes();
+        int jpegIdx = wb.addPicture(jpegData, XSSFWorkbook.PICTURE_TYPE_JPEG);
+
+        XSSFPicture shape1 = drawing.createPicture(anchor, jpegIdx);
+        assertEquals(1, shape1.getCTPicture().getNvPicPr().getCNvPr().getId());
+
+        jpegData = &quot;picture2&quot;.getBytes();
+        jpegIdx = wb.addPicture(jpegData, XSSFWorkbook.PICTURE_TYPE_JPEG);
+        XSSFPicture shape2 = drawing.createPicture(anchor, jpegIdx);
+        assertEquals(2, shape2.getCTPicture().getNvPicPr().getCNvPr().getId());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSLFHyperlink createHyperlink() {
+        XSLFHyperlink hl = getHyperlink();
+        if (hl == null) {
+            CTNonVisualDrawingProps cNvPr = getCNvPr();
+            hl = new XSLFHyperlink(cNvPr.addNewHlinkClick(), getSheet());
+        }
+        return hl;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSSFSimpleShape createSimpleShape(XSSFClientAnchor anchor)
+    {
+        long shapeId = newShapeId();
+        CTTwoCellAnchor ctAnchor = createTwoCellAnchor(anchor);
+        CTShape ctShape = ctAnchor.addNewSp();
+        ctShape.set(XSSFSimpleShape.prototype());
+        ctShape.getNvSpPr().getCNvPr().setId(shapeId);
+        XSSFSimpleShape shape = new XSSFSimpleShape(this, ctShape);
+        shape.anchor = anchor;
+        return shape;
+    }
+</code></pre>
+</body>

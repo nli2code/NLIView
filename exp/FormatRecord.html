@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void processRecordInternally(Record record) {
+		if (record instanceof FormatRecord) {
+			FormatRecord fr = (FormatRecord) record;
+			_customFormatRecords.put(Integer.valueOf(fr.getIndexCode()), fr);
+		}
+		if (record instanceof ExtendedFormatRecord) {
+			ExtendedFormatRecord xr = (ExtendedFormatRecord) record;
+			_xfRecords.add(xr);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int createFormat(String formatString) {
+
+        maxformatid = maxformatid &gt;= 0xa4 ? maxformatid + 1 : 0xa4; //Starting value from M$ empircal study.
+        FormatRecord rec = new FormatRecord(maxformatid, formatString);
+
+        int pos = 0;
+        while ( pos &lt; records.size() &amp;&amp; records.get( pos ).getSid() != FormatRecord.sid )
+            pos++;
+        pos += formats.size();
+        formats.add( rec );
+        records.add( pos, rec );
+        return maxformatid;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public FormatRecord(RecordInputStream in) {
+        field_1_index_code = in.readShort();
+        int field_3_unicode_len = in.readUShort();
+        field_3_hasMultibyte = (in.readByte() &amp; 0x01) != 0;
+
+        if (field_3_hasMultibyte) {
+            field_4_formatstring = in.readUnicodeLEString(field_3_unicode_len);
+        } else {
+            field_4_formatstring = in.readCompressedUnicode(field_3_unicode_len);
+        }
+    }
+</code></pre>
+</body>

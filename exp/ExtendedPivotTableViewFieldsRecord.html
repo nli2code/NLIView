@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testSubNameNotPresent_bug46693() {
+		// This data came from attachment 23347 of bug 46693 at offset 0xAA43
+		byte[] data = HexRead.readFromString(
+				&quot;00 01 14 00&quot; + // BIFF header
+				&quot;1E 14 00 0A FF FF FF FF 00 00 FF FF 00 00 00 00 00 00 00 00&quot;);
+		RecordInputStream in = TestcaseRecordInputStream.create(data);
+		ExtendedPivotTableViewFieldsRecord rec;
+		try {
+			rec = new ExtendedPivotTableViewFieldsRecord(in);
+		} catch (RecordFormatException e) {
+			if (e.getMessage().equals(&quot;Expected to find a ContinueRecord in order to read remaining 65535 of 65535 chars&quot;)) {
+				throw new AssertionFailedError(&quot;Identified bug 46693a&quot;);
+			}
+			throw e;
+		}
+		
+		assertEquals(data.length, rec.getRecordSize());
+	}
+</code></pre>
+</body>

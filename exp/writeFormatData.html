@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void writeFormatData(ContinuableRecordOutput out , HSSFRichTextString str) {
+		int nRuns = str.numFormattingRuns();
+		for (int i = 0; i &lt; nRuns; i++) {
+			out.writeShort(str.getIndexOfFormattingRun(i));
+			int fontIndex = str.getFontOfFormattingRun(i);
+			out.writeShort(fontIndex == str.NO_FONT ? 0 : fontIndex);
+			out.writeInt(0); // skip reserved
+		}
+		out.writeShort(str.length());
+		out.writeShort(0);
+		out.writeInt(0); // skip reserved
+	}
+</code></pre>
+</body>

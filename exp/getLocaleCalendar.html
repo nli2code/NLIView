@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testShouldIgnoreTimestamp() throws EvaluationException {
+        Calendar expDate = LocaleUtil.getLocaleCalendar(1984, Calendar.OCTOBER, 20);
+        Calendar actDate = DateParser.parseDate(&quot;1984/10/20 12:34:56&quot;);
+        assertEquals(&quot;Had: &quot; + expDate.getTime() + &quot; and &quot; + actDate.getTime() + &quot;/&quot; + 
+                expDate.getTimeInMillis() + &quot;ms and &quot; + actDate.getTimeInMillis() + &quot;ms&quot;, 
+                expDate, actDate);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static double makeDate(HSSFRow row, int yearColumn) {
+		int year = getIntCell(row, yearColumn + 0);
+		int month = getIntCell(row, yearColumn + 1);
+		int day = getIntCell(row, yearColumn + 2);
+		Calendar c = new GregorianCalendar(year, month-1, day, 0, 0, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		return HSSFDateUtil.getExcelDate(c.getTime());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void test53404(){
+        Workbook wb = openSample(&quot;53404.xls&quot;);
+        Sheet sheet = wb.getSheet(&quot;test-sheet&quot;);
+        int rowCount = sheet.getLastRowNum() + 1;
+        int newRows = 5;
+        for (int r = rowCount; r &lt; rowCount + newRows; r++) {
+            Row row = sheet.createRow((short) r);
+            row.createCell(0).setCellValue(1.03 * (r + 7));
+            row.createCell(1).setCellValue(new Date());
+            row.createCell(2).setCellValue(Calendar.getInstance());
+            row.createCell(3).setCellValue(String.format(&quot;row:%d/col:%d&quot;, r, 3));
+            row.createCell(4).setCellValue(true);
+            row.createCell(5).setCellType(Cell.CELL_TYPE_ERROR);
+            row.createCell(6).setCellValue(&quot;added cells.&quot;);
+        }
+
+        wb = writeOutAndReadBack((HSSFWorkbook) wb);
+    }
+</code></pre>
+</body>

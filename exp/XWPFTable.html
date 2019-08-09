@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void insertTable(int pos, XWPFTable table) {
+        bodyElements.add(pos, table);
+        int i = 0;
+        for (CTTbl tbl : headerFooter.getTblArray()) {
+            if (tbl == table.getCTTbl()) {
+                break;
+            }
+            i++;
+        }
+        tables.add(i, table);
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testSetGetHeight() {
+        XWPFDocument doc = new XWPFDocument();
+
+        CTTbl table = CTTbl.Factory.newInstance();
+
+        XWPFTable xtab = new XWPFTable(table, doc);
+        XWPFTableRow row = xtab.createRow();
+        row.setHeight(20);
+        assertEquals(20, row.getHeight());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void iterateParagraphs(XWPFDocument doc, Consumer&lt;XWPFParagraph&gt; consumer) {
+		for (XWPFParagraph p : doc.getParagraphs())
+			consumer.accept(p);
+		for (XWPFTable tbl : doc.getTables())
+			for (XWPFTableRow row : tbl.getRows())
+				for (XWPFTableCell cell : row.getTableCells())
+					for (XWPFParagraph p : cell.getParagraphs())
+						consumer.accept(p);
+	}
+</code></pre>
+</body>

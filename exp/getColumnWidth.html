@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void printCols(Sheet sheet) {
+        out.format(&quot;&lt;col/&gt;%n&quot;);
+        ensureColumnBounds(sheet);
+        for (int i = firstColumn; i &lt; endColumn; i++) {
+            out.format(&quot;&lt;col/&gt;%n&quot;);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testBasic() {
+		byte[] data = HexRead.readFromString(&quot;7D 00 0C 00 14 00 9B 00 C7 19 0F 00 01 13 00 00&quot;);
+
+		RecordInputStream in = TestcaseRecordInputStream.create(data);
+		ColumnInfoRecord cir = new ColumnInfoRecord(in);
+		assertEquals(0, in.remaining());
+
+		assertEquals(20, cir.getFirstColumn());
+		assertEquals(155, cir.getLastColumn());
+		assertEquals(6599, cir.getColumnWidth());
+		assertEquals(15, cir.getXFIndex());
+		assertEquals(true, cir.getHidden());
+		assertEquals(3, cir.getOutlineLevel());
+		assertEquals(true, cir.getCollapsed());
+		assertTrue(Arrays.equals(data, cir.serialize()));
+	}
+</code></pre>
+</body>

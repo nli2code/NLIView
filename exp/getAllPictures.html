@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testGetXlsPicture() {
+        ExcelUtils excelUtils = new ExcelUtils();
+        Workbook workbook = excelUtils.readExcel(ExcelUtils.class.getResourceAsStream(&quot;/excel/test.xls&quot;), MIMETypeEnum.XLS);
+        PictureData pictureData = excelUtils.getPictureData(workbook.getSheetAt(0), 5, 5);
+        if (pictureData != null) {
+            System.out.println(pictureData.getMimeType());
+            ImageUtils.saveImage(pictureData.getData(), &quot;b.png&quot;, MIMETypeEnum.PNG);
+        } else {
+            System.out.println(&quot;未读取到指定图片！&quot;);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testPictureDetectionWithPNG() throws Exception {
+        HWPFDocument document = HWPFTestDataSamples.openSampleFile(&quot;PngPicture.doc&quot;);
+        PicturesTable pictureTable = document.getPicturesTable();
+        
+        assertEquals(1, pictureTable.getAllPictures().size());
+        
+        Picture p = pictureTable.getAllPictures().get(0);
+        assertEquals(PictureType.PNG, p.suggestPictureType());
+        assertEquals(&quot;png&quot;, p.suggestFileExtension());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    protected PackageRelationship addPictureReference(int pictureIndex){
+        XSSFWorkbook wb = (XSSFWorkbook)getParent().getParent();
+        XSSFPictureData data = wb.getAllPictures().get(pictureIndex);
+        PackagePartName ppName = data.getPackagePart().getPartName();
+        PackageRelationship rel = getPackagePart().addRelationship(ppName, TargetMode.INTERNAL, XSSFRelation.IMAGES.getRelation());
+        addRelation(rel.getId(),new XSSFPictureData(data.getPackagePart(), rel));
+        return rel;
+    }
+</code></pre>
+</body>

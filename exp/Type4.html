@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		private Type4(String thingType, String bitType, byte[] data) {
+			super(thingType, bitType, data);
+
+			// Grab our 4x pre-data
+			preData = new int[4];
+			preData[0] = LittleEndian.getUShort(data, 8+0);
+			preData[1] = LittleEndian.getUShort(data, 8+2);
+			preData[2] = LittleEndian.getUShort(data, 8+4);
+			preData[3] = LittleEndian.getUShort(data, 8+6);
+
+			// And grab the 4 byte values
+			for(int i=0; i&lt;numberOfPLCs; i++) {
+				plcValA[i] = LittleEndian.getUInt(data, 16+(8*i));
+				plcValB[i] = LittleEndian.getUInt(data, 16+(8*i)+4);
+			}
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static QCPLCBit createQCPLCBit(String thingType, String bitType, byte[] data) {
+		// Grab the type
+		int type = (int)LittleEndian.getUInt(data, 4);
+		switch(type) {
+			case 0:
+				return new Type0(thingType, bitType, data);
+			case 4:
+				return new Type4(thingType, bitType, data);
+			case 8:
+				return new Type8(thingType, bitType, data);
+			case 12: // 0xc
+				return new Type12(thingType, bitType, data);
+			default:
+				throw new IllegalArgumentException(&quot;Sorry, I don&#x27;t know how to deal with PLCs of type &quot; + type);
+		}
+	}
+</code></pre>
+</body>

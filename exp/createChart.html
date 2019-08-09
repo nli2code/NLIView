@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testAddChartsToNewWorkbook() throws Exception {
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet s1 = wb.createSheet();
+		XSSFDrawing d1 = s1.createDrawingPatriarch();
+		XSSFClientAnchor a1 = new XSSFClientAnchor(0, 0, 0, 0, 1, 1, 10, 30);
+		XSSFChart c1 = d1.createChart(a1);
+
+		assertEquals(1, d1.getCharts().size());
+		assertNotNull(c1.getGraphicFrame());
+		assertNotNull(c1.getOrCreateLegend());
+
+		XSSFClientAnchor a2 = new XSSFClientAnchor(0, 0, 0, 0, 1, 11, 10, 60);
+		XSSFChart c2 = d1.createChart(a2);
+		assertEquals(2, d1.getCharts().size());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSSFChart createChart(XSSFClientAnchor anchor) {
+        int chartNumber = getPackagePart().getPackage().
+            getPartsByContentType(XSSFRelation.CHART.getContentType()).size() + 1;
+
+        XSSFChart chart = (XSSFChart) createRelationship(
+                XSSFRelation.CHART, XSSFFactory.getInstance(), chartNumber);
+        String chartRelId = chart.getPackageRelationship().getId();
+
+        XSSFGraphicFrame frame = createGraphicFrame(anchor);
+        frame.setChart(chart, chartRelId);
+
+        return chart;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testAccessMethods() throws Exception {
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet();
+		XSSFDrawing drawing = sheet.createDrawingPatriarch();
+		XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 1, 1, 10, 30);
+		XSSFChart chart = drawing.createChart(anchor);
+		XSSFCategoryAxis axis = chart.getChartAxisFactory().createCategoryAxis(AxisPosition.BOTTOM);
+
+		axis.setCrosses(AxisCrosses.AUTO_ZERO);
+		assertEquals(axis.getCrosses(), AxisCrosses.AUTO_ZERO);
+
+		assertEquals(chart.getAxis().size(), 1);
+	}
+</code></pre>
+</body>

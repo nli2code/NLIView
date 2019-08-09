@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test49928() {
+        XSSFWorkbook wb = XSSFTestDataSamples.openSampleWorkbook(&quot;49928.xlsx&quot;);
+        doTest49928Core(wb);
+        
+        DataFormat dataFormat = wb.createDataFormat();
+
+        // As of 2015-12-27, there is no way to override a built-in number format with POI XSSFWorkbook
+        // 49928.xlsx has been saved with a poundFmt that overrides the default value (dollar)
+        short poundFmtIdx = wb.getSheetAt(0).getRow(0).getCell(0).getCellStyle().getDataFormat();
+        assertEquals(poundFmtIdx, dataFormat.getFormat(poundFmt));
+
+        // now create a custom format with Pound (\u00a3)
+        
+        String customFmt = &quot;\u00a3##.00[Yellow]&quot;;
+        assertNotBuiltInFormat(customFmt);
+        short customFmtIdx = dataFormat.getFormat(customFmt);
+        assertTrue(customFmtIdx &gt;= BuiltinFormats.FIRST_USER_DEFINED_FORMAT_INDEX);
+        assertEquals(customFmt, dataFormat.getFormat(customFmtIdx));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public int putNumberFormat(String fmt) {
+		if (numberFormats.containsValue(fmt)) {
+			// Find the key, and return that
+			for(Integer key : numberFormats.keySet() ) {
+				if(numberFormats.get(key).equals(fmt)) {
+					return key;
+				}
+			}
+			throw new IllegalStateException(&quot;Found the format, but couldn&#x27;t figure out where - should never happen!&quot;);
+		}
+
+		// Find a spare key, and add that
+		int newKey = FIRST_CUSTOM_STYLE_ID;
+		while(numberFormats.containsKey(newKey)) {
+			newKey++;
+		}
+		numberFormats.put(newKey, fmt);
+		return newKey;
+	}
+</code></pre>
+</body>

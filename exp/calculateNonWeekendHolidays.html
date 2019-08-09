@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected int calculateNonWeekendHolidays(double start, double end, double[] holidays) {
+        int nonWeekendHolidays = 0;
+        double startDay = start &lt; end ? start : end;
+        double endDay = end &gt; start ? end : start;
+        for (int i = 0; i &lt; holidays.length; i++) {
+            if (isInARange(startDay, endDay, holidays[i])) {
+                if (!isWeekend(holidays[i])) {
+                    nonWeekendHolidays++;
+                }
+            }
+        }
+        return start &lt; end ? nonWeekendHolidays : -nonWeekendHolidays;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int calculateWorkdays(double start, double end, double[] holidays) {
+        int saturdaysPast = this.pastDaysOfWeek(start, end, Calendar.SATURDAY);
+        int sundaysPast = this.pastDaysOfWeek(start, end, Calendar.SUNDAY);
+        int nonWeekendHolidays = this.calculateNonWeekendHolidays(start, end, holidays);
+        return (int) (end - start + 1) - saturdaysPast - sundaysPast - nonWeekendHolidays;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public Date calculateWorkdays(double start, int workdays, double[] holidays) {
+        Date startDate = DateUtil.getJavaDate(start);
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(startDate);
+        endDate.add(Calendar.DAY_OF_YEAR, workdays);
+        int skippedDays = 0;
+        do {
+            double end = DateUtil.getExcelDate(endDate.getTime());
+            int saturdaysPast = this.pastDaysOfWeek(start, end, Calendar.SATURDAY);
+            int sundaysPast = this.pastDaysOfWeek(start, end, Calendar.SUNDAY);
+            int nonWeekendHolidays = this.calculateNonWeekendHolidays(start, end, holidays);
+            skippedDays = saturdaysPast + sundaysPast + nonWeekendHolidays;
+            endDate.add(Calendar.DAY_OF_YEAR, skippedDays);
+            start = end + isNonWorkday(end, holidays);
+        } while (skippedDays != 0);
+        return endDate.getTime();
+    }
+</code></pre>
+</body>

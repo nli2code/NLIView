@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected void afterInsert(Sheet sheet){
+        ExControl ctrl = getExControl();
+        ctrl.getExControlAtom().setSlideId(sheet._getSheetNumber());
+
+        try {
+            String name = ctrl.getProgId() + &quot;-&quot; + getControlIndex();
+            byte[] data = (name + &#x27;\u0000&#x27;).getBytes(&quot;UTF-16LE&quot;);
+            EscherComplexProperty prop = new EscherComplexProperty(EscherProperties.GROUPSHAPE__SHAPENAME, false, data);
+            EscherOptRecord opt = (EscherOptRecord)getEscherChild(_escherContainer, EscherOptRecord.RECORD_ID);
+            opt.addEscherProperty(prop);
+        } catch (UnsupportedEncodingException e){
+            throw new HSLFException(e);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int getControlIndex(){
+        int idx = -1;
+        OEShapeAtom oe = (OEShapeAtom)getClientDataRecord(RecordTypes.OEShapeAtom.typeID);
+        if(oe != null) idx = oe.getOptions();
+        return idx;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public ExControl getExControl(){
+        int idx = getControlIndex();
+        ExControl ctrl = null;
+        Document doc = getSheet().getSlideShow().getDocumentRecord();
+        ExObjList lst = (ExObjList)doc.findFirstOfType(RecordTypes.ExObjList.typeID);
+        if(lst != null){
+            Record[] ch = lst.getChildRecords();
+            for (int i = 0; i &lt; ch.length; i++) {
+                if(ch[i] instanceof ExControl){
+                    ExControl c = (ExControl)ch[i];
+                    if(c.getExOleObjAtom().getObjID() == idx){
+                        ctrl = c;
+                        break;
+                    }
+                }
+            }
+        }
+        return ctrl;
+    }
+</code></pre>
+</body>

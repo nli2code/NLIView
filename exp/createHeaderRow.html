@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void addTextLengthValidations(WorkbookFormatter wf) {
+		wf.createSheet(&quot;Text lengths&quot;);
+		wf.createHeaderRow();
+
+		ValidationAdder va = wf.createValidationAdder(null, VT.TEXT_LENGTH);
+		va.addValidation(OP.BETWEEN, &quot;2&quot;, &quot;6&quot;, ES.STOP, &quot;Between 2 and 6 &quot;, &quot;Error box type = STOP&quot;, true, true, true);
+		va.addValidation(OP.NOT_BETWEEN, &quot;2&quot;, &quot;6&quot;, ES.INFO, &quot;Not between 2 and 6 &quot;, &quot;Error box type = INFO&quot;, false, true, true);
+		va.addValidation(OP.EQUAL, &quot;3&quot;, null, ES.WARNING, &quot;Equal to 3&quot;, &quot;Error box type = WARNING&quot;, false, false, true);
+		va.addValidation(OP.NOT_EQUAL, &quot;3&quot;, null, ES.WARNING, &quot;Not equal to 3&quot;, &quot;-&quot;, false, false, false);
+		va.addValidation(OP.GREATER_THAN, &quot;3&quot;, null, ES.WARNING, &quot;Greater than 3&quot;, &quot;-&quot;, true, false, false);
+		va.addValidation(OP.LESS_THAN, &quot;3&quot;, null, ES.WARNING, &quot;Less than 3&quot;, &quot;-&quot;, true, true, false);
+		va.addValidation(OP.GREATER_OR_EQUAL, &quot;4&quot;, null, ES.STOP, &quot;Greater than or equal to 4&quot;, &quot;Error box type = STOP&quot;, true, false, true);
+		va.addValidation(OP.LESS_OR_EQUAL, &quot;4&quot;, null, ES.STOP, &quot;Less than or equal to 4&quot;, &quot;-&quot;, false, true, false);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void writeRowMap (ExcelWorkbookWrapper swb) throws IOException
+	{
+		HSSFWorkbook workBook = writeAllRowsExcludingHeader (swb);
+		if (os == null)
+		{
+			os = new FileOutputStream (targetFile);
+		}
+		workBook.write (os);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void addCustomValidations(WorkbookFormatter wf) {
+		wf.createSheet(&quot;Custom&quot;);
+		wf.createHeaderRow();
+
+		ValidationAdder va = wf.createValidationAdder(null, VT.FORMULA);
+		va.addValidation(OP.BETWEEN, &quot;ISNUMBER($A2)&quot;, null, ES.STOP, &quot;ISNUMBER(A2)&quot;, &quot;Error box type = STOP&quot;, true, true, true);
+		va.addValidation(OP.BETWEEN, &quot;IF(SUM(A2:A3)=5,TRUE,FALSE)&quot;, null, ES.WARNING, &quot;IF(SUM(A2:A3)=5,TRUE,FALSE)&quot;, &quot;Error box type = WARNING&quot;, false, false, true);
+	}
+</code></pre>
+</body>

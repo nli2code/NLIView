@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void fillFields( byte[] data, int offset )
+    {
+        int lcb = LittleEndian.getInt( data, offset );
+        int cbHeader = LittleEndian.getUShort( data, offset
+                + LittleEndian.INT_SIZE );
+
+        if ( cbHeader != 0x44 )
+        {
+            log.log( POILogger.WARN, &quot;NilPICFAndBinData at offset &quot;, offset,
+                    &quot; cbHeader 0x&quot; + Integer.toHexString( cbHeader )
+                            + &quot; != 0x44&quot; );
+        }
+
+        // skip the 62 ignored bytes
+        int binaryLength = lcb - cbHeader;
+        this._binData = ArrayUtil.copyOfRange( data, offset + cbHeader,
+                offset + cbHeader + binaryLength );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int fillFields(byte[] data, int offset, EscherRecordFactory recordFactory) {
+        int bytesRemaining = readHeader( data, offset );
+        byte remainingData[] = new byte[bytesRemaining];
+        System.arraycopy(data, offset+8, remainingData, 0, bytesRemaining);
+        setRemainingData(remainingData);
+        return bytesRemaining + 8;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void serialize( byte[] data, int offset )
+    {
+        LittleEndian.putInt( data, 0x0 + offset, field_1_iStartAt );
+        data[ 0x4 + offset ] = field_2_nfc;
+        data[ 0x5 + offset ] = field_3_info;
+        System.arraycopy( field_4_rgbxchNums, 0, data, 0x6 + offset, field_4_rgbxchNums.length );
+        data[ 0xf + offset ] = field_5_ixchFollow;
+        LittleEndian.putInt( data, 0x10 + offset, field_6_dxaIndentSav );
+        LittleEndian.putInt( data, 0x14 + offset, field_7_unused2 );
+        LittleEndian.putUByte( data, 0x18 + offset, field_8_cbGrpprlChpx );
+        LittleEndian.putUByte( data, 0x19 + offset, field_9_cbGrpprlPapx );
+        LittleEndian.putUByte( data, 0x1a + offset, field_10_ilvlRestartLim );
+        field_11_grfhic.serialize( data, 0x1b + offset );
+    }
+</code></pre>
+</body>

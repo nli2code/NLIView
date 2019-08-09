@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testOutlineGettersXSSF() throws IOException {
+        XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
+        XSSFSheet xssfSheet = xssfWorkbook.createSheet();
+        xssfSheet.createRow(0);
+        xssfSheet.createRow(1);
+        xssfSheet.createRow(2);
+        xssfSheet.createRow(3);
+        xssfSheet.createRow(4);
+        xssfSheet.groupRow(1, 3);
+        xssfSheet.groupRow(2, 3);
+
+        assertEquals(0, xssfSheet.getRow(0).getOutlineLevel());
+        assertEquals(1, xssfSheet.getRow(1).getOutlineLevel());
+        assertEquals(2, xssfSheet.getRow(2).getOutlineLevel());
+        assertEquals(2, xssfSheet.getRow(3).getOutlineLevel());
+        assertEquals(0, xssfSheet.getRow(4).getOutlineLevel());
+        xssfWorkbook.close();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void verifyGroupCollapsedSpec(boolean level1, boolean level2, boolean level3, 
+            Boolean[] collapsed, boolean[] hidden, int[] outlineLevel) throws IOException {
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet(&quot;sheet123&quot;);
+
+        for (int i = 5; i &lt; 9; i++) {
+            sheet.createRow(i);
+        }
+        
+        sheet.groupRow(5, 6);
+        sheet.groupRow(5, 7);
+        sheet.groupRow(5, 8);
+        
+        sheet.setRowGroupCollapsed(6, level1);
+        sheet.setRowGroupCollapsed(7, level2);
+        sheet.setRowGroupCollapsed(8, level3);
+        
+        checkWorkbookGrouping(wb, collapsed, hidden, outlineLevel);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void ungroupRow(int fromRow, int toRow) {
+        for (int i = fromRow; i &lt;= toRow; i++) {
+            XSSFRow xrow = getRow(i);
+            if (xrow != null) {
+                CTRow ctRow = xrow.getCTRow();
+                int outlineLevel = ctRow.getOutlineLevel();
+                ctRow.setOutlineLevel((short) (outlineLevel - 1));
+                //remove a row only if the row has no cell and if the outline level is 0
+                if (outlineLevel == 1 &amp;&amp; xrow.getFirstCellNum() == -1) {
+                    removeRow(xrow);
+                }
+            }
+        }
+        setSheetFormatPrOutlineLevelRow();
+    }
+</code></pre>
+</body>

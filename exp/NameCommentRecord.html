@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void updateNameCommentRecordCache(final NameCommentRecord commentRecord) {
+       if(commentRecords.containsValue(commentRecord)) {
+          for(Entry&lt;String,NameCommentRecord&gt; entry : commentRecords.entrySet()) {
+             if(entry.getValue().equals(commentRecord)) {
+                commentRecords.remove(entry.getKey());
+                break;
+             }
+          }
+       }
+       commentRecords.put(commentRecord.getNameText(), commentRecord);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private InternalWorkbook() {
+    	records     = new WorkbookRecordList();
+
+		boundsheets = new ArrayList&lt;BoundSheetRecord&gt;();
+		formats = new ArrayList&lt;FormatRecord&gt;();
+		hyperlinks = new ArrayList&lt;HyperlinkRecord&gt;();
+		numxfs = 0;
+		numfonts = 0;
+		maxformatid = -1;
+		uses1904datewindowing = false;
+		escherBSERecords = new ArrayList&lt;EscherBSERecord&gt;();
+		commentRecords = new LinkedHashMap&lt;String, NameCommentRecord&gt;();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testReserialize() {
+		final byte[] data = HexRead
+				.readFromString(&quot;&quot;
+						+ &quot;94 08 00 00 00 00 00 00 00 00 00 00 04 00 07 00 00 6E 61 6D 65 00 63 6F 6D 6D 65 6E 74]&quot;);
+		final RecordInputStream in = TestcaseRecordInputStream.create(NameCommentRecord.sid, data);
+		final NameCommentRecord ncr = new NameCommentRecord(in);
+		assertEquals(0x0894, ncr.getRecordType());
+		assertEquals(&quot;name&quot;, ncr.getNameText());
+		assertEquals(&quot;comment&quot;, ncr.getCommentText());
+		final byte[] data2 = ncr.serialize();
+		TestcaseRecordInputStream.confirmRecordEncoding(NameCommentRecord.sid, data, data2);
+	}
+</code></pre>
+</body>

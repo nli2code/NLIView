@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	protected Paragraph insertAfter(ParagraphProperties props, int styleIndex, String text)
+	{
+		initAll();
+		StyleSheet ss = _doc.getStyleSheet();
+		ParagraphProperties baseStyle = ss.getParagraphStyle(styleIndex);
+		CharacterProperties baseChp = ss.getCharacterStyle(styleIndex);
+
+		byte[] grpprl = ParagraphSprmCompressor.compressParagraphProperty(props, baseStyle);
+		byte[] withIndex = new byte[grpprl.length + LittleEndian.SHORT_SIZE];
+		LittleEndian.putShort(withIndex, (short) styleIndex);
+		System.arraycopy(grpprl, 0, withIndex, LittleEndian.SHORT_SIZE, grpprl.length);
+		SprmBuffer buf = new SprmBuffer(withIndex, 2);
+
+		_doc.getParagraphTable().insert(_parEnd, _end, buf);
+		_parEnd++;
+		insertAfter(text, baseChp);
+		return getParagraph(numParagraphs() - 1);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public CharacterProperties getCharacterProperties( StyleSheet ss, short istd )
+    {
+        if ( ss == null )
+        {
+            // TODO Fix up for Word 6/95
+            return new CharacterProperties();
+        }
+
+        CharacterProperties baseStyle = ss.getCharacterStyle( istd );
+        if (baseStyle == null)
+            baseStyle = new CharacterProperties();
+
+        CharacterProperties props = CharacterSprmUncompressor.uncompressCHP(
+                baseStyle, getGrpprl(), 0 );
+        return props;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public CharacterRun insertAfter(String text, CharacterProperties props)
+	{
+		initAll();
+		PAPX papx = _paragraphs.get(_parEnd - 1);
+		short istd = papx.getIstd();
+
+		StyleSheet ss = _doc.getStyleSheet();
+		CharacterProperties baseStyle = ss.getCharacterStyle(istd);
+		byte[] grpprl = CharacterSprmCompressor.compressCharacterProperty(props, baseStyle);
+		SprmBuffer buf = new SprmBuffer(grpprl, 0);
+		_doc.getCharacterTable().insert(_charEnd, _end, buf);
+		_charEnd++;
+		return insertAfter(text);
+	}
+</code></pre>
+</body>

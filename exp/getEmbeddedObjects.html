@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testOleEmbedding2003() throws Exception {
+        HSLFSlideShow slideShow = new HSLFSlideShow(_slTests.openResourceAsStream(&quot;ole2-embedding-2003.ppt&quot;));
+        // Placeholder EMFs for clients that don&#x27;t support the OLE components.
+        PictureData[] pictures = slideShow.getPictures();
+        assertEquals(&quot;Should be two pictures&quot;, 2, pictures.length);
+        //assertDigestEquals(&quot;Wrong data for picture 1&quot;, &quot;8d1fbadf4814f321bb1ccdd056e3c788&quot;, pictures[0].getData());
+        //assertDigestEquals(&quot;Wrong data for picture 2&quot;, &quot;987a698e83559cf3d38a0deeba1cc63b&quot;, pictures[1].getData());
+
+        // Actual embedded objects.
+        ObjectData[] objects = slideShow.getEmbeddedObjects();
+        assertEquals(&quot;Should be two objects&quot;, 2, objects.length);
+        //assertDigestEquals(&quot;Wrong data for objecs 1&quot;, &quot;0d1fcc61a83de5c4894dc0c88e9a019d&quot;, objects[0].getData());
+        //assertDigestEquals(&quot;Wrong data for object 2&quot;, &quot;b323604b2003a7299c77c2693b641495&quot;, objects[1].getData());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public ObjectData[] getEmbeddedObjects() {
+        if (_objects == null) {
+            List&lt;ObjectData&gt; objects = new ArrayList&lt;ObjectData&gt;();
+            for (int i = 0; i &lt; _records.length; i++) {
+                if (_records[i] instanceof ExOleObjStg) {
+                    objects.add(new ObjectData((ExOleObjStg) _records[i]));
+                }
+            }
+            _objects = objects.toArray(new ObjectData[objects.size()]);
+        }
+        return _objects;
+    }
+</code></pre>
+</body>

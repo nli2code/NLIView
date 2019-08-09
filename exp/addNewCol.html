@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void addNewCol() {
+        if (ctTbl.sizeOfTrArray() == 0) {
+            createRow();
+        }
+        for (int i = 0; i &lt; ctTbl.sizeOfTrArray(); i++) {
+            XWPFTableRow tabRow = new XWPFTableRow(ctTbl.getTrArray(i), this);
+            tabRow.createCell();
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public CTCol cloneCol(CTCols cols, CTCol col) {
+        CTCol newCol = cols.addNewCol();
+        newCol.setMin(col.getMin());
+        newCol.setMax(col.getMax());
+        setColumnAttributes(col, newCol);
+        return newCol;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    protected CTCol getOrCreateColumn1Based(long index1, boolean splitColumns) {
+        CTCol col = getColumn1Based(index1, splitColumns);
+        if (col == null) {
+            col = worksheet.getColsArray(0).addNewCol();
+            col.setMin(index1);
+            col.setMax(index1);
+        }
+        return col;
+    }
+</code></pre>
+</body>

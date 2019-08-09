@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testLoad() {
+		RecordInputStream in = TestcaseRecordInputStream.create(data);
+		ChartFormatRecord record = new ChartFormatRecord(in);
+		if (in.remaining() == 2) {
+			throw new AssertionFailedError(&quot;Identified bug 44693d&quot;);
+		}
+		assertEquals(0, in.remaining());
+		assertEquals(24, record.getRecordSize());
+
+		byte[] data2 = record.serialize();
+		assertTrue(Arrays.equals(data, data2));
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testLoad() {
+        LineFormatRecord record = new LineFormatRecord(TestcaseRecordInputStream.create(0x1007, data));
+        assertEquals( 0, record.getLineColor());
+        assertEquals( 0, record.getLinePattern());
+        assertEquals( 0, record.getWeight());
+        assertEquals( 1, record.getFormat());
+        assertEquals( true, record.isAuto() );
+        assertEquals( false, record.isDrawTicks() );
+        assertEquals( 0x4d, record.getColourPaletteIndex());
+
+        assertEquals( 16, record.getRecordSize() );
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private boolean isContinueNext() {
+		if (_currentDataLength != DATA_LEN_NEEDS_TO_BE_READ &amp;&amp; _currentDataOffset != _currentDataLength) {
+			throw new IllegalStateException(&quot;Should never be called before end of current record&quot;);
+		}
+		if (!hasNextRecord()) {
+			return false;
+		}
+		// At what point are records continued?
+		//  - Often from within the char data of long strings (caller is within readStringCommon()).
+		//  - From UnicodeString construction (many different points - call via checkRecordPosition)
+		//  - During TextObjectRecord construction (just before the text, perhaps within the text,
+		//    and before the formatting run data)
+		return _nextSid == ContinueRecord.sid;
+	}
+</code></pre>
+</body>

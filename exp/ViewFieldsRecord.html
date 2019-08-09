@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public ViewFieldsRecord(RecordInputStream in) {
+		_sxaxis = in.readShort();
+		_cSub = in.readShort();
+		_grbitSub = in.readShort();
+		_cItm = in.readShort();
+		
+		int cchName = in.readUShort();
+		if (cchName != STRING_NOT_PRESENT_LEN) {
+			int flag = in.readByte();
+			if ((flag &amp; 0x01) != 0) {
+				_name = in.readUnicodeLEString(cchName);
+			} else {
+				_name = in.readCompressedUnicode(cchName);
+			}
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testUnicodeFlag_bug46693() {
+		byte[] data = HexRead.readFromString(&quot;01 00 01 00 01 00 04 00 05 00 00 6D 61 72 63 6F&quot;);
+		RecordInputStream in = TestcaseRecordInputStream.create(ViewFieldsRecord.sid, data);
+		ViewFieldsRecord rec = new ViewFieldsRecord(in);
+		if (in.remaining() == 1) {
+			throw new AssertionFailedError(&quot;Identified bug 46693b&quot;);
+		}
+		assertEquals(0, in.remaining());
+		assertEquals(4+data.length, rec.getRecordSize());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static PageItemRecord confirmSerialize(String hexDump) {
+		byte[] data = HexRead.readFromString(hexDump);
+		RecordInputStream in = TestcaseRecordInputStream.create(PageItemRecord.sid, data);
+		PageItemRecord rec = new PageItemRecord(in);
+		assertEquals(0, in.remaining());
+		assertEquals(4+data.length, rec.getRecordSize());
+		byte[] data2 = rec.serialize();
+		TestcaseRecordInputStream.confirmRecordEncoding(PageItemRecord.sid, data, data2);
+		return rec;
+	}
+</code></pre>
+</body>

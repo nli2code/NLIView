@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String getCellFormula() {
+        int cellType = getCellType();
+        if(cellType != CELL_TYPE_FORMULA) throw typeMismatch(CELL_TYPE_FORMULA, cellType, false);
+
+        CTCellFormula f = _cell.getF();
+        if (isPartOfArrayFormulaGroup() &amp;&amp; f == null) {
+            XSSFCell cell = getSheet().getFirstCellInArrayFormula(this);
+            return cell.getCellFormula();
+        }
+        if (f.getT() == STCellFormulaType.SHARED) {
+            return convertSharedFormula((int)f.getSi());
+        }
+        return f.getStringValue();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test31661() {
+        HSSFWorkbook wb = openSample(&quot;31661.xls&quot;);
+        HSSFSheet sheet = wb.getSheetAt(0);
+        HSSFCell cell = sheet.getRow(11).getCell(10); //K11
+        assertEquals(&quot;+&#x27;[GM Budget.xls]8085.4450&#x27;!$B$2&quot;, cell.getCellFormula());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testIsnontext() {
+		
+		String formula;
+		try {
+			formula = getCellFormula(5);
+		} catch (IllegalStateException e) {
+			if(e.getMessage().startsWith(&quot;too much stuff&quot;)) {
+				throw afe(&quot;ISNONTEXT() registered with wrong index&quot;);
+			}
+			// some other unexpected error
+			throw e;
+		}
+		assertEquals(&quot;ISNONTEXT(\&quot;abc\&quot;)&quot;, formula);
+	}
+</code></pre>
+</body>

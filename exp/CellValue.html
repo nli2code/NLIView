@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private CellValue evaluateFormulaCellValue(Cell cell) {
+		ValueEval eval = _bookEvaluator.evaluate(new HSSFEvaluationCell((HSSFCell)cell));
+		if (eval instanceof BoolEval) {
+			BoolEval be = (BoolEval) eval;
+			return CellValue.valueOf(be.getBooleanValue());
+		}
+		if (eval instanceof NumericValueEval) {
+			NumericValueEval ne = (NumericValueEval) eval;
+			return new CellValue(ne.getNumberValue());
+		}
+		if (eval instanceof StringValueEval) {
+			StringValueEval ne = (StringValueEval) eval;
+			return new CellValue(ne.getStringValue());
+		}
+		if (eval instanceof ErrorEval) {
+			return CellValue.getError(((ErrorEval)eval).getErrorCode());
+		}
+		throw new RuntimeException(&quot;Unexpected eval class (&quot; + eval.getClass().getName() + &quot;)&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testSimpleCircularReference() {
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet(&quot;Sheet1&quot;);
+
+		HSSFRow row = sheet.createRow(0);
+		HSSFCell testCell = row.createCell(0);
+		testCell.setCellFormula(&quot;A1&quot;);
+
+		CellValue cellValue = evaluateWithCycles(wb, testCell);
+
+		confirmCycleErrorCode(cellValue);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private void confirm(String formulaText, double expectedResult) {
+        cell11.setCellFormula(formulaText);
+        evaluator.clearAllCachedResultValues();
+        CellValue cv = evaluator.evaluate(cell11);
+        if (cv.getCellType() != Cell.CELL_TYPE_NUMERIC) {
+            throw new AssertionFailedError(&quot;Wrong result type: &quot; + cv.formatAsString());
+        }
+        double actualValue = cv.getNumberValue();
+        assertEquals(expectedResult, actualValue, 0);
+    }
+</code></pre>
+</body>

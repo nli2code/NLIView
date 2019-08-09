@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testTable() throws Exception {
+        XSLFSlideShow xml = 
+           new XSLFSlideShow(OPCPackage.open(slTests.openResourceAsStream(&quot;present1.pptx&quot;)));
+        XSLFPowerPointExtractor extractor =
+            new XSLFPowerPointExtractor(xml);
+
+        String text = extractor.getText();
+        assertTrue(text.length() &gt; 0);
+
+        // Check comments are there
+        assertTrue(&quot;Unable to find expected word in text\n&quot; + text, text.contains(&quot;TEST&quot;));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static void main(String[] args) throws Exception {
+		if(args.length &lt; 1) {
+			System.err.println(&quot;Use:&quot;);
+			System.err.println(&quot;  PLCDumper &lt;filename&gt;&quot;);
+			System.exit(1);
+		}
+		PLCDumper dump = new PLCDumper(
+				new FileInputStream(args[0])
+		);
+
+		System.out.println(&quot;Dumping &quot; + args[0]);
+		dump.dumpPLC();
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>   public void testGetComments() throws Exception {
+      XSLFSlideShow xml = 
+         new XSLFSlideShow(OPCPackage.open(slTests.openResourceAsStream(&quot;45545_Comment.pptx&quot;)));
+      XSLFPowerPointExtractor extractor = 
+         new XSLFPowerPointExtractor(xml);
+
+      String text = extractor.getText();
+      assertTrue(text.length() &gt; 0);
+
+      // Check comments are there
+      assertTrue(&quot;Unable to find expected word in text\n&quot; + text, text.contains(&quot;testdoc&quot;));
+      assertTrue(&quot;Unable to find expected word in text\n&quot; + text, text.contains(&quot;test phrase&quot;));
+
+      // Check the authors came through too
+      assertTrue(&quot;Unable to find expected word in text\n&quot; + text, text.contains(&quot;XPVMWARE01&quot;));
+   }
+</code></pre>
+</body>

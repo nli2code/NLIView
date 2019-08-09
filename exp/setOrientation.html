@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void setOrientation(AxisOrientation orientation) {
+		CTScaling scaling = getCTScaling();
+		STOrientation.Enum stOrientation = fromAxisOrientation(orientation);
+		if (scaling.isSetOrientation()) {
+			scaling.getOrientation().setVal(stOrientation);
+		} else {
+			getCTScaling().addNewOrientation().setVal(stOrientation);
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testSetGetOrientation() {
+        CTWorksheet worksheet = CTWorksheet.Factory.newInstance();
+        CTPageSetup pSetup = worksheet.addNewPageSetup();
+        pSetup.setOrientation(STOrientation.PORTRAIT);
+        XSSFPrintSetup printSetup = new XSSFPrintSetup(worksheet);
+        assertEquals(PrintOrientation.PORTRAIT, printSetup.getOrientation());
+        assertEquals(false, printSetup.getLandscape());
+        assertEquals(false, printSetup.getNoOrientation());
+
+        printSetup.setOrientation(PrintOrientation.LANDSCAPE);
+        assertEquals(pSetup.getOrientation().intValue(), printSetup.getOrientation().getValue());
+        assertEquals(true, printSetup.getLandscape());
+        assertEquals(false, printSetup.getNoOrientation());
+    }
+</code></pre>
+</body>

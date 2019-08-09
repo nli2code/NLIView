@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static void main(String[] args) throws IOException
+	{
+		// 打开一个现有的 PPT
+		File file = new File(&quot;C:\\Users\\lc\\Desktop\\example1.pptx&quot;);
+		FileInputStream in = new FileInputStream(file);
+		XMLSlideShow ppt = new XMLSlideShow(in);
+		
+		// 向 PPT 添加幻灯片
+		XSLFSlide slide1 = ppt.createSlide();
+		XSLFSlide slide2 = ppt.createSlide();
+		
+		// 保存更改
+		FileOutputStream out = new FileOutputStream(file);
+		ppt.write(out);
+		
+		System.out.println(&quot;PPT 编辑成功！&quot;); 
+		out.close();
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testImageCaching() {
+        XMLSlideShow ppt = new XMLSlideShow();
+        byte[] img1 = new byte[]{1,2,3};
+        byte[] img2 = new byte[]{3,4,5};
+        int idx1 = ppt.addPicture(img1, XSLFPictureData.PICTURE_TYPE_PNG);
+        assertEquals(0, idx1);
+        assertEquals(0, ppt.addPicture(img1, XSLFPictureData.PICTURE_TYPE_PNG));
+
+        int idx2 = ppt.addPicture(img2, XSLFPictureData.PICTURE_TYPE_PNG);
+        assertEquals(1, idx2);
+        assertEquals(1, ppt.addPicture(img2, XSLFPictureData.PICTURE_TYPE_PNG));
+
+        XSLFSlide slide1 = ppt.createSlide();
+        XSLFSlide slide2 = ppt.createSlide();
+
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testRead(){
+        XMLSlideShow ppt = XSLFTestDataSamples.openSampleDocument(&quot;themes.pptx&quot;);
+        XSLFSlide[] slides = ppt.getSlides();
+
+        slide1(slides[0]);
+        slide2(slides[1]);
+        slide3(slides[2]);
+        slide4(slides[3]);
+        slide5(slides[4]);
+        slide6(slides[5]);
+        slide7(slides[6]);
+        slide8(slides[7]);
+        slide9(slides[8]);
+        slide10(slides[9]);
+    }
+</code></pre>
+</body>

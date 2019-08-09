@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void visitContainedRecords(RecordVisitor rv) {
+		int nItems = records.size();
+		if (nItems &lt; 1) {
+			return;
+		}
+		ColumnInfoRecord cirPrev = null;
+		for(int i=0; i&lt;nItems; i++) {
+			ColumnInfoRecord cir = (ColumnInfoRecord)records.get(i);
+			rv.visitRecord(cir);
+			if (cirPrev != null &amp;&amp; CIRComparator.compareColInfos(cirPrev, cir) &gt; 0) {
+				// Excel probably wouldn&#x27;t mind, but there is much logic in this class
+				// that assumes the column info records are kept in order
+				throw new RuntimeException(&quot;Column info records are out of order&quot;);
+			}
+			cirPrev = cir;
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static boolean mergeColInfoRecords(ColumnInfoRecord ciA, ColumnInfoRecord ciB) {
+		if (ciA.isAdjacentBefore(ciB) &amp;&amp; ciA.formatMatches(ciB)) {
+			ciA.setLastColumn(ciB.getLastColumn());
+			return true;
+		}
+		return false;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testGroupColumns_bug45639() {
+		ColumnInfoRecordsAggregate agg = new ColumnInfoRecordsAggregate();
+		agg.groupColumnRange( 7, 9, true);
+		agg.groupColumnRange( 4, 12, true);
+		try {
+			agg.groupColumnRange( 1, 15, true);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new AssertionFailedError(&quot;Identified bug 45639&quot;);
+		}
+		ColumnInfoRecord[] cirs = CIRCollector.getRecords(agg);
+		assertEquals(5, cirs.length);
+		confirmCIR(cirs, 0,  1,  3, 1, false, false);
+		confirmCIR(cirs, 1,  4,  6, 2, false, false);
+		confirmCIR(cirs, 2,  7,  9, 3, false, false);
+		confirmCIR(cirs, 3, 10, 12, 2, false, false);
+		confirmCIR(cirs, 4, 13, 15, 1, false, false);
+	}
+</code></pre>
+</body>

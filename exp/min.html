@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public int[] getBATArray() {
+      // Read them in
+		int[] result = new int[ Math.min(_bat_count,_max_bats_in_header) ];
+		int offset = _bat_array_offset;
+		for (int j = 0; j &lt; result.length; j++) {
+			result[ j ] = LittleEndian.getInt(_data, offset);
+			offset     += LittleEndianConsts.INT_SIZE;
+		}
+		return result;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static String getFromCompressedUnicode(
+		final byte[] string,
+		final int offset,
+		final int len) {
+		try {
+			int len_to_use = Math.min(len, string.length - offset);
+			return new String(string, offset, len_to_use, ENCODING_ISO_8859_1);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>  public void adjustForDelete(int start, int length)
+  {
+    int end = start + length;
+
+    if (_cpEnd &gt; start) {
+        // The start of the change is before we end
+
+        if (_cpStart &lt; end) {
+            // The delete was somewhere in the middle of us
+            _cpEnd = end &gt;= _cpEnd ? start : _cpEnd - length;
+            _cpStart = Math.min(start, _cpStart);
+        } else {
+            // The delete was before us
+            _cpEnd -= length;
+            _cpStart -= length;
+        }
+    }
+  }
+</code></pre>
+</body>

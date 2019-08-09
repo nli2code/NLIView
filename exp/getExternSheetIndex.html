@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void confirmSingle3DRef(Ptg[] ptgs, int expectedExternSheetIndex) {
+		assertEquals(1, ptgs.length);
+		Ptg ptg0 = ptgs[0];
+		assertTrue(ptg0 instanceof Ref3DPtg);
+		assertEquals(expectedExternSheetIndex, ((Ref3DPtg)ptg0).getExternSheetIndex());
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String toString() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(getClass().getName());
+        sb.append(&quot; [&quot;);
+        sb.append(_firstMovedIndex);
+        sb.append(_lastMovedIndex);
+        sb.append(_amountToMove);
+        return sb.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public int getExternSheetNumber(){
+		if (field_13_name_definition.getEncodedSize() &lt; 1) {
+			return 0;
+		}
+		Ptg ptg = field_13_name_definition.getTokens()[0];
+
+		if (ptg.getClass() == Area3DPtg.class){
+			return ((Area3DPtg) ptg).getExternSheetIndex();
+
+		}
+		if (ptg.getClass() == Ref3DPtg.class){
+			return ((Ref3DPtg) ptg).getExternSheetIndex();
+		}
+		return 0;
+	}
+</code></pre>
+</body>

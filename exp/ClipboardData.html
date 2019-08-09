@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    ClipboardData( byte[] data, int offset )
+    {
+        int size = LittleEndian.getInt( data, offset );
+
+        if ( size &lt; 4 )
+        {
+            logger.log( POILogger.WARN, &quot;ClipboardData at offset &quot;,
+                    Integer.valueOf( offset ), &quot; size less than 4 bytes &quot;
+                            + &quot;(doesn&#x27;t even have format field!). &quot;
+                            + &quot;Setting to format == 0 and hope for the best&quot; );
+            _format = 0;
+            _value = new byte[0];
+            return;
+        }
+
+        _format = LittleEndian.getInt( data, offset + LittleEndian.INT_SIZE );
+        _value = LittleEndian.getByteArray( data, offset
+                + LittleEndian.INT_SIZE * 2, size - LittleEndian.INT_SIZE );
+    }
+</code></pre>
+</body>

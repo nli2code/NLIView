@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toFormulaString(String[] operands) {
+        StringBuilder buf = new StringBuilder();
+
+        if(isExternalFunction()) {
+            buf.append(operands[0]); // first operand is actually the function name
+            appendArgs(buf, 1, operands);
+        } else {
+            buf.append(getName());
+            appendArgs(buf, 0, operands);
+        }
+        return buf.toString();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testToFormulaString() {
+		ArrayPtg ptg = create(ENCODED_PTG_DATA, ENCODED_CONSTANT_DATA);
+		String actualFormula;
+		try {
+			actualFormula = ptg.toFormulaString();
+		} catch (IllegalArgumentException e) {
+			if (e.getMessage().equals(&quot;Unexpected constant class (java.lang.Boolean)&quot;)) {
+				throw new AssertionFailedError(&quot;Identified bug 45380&quot;);
+			}
+			throw e;
+		}
+		assertEquals(&quot;{TRUE,\&quot;ABCD\&quot;,\&quot;E\&quot;;0,FALSE,\&quot;FG\&quot;}&quot;, actualFormula);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public String toFormulaString(String[] operands)
+    {
+         StringBuffer buffer = new StringBuffer();
+
+         buffer.append(operands[ 0 ]);
+         buffer.append(&quot;,&quot;);
+         buffer.append(operands[ 1 ]);
+         return buffer.toString();
+     }
+</code></pre>
+</body>

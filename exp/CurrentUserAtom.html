@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testReadEnc() throws Exception {
+		POIFSFileSystem fs = new POIFSFileSystem(
+				_slTests.openResourceAsStream(encFile)
+		);
+
+		try {
+			new CurrentUserAtom(fs);
+			fail();
+		} catch(EncryptedPowerPointFileException e) {
+			// Good
+		}
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private void readCurrentUserStream() {
+		try {
+			currentUser = new CurrentUserAtom(directory);
+		} catch(IOException ie) {
+			logger.log(POILogger.ERROR, &quot;Error finding Current User Atom:\n&quot; + ie);
+			currentUser = new CurrentUserAtom();
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testReadNormal() throws Exception {
+		POIFSFileSystem fs = new POIFSFileSystem(
+				_slTests.openResourceAsStream(normalFile)
+		);
+
+		CurrentUserAtom cu = new CurrentUserAtom(fs);
+
+		// Check the contents
+		assertEquals(&quot;Hogwarts&quot;, cu.getLastEditUsername());
+		assertEquals(0x2942, cu.getCurrentEditOffset());
+
+		// Round trip
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		cu.writeOut(baos);
+
+		CurrentUserAtom cu2 = new CurrentUserAtom(baos.toByteArray());
+		assertEquals(&quot;Hogwarts&quot;, cu2.getLastEditUsername());
+		assertEquals(0x2942, cu2.getCurrentEditOffset());
+	}
+</code></pre>
+</body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testReserializeTargetFrame() {
+		RecordInputStream in = TestcaseRecordInputStream.create(HyperlinkRecord.sid, dataTargetFrame);
+		HyperlinkRecord hr = new HyperlinkRecord(in);
+		byte[] ser = hr.serialize();
+		TestcaseRecordInputStream.confirmRecordEncoding(HyperlinkRecord.sid, dataTargetFrame, ser);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testCameraTool_bug45912() {
+		/**
+		 * taken from ftPictFmla sub-record in attachment 22645 (offset 0x40AB).
+		 */
+		byte[] data45912 = hr(
+				&quot;12 00 0B 00 F8 02 88 04 3B 00 &quot; +
+				&quot;00 00 00 01 00 00 00 01 &quot; +
+				&quot;00 00&quot;);
+		RecordInputStream in = TestcaseRecordInputStream.create(EORSR_SID, data45912);
+
+		EmbeddedObjectRefSubRecord rec = new EmbeddedObjectRefSubRecord(in, data45912.length);
+		byte[] ser2 = rec.serialize();
+		confirmData(data45912, ser2);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testReserializeLinkToWorkbook() {
+
+		RecordInputStream in = TestcaseRecordInputStream.create(HyperlinkRecord.sid, dataLinkToWorkbook);
+		HyperlinkRecord hr = new HyperlinkRecord(in);
+		byte[] ser = hr.serialize();
+		TestcaseRecordInputStream.confirmRecordEncoding(HyperlinkRecord.sid, dataLinkToWorkbook, ser);
+		if (&quot;YEARFR~1.XLS&quot;.equals(hr.getAddress())) {
+			throw new AssertionFailedError(&quot;Identified bug in reading workbook link&quot;);
+		}
+		assertEquals(&quot;yearfracExamples.xls&quot;, hr.getAddress());
+	}
+</code></pre>
+</body>

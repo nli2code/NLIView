@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public List&lt;PackagePart&gt; getAllEmbedds() throws OpenXML4JException {
+        List&lt;PackagePart&gt; embedds = new LinkedList&lt;PackagePart&gt;();
+
+        // Get the embeddings for the workbook
+        PackagePart part = getPackagePart();
+        for (PackageRelationship rel : getPackagePart().getRelationshipsByType(OLE_OBJECT_REL_TYPE)) {
+            embedds.add(part.getRelatedPart(rel));
+        }
+
+        for (PackageRelationship rel : getPackagePart().getRelationshipsByType(PACK_OBJECT_REL_TYPE)) {
+            embedds.add(part.getRelatedPart(rel));
+        }
+
+        return embedds;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public List&lt;PackagePart&gt; getAllEmbedds() throws OpenXML4JException {
+        List&lt;PackagePart&gt; embedds = new LinkedList&lt;PackagePart&gt;();
+
+        for(XSSFSheet sheet : sheets){
+            // Get the embeddings for the workbook
+            for(PackageRelationship rel : sheet.getPackagePart().getRelationshipsByType(XSSFRelation.OLEEMBEDDINGS.getRelation())) {
+                embedds.add( sheet.getPackagePart().getRelatedPart(rel) );
+            }
+
+            for(PackageRelationship rel : sheet.getPackagePart().getRelationshipsByType(XSSFRelation.PACKEMBEDDINGS.getRelation())) {
+               embedds.add( sheet.getPackagePart().getRelatedPart(rel) );
+            }
+        }
+        return embedds;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void test(POIXMLDocument doc, int expectedCount) throws Exception {
+		assertNotNull(doc.getAllEmbedds());
+		assertEquals(expectedCount, doc.getAllEmbedds().size());
+
+		for(int i=0; i&lt;doc.getAllEmbedds().size(); i++) {
+			PackagePart pp = doc.getAllEmbedds().get(i);
+			assertNotNull(pp);
+			
+			byte[] b = IOUtils.toByteArray(pp.getInputStream());
+			assertTrue(b.length &gt; 0);
+		}
+	}
+</code></pre>
+</body>

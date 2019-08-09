@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>  public Object clone()
+    throws CloneNotSupportedException
+  {
+    TableCellDescriptor tc = (TableCellDescriptor)super.clone();
+    tc.setShd( (ShadingDescriptor) getShd().clone() );
+    tc.setBrcTop((BorderCode)getBrcTop().clone());
+    tc.setBrcLeft((BorderCode)getBrcLeft().clone());
+    tc.setBrcBottom((BorderCode)getBrcBottom().clone());
+    tc.setBrcRight((BorderCode)getBrcRight().clone());
+    return tc;
+  }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  public Object clone()
+    throws CloneNotSupportedException
+  {
+    CharacterRun cp = (CharacterRun)super.clone();
+    cp._props.setDttmRMark((DateAndTime)_props.getDttmRMark().clone());
+    cp._props.setDttmRMarkDel((DateAndTime)_props.getDttmRMarkDel().clone());
+    cp._props.setDttmPropRMark((DateAndTime)_props.getDttmPropRMark().clone());
+    cp._props.setDttmDispFldRMark((DateAndTime)_props.getDttmDispFldRMark().
+                                  clone());
+    cp._props.setXstDispFldRMark(_props.getXstDispFldRMark().clone());
+    cp._props.setShd((ShadingDescriptor)_props.getShd().clone());
+
+    return cp;
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void setColor(String rgbStr) {
+        CTTcPr tcpr = ctTc.isSetTcPr() ? ctTc.getTcPr() : ctTc.addNewTcPr();
+        CTShd ctshd = tcpr.isSetShd() ? tcpr.getShd() : tcpr.addNewShd();
+        ctshd.setColor(&quot;auto&quot;);
+        ctshd.setVal(STShd.CLEAR);
+        ctshd.setFill(rgbStr);
+    }
+</code></pre>
+</body>

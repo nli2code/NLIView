@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static final int getNumberOfInfoRecsForStrings(int numStrings) {
+      int infoRecs = (numStrings / DEFAULT_BUCKET_SIZE);
+      if ((numStrings % DEFAULT_BUCKET_SIZE) != 0)
+        infoRecs ++;
+      //Excel seems to max out after 128 info records.
+      //This isn&#x27;t really documented anywhere...
+      if (infoRecs &gt; MAX_BUCKETS)
+        infoRecs = MAX_BUCKETS;
+      return infoRecs;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public SSTSerializer( IntMapper&lt;UnicodeString&gt; strings, int numStrings, int numUniqueStrings )
+    {
+        this.strings = strings;
+		_numStrings = numStrings;
+		_numUniqueStrings = numUniqueStrings;
+
+        int infoRecs = ExtSSTRecord.getNumberOfInfoRecsForStrings(strings.size());
+        this.bucketAbsoluteOffsets = new int[infoRecs];
+        this.bucketRelativeOffsets = new int[infoRecs];
+    }
+</code></pre>
+</body>

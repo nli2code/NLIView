@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testEmbeddedObjects() throws Exception {
+        HSSFWorkbook workbook = HSSFTestDataSamples.openSampleWorkbook(&quot;ole2-embedding.xls&quot;);
+
+        List objects = workbook.getAllEmbeddedObjects();
+        assertEquals(&quot;Wrong number of objects&quot;, 2, objects.size());
+        assertEquals(&quot;Wrong name for first object&quot;, &quot;MBD06CAB431&quot;,
+                ((HSSFObjectData)
+                objects.get(0)).getDirectory().getName());
+        assertEquals(&quot;Wrong name for second object&quot;, &quot;MBD06CAC85A&quot;,
+                ((HSSFObjectData)
+                objects.get(1)).getDirectory().getName());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testEvaluateSimple() {
+		HSSFWorkbook wb = HSSFTestDataSamples.openSampleWorkbook(&quot;testNames.xls&quot;);
+		HSSFSheet sheet = wb.getSheetAt(0);
+		HSSFCell cell = sheet.getRow(8).getCell(0);
+		HSSFFormulaEvaluator fe = new HSSFFormulaEvaluator(wb);
+		CellValue cv = fe.evaluate(cell);
+		assertEquals(HSSFCell.CELL_TYPE_NUMERIC, cv.getCellType());
+		assertEquals(3.72, cv.getNumberValue(), 0.0);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testColorFromTheme() {
+        XSSFWorkbook wb = XSSFTestDataSamples.openSampleWorkbook(&quot;styles.xlsx&quot;);
+        XSSFCell cellWithThemeColor = wb.getSheetAt(0).getRow(10).getCell(0);
+        //color RGB will be extracted from theme
+        XSSFColor foregroundColor = cellWithThemeColor.getCellStyle().getFillForegroundXSSFColor();
+        byte[] rgb = foregroundColor.getRgb();
+        byte[] rgbWithTint = foregroundColor.getRgbWithTint();
+        assertEquals(rgb[0],-18);
+        assertEquals(rgb[1],-20);
+        assertEquals(rgb[2],-31);
+        assertEquals(rgbWithTint[0],-12);
+        assertEquals(rgbWithTint[1],-13);
+        assertEquals(rgbWithTint[2],-20);
+    }
+</code></pre>
+</body>

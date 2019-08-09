@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private int getParaTextPropVal(String propName) {
+		TextProp prop = null;
+		boolean hardAttribute = false;
+		if (paragraphStyle != null){
+			prop = paragraphStyle.findByName(propName);
+
+			BitMaskTextProp maskProp = (BitMaskTextProp)paragraphStyle.findByName(ParagraphFlagsTextProp.NAME);
+			hardAttribute = maskProp != null &amp;&amp; maskProp.getValue() == 0;
+		}
+		if (prop == null &amp;&amp; !hardAttribute){
+			Sheet sheet = parentRun.getSheet();
+			int txtype = parentRun.getRunType();
+			MasterSheet master = sheet.getMasterSheet();
+			if (master != null)
+				prop = master.getStyleAttribute(txtype, getIndentLevel(), propName, false);
+		}
+
+		return prop == null ? -1 : prop.getValue();
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private TextProp fetchOrAddTextProp(TextPropCollection textPropCol, String textPropName) {
+		// Fetch / Add the TextProp
+		TextProp tp = textPropCol.findByName(textPropName);
+		if(tp == null) {
+			tp = textPropCol.addWithName(textPropName);
+		}
+		return tp;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public TextProp findByName(String textPropName) {
+		for(int i=0; i&lt;textPropList.size(); i++) {
+			TextProp prop = textPropList.get(i);
+			if(prop.getName().equals(textPropName)) {
+				return prop;
+			}
+		}
+		return null;
+	}
+</code></pre>
+</body>

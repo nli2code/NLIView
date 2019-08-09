@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setCellValue(double value) {
+        if(Double.isInfinite(value)) {
+            // Excel does not support positive/negative infinities,
+            // rather, it gives a #DIV/0! error in these cases.
+            _cell.setT(STCellType.E);
+            _cell.setV(FormulaError.DIV0.getString());
+        } else if (Double.isNaN(value)){
+            // Excel does not support Not-a-Number (NaN),
+            // instead it immediately generates an #NUM! error.
+            _cell.setT(STCellType.E);
+            _cell.setV(FormulaError.NUM.getString());
+        } else {
+            _cell.setT(STCellType.N);
+            _cell.setV(String.valueOf(value));
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testConstructor() {
+        CommentsTable sheetComments = new CommentsTable();
+        assertNotNull(sheetComments.getCTComments().getCommentList());
+        assertNotNull(sheetComments.getCTComments().getAuthors());
+        assertEquals(1, sheetComments.getCTComments().getAuthors().sizeOfAuthorArray());
+        assertEquals(1, sheetComments.getNumberOfAuthors());
+
+        CTComment ctComment = sheetComments.newComment();
+        CTShape vmlShape = CTShape.Factory.newInstance();
+
+        XSSFComment comment = new XSSFComment(sheetComments, ctComment, vmlShape);
+        assertEquals(null, comment.getString());
+        assertEquals(0, comment.getRow());
+        assertEquals(0, comment.getColumn());
+        assertEquals(&quot;&quot;, comment.getAuthor());
+        assertEquals(false, comment.isVisible());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static String unicodeString(HSSFCell cell) {
+        String ss = cell.getRichStringCellValue().getString();
+        char s[] = ss.toCharArray();
+        StringBuffer sb = new StringBuffer();
+        for (int x=0;x&lt;s.length;x++) {
+            sb.append(&quot;\\u&quot;).append(Integer.toHexString(s[x]));
+        }
+        return sb.toString();
+    }
+</code></pre>
+</body>

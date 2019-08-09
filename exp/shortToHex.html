@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>		public void appendDebugInfo(StringBuffer sb) {
+			sb.append(&#x27;(&#x27;);
+			sb.append( &quot;isxvi=&quot;).append(HexDump.shortToHex(_isxvi));
+			sb.append(&quot; isxvd=&quot;).append(HexDump.shortToHex(_isxvd));
+			sb.append(&quot; idObj=&quot;).append(HexDump.shortToHex(_idObj));
+			sb.append(&#x27;)&#x27;);
+		}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private void confirmGUID(GUID g, int d1, int d2, int d3, long d4) {
+		assertEquals(new String(HexDump.intToHex(d1)), new String(HexDump.intToHex(g.getD1())));
+		assertEquals(new String(HexDump.shortToHex(d2)), new String(HexDump.shortToHex(g.getD2())));
+		assertEquals(new String(HexDump.shortToHex(d3)), new String(HexDump.shortToHex(g.getD3())));
+		assertEquals(new String(HexDump.longToHex(d4)), new String(HexDump.longToHex(g.getD4())));
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>  public String toString() {
+    final StringBuffer sb = new StringBuffer();
+
+    sb.append(&quot;[NAMECMT]\n&quot;);
+    sb.append(&quot;    .record type            = &quot;).append(HexDump.shortToHex(field_1_record_type)).append(&quot;\n&quot;);
+    sb.append(&quot;    .frt cell ref flag      = &quot;).append(HexDump.byteToHex(field_2_frt_cell_ref_flag)).append(&quot;\n&quot;);
+    sb.append(&quot;    .reserved               = &quot;).append(field_3_reserved).append(&quot;\n&quot;);
+    sb.append(&quot;    .name length            = &quot;).append(field_6_name_text.length()).append(&quot;\n&quot;);
+    sb.append(&quot;    .comment length         = &quot;).append(field_7_comment_text.length()).append(&quot;\n&quot;);
+    sb.append(&quot;    .name                   = &quot;).append(field_6_name_text).append(&quot;\n&quot;);
+    sb.append(&quot;    .comment                = &quot;).append(field_7_comment_text).append(&quot;\n&quot;);
+    sb.append(&quot;[/NAMECMT]\n&quot;);
+
+    return sb.toString();
+  }
+</code></pre>
+</body>

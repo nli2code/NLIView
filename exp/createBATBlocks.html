@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static BATBlock [] createBATBlocks(final POIFSBigBlockSize bigBlockSize, final int [] entries)
+    {
+        int        block_count = calculateStorageRequirements(bigBlockSize, entries.length);
+        BATBlock[] blocks      = new BATBlock[ block_count ];
+        int        index       = 0;
+        int        remaining   = entries.length;
+
+        int _entries_per_block = bigBlockSize.getBATEntriesPerBlock();
+        for (int j = 0; j &lt; entries.length; j += _entries_per_block)
+        {
+            blocks[ index++ ] = new BATBlock(bigBlockSize, entries, j,
+                                             (remaining &gt; _entries_per_block)
+                                             ? j + _entries_per_block
+                                             : entries.length);
+            remaining         -= _entries_per_block;
+        }
+        return blocks;
+    }
+</code></pre>
+</body>

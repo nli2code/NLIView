@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testMissingCoreRecords() throws Exception {
+		ppe = new PowerPointExtractor(slTests.openResourceAsStream(&quot;missing_core_records.ppt&quot;));
+
+		String text = ppe.getText(true, false);
+		String nText = ppe.getNotes();
+
+		assertNotNull(text);
+		assertNotNull(nText);
+		
+		// Notes record were corrupt, so don&#x27;t expect any
+		assertEquals(nText.length(), 0);
+		
+		// Slide records were fine
+		assertTrue(text.startsWith(&quot;Using Disease Surveillance and Response&quot;));
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test52991() throws Exception {
+        String path = &quot;badzip.ppt&quot;;
+        ppe = new PowerPointExtractor(POIDataSamples.getSlideShowInstance().openResourceAsStream(path));
+        List&lt;OLEShape&gt; shapes = ppe.getOLEShapes();
+        
+        for (OLEShape shape : shapes) {
+            IOUtils.copy(shape.getObjectData().getData(), new ByteArrayOutputStream());
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>   public void testSlideMasterText() throws Exception {
+      String masterTitleText = &quot;This is the Master Title&quot;;
+      String masterRandomText = &quot;This text comes from the Master Slide&quot;;
+      String masterFooterText = &quot;Footer from the master slide&quot;;
+      HSLFSlideShow hslf = new HSLFSlideShow(slTests.openResourceAsStream(&quot;WithMaster.ppt&quot;));
+      
+      ppe = new PowerPointExtractor(hslf);
+      
+      String text = ppe.getText();
+      //assertContains(text, masterTitleText); // TODO Is this available in PPT?
+      //assertContains(text, masterRandomText); // TODO Extract
+      assertContains(text, masterFooterText);
+   }
+</code></pre>
+</body>

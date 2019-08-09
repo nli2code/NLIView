@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void fillOval(int x, int y, int width, int height)
+    {
+        HSSFSimpleShape shape = escherGroup.createShape(new HSSFChildAnchor( x, y, x + width, y + height ) );
+        shape.setShapeType(HSSFSimpleShape.OBJECT_TYPE_OVAL);
+        shape.setLineStyle(HSSFShape.LINESTYLE_NONE);
+        shape.setFillColor(foreground.getRed(), foreground.getGreen(), foreground.getBlue());
+        shape.setLineStyleColor(foreground.getRed(), foreground.getGreen(), foreground.getBlue());
+        shape.setNoFill(false);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static void drawOval( HSSFPatriarch patriarch )
+    {
+        // Create an oval and style to taste.
+        HSSFClientAnchor a = new HSSFClientAnchor();
+        a.setAnchor((short)2, 2, 20, 20, (short) 2, 2, 190, 80);
+        HSSFSimpleShape s = patriarch.createSimpleShape(a);
+        s.setShapeType(HSSFSimpleShape.OBJECT_TYPE_OVAL);
+        s.setLineStyleColor(10,10,10);
+        s.setFillColor(90,10,200);
+        s.setLineWidth(HSSFShape.LINEWIDTH_ONE_PT * 3);
+        s.setLineStyle(HSSFShape.LINESTYLE_DOTSYS);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void drawLine(int x1, int y1, int x2, int y2, int width)
+    {
+        HSSFSimpleShape shape = escherGroup.createShape(new HSSFChildAnchor(x1, y1, x2, y2) );
+        shape.setShapeType(HSSFSimpleShape.OBJECT_TYPE_LINE);
+        shape.setLineWidth(width);
+        shape.setLineStyleColor(foreground.getRed(), foreground.getGreen(), foreground.getBlue());
+    }
+</code></pre>
+</body>

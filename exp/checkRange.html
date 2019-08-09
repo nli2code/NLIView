@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HSSFClientAnchor( int dx1, int dy1, int dx2, int dy2, short col1, int row1, short col2, int row2 )
+    {
+        super( dx1, dy1, dx2, dy2 );
+
+        checkRange(dx1, 0, 1023, &quot;dx1&quot;);
+        checkRange(dx2, 0, 1023, &quot;dx2&quot;);
+        checkRange(dy1, 0, 255, &quot;dy1&quot;);
+        checkRange(dy2, 0, 255, &quot;dy2&quot;);
+        checkRange(col1, 0, 255, &quot;col1&quot;);
+        checkRange(col2, 0, 255, &quot;col2&quot;);
+        checkRange(row1, 0, 255 * 256, &quot;row1&quot;);
+        checkRange(row2, 0, 255 * 256, &quot;row2&quot;);
+
+        this.col1 = col1;
+        this.row1 = row1;
+        this.col2 = col2;
+        this.row2 = row2;
+    }
+</code></pre>
+</body>

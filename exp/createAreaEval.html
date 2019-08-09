@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void confirmAreaEval(String areaRefString, double[] dValues,
+			int rowNum, int colNum, double expectedResult) {
+		ValueEval[] values = new ValueEval[dValues.length];
+		for (int i = 0; i &lt; values.length; i++) {
+			values[i] = new NumberEval(dValues[i]);
+		}
+		AreaEval arg0 = EvalFactory.createAreaEval(areaRefString, values);
+
+		ValueEval[] args;
+		if (colNum &gt; 0) {
+			args = new ValueEval[] { arg0, new NumberEval(rowNum), new NumberEval(colNum), };
+		} else {
+			args = new ValueEval[] { arg0, new NumberEval(rowNum), };
+		}
+
+		double actual = invokeAndDereference(args);
+		assertEquals(expectedResult, actual, 0D);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testMismatchAreaDimensions() {
+
+		AreaEval aeA = EvalFactory.createAreaEval(&quot;A1:A3&quot;, new ValueEval[3]);
+		AreaEval aeB = EvalFactory.createAreaEval(&quot;B1:D1&quot;, new ValueEval[3]);
+
+		ValueEval[] args;
+		args = new ValueEval[] { aeA, aeB, };
+		assertEquals(ErrorEval.VALUE_INVALID, invokeSumproduct(args));
+
+		args = new ValueEval[] { aeA, new NumberEval(5), };
+		assertEquals(ErrorEval.VALUE_INVALID, invokeSumproduct(args));
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void test1x1AreaOperand() {
+
+		ValueEval[] values = { BoolEval.FALSE, };
+		ValueEval[] args = {
+			EvalFactory.createAreaEval(&quot;B1:B1&quot;, values),
+			BoolEval.FALSE,
+		};
+		ValueEval result = evaluate(EI.Equal, args, 10, 10);
+		if (result instanceof ErrorEval) {
+			if (result == ErrorEval.VALUE_INVALID) {
+				throw new AssertionFailedError(&quot;Identified bug in evaluation of 1x1 area&quot;);
+			}
+		}
+		assertEquals(BoolEval.class, result.getClass());
+		assertTrue(((BoolEval)result).getBooleanValue());
+	}
+</code></pre>
+</body>

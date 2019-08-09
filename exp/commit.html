@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected void commit() throws IOException {
+        if (ctSettings == null) {
+            throw new IllegalStateException(&quot;Unable to write out settings that were never read in!&quot;);
+        }
+
+        XmlOptions xmlOptions = new XmlOptions(DEFAULT_XML_OPTIONS);
+        xmlOptions.setSaveSyntheticDocumentElement(new QName(CTSettings.type.getName().getNamespaceURI(), &quot;settings&quot;));
+
+        PackagePart part = getPackagePart();
+        OutputStream out = part.getOutputStream();
+        ctSettings.save(out, xmlOptions);
+        out.close();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected void commit() throws IOException {
+        XmlOptions xmlOptions = new XmlOptions(DEFAULT_XML_OPTIONS);
+        xmlOptions.setSaveSyntheticDocumentElement(new QName(CTNumbering.type.getName().getNamespaceURI(), &quot;numbering&quot;));
+        Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+        map.put(&quot;http://schemas.openxmlformats.org/markup-compatibility/2006&quot;, &quot;ve&quot;);
+        map.put(&quot;urn:schemas-microsoft-com:office:office&quot;, &quot;o&quot;);
+        map.put(&quot;http://schemas.openxmlformats.org/officeDocument/2006/relationships&quot;, &quot;r&quot;);
+        map.put(&quot;http://schemas.openxmlformats.org/officeDocument/2006/math&quot;, &quot;m&quot;);
+        map.put(&quot;urn:schemas-microsoft-com:vml&quot;, &quot;v&quot;);
+        map.put(&quot;http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing&quot;, &quot;wp&quot;);
+        map.put(&quot;urn:schemas-microsoft-com:office:word&quot;, &quot;w10&quot;);
+        map.put(&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;, &quot;w&quot;);
+        map.put(&quot;http://schemas.microsoft.com/office/word/2006/wordml&quot;, &quot;wne&quot;);
+        xmlOptions.setSaveSuggestedPrefixes(map);
+        PackagePart part = getPackagePart();
+        OutputStream out = part.getOutputStream();
+        ctNumbering.save(out, xmlOptions);
+        out.close();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public final void write(OutputStream stream) throws IOException {
+        //force all children to commit their changes into the underlying OOXML Package
+        Set&lt;PackagePart&gt; context = new HashSet&lt;PackagePart&gt;();
+        onSave(context);
+        context.clear();
+
+        //save extended and custom properties
+        getProperties().commit();
+
+        getPackage().save(stream);
+    }
+</code></pre>
+</body>

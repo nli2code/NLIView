@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public final char getRVAType() {
+		if (isBaseToken()) {
+			return &#x27;.&#x27;;
+		}
+		switch (ptgClass) {
+			case Ptg.CLASS_REF:   return &#x27;R&#x27;;
+			case Ptg.CLASS_VALUE: return &#x27;V&#x27;;
+			case Ptg.CLASS_ARRAY: return &#x27;A&#x27;;
+		}
+		throw new RuntimeException(&quot;Unknown operand class (&quot; + ptgClass + &quot;)&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private void confirmTokenClass(Ptg[] ptgs, int i, byte operandClass) {
+		Ptg ptg = ptgs[i];
+		if (ptg.isBaseToken()) {
+			throw new AssertionFailedError(&quot;ptg[&quot; + i + &quot;] is a base token&quot;);
+		}
+		if (operandClass != ptg.getPtgClass()) {
+			throw new AssertionFailedError(&quot;Wrong operand class for ptg (&quot;
+					+ ptg.toString() + &quot;). Expected &quot; + getOperandClassName(operandClass)
+					+ &quot; but got &quot; + getOperandClassName(ptg.getPtgClass()));
+		}
+	}
+</code></pre>
+</body>

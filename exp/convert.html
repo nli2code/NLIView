@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>  public static byte[] shortArrayToByteArray(short[] convert)
+  {
+    byte[] buf = new byte[convert.length * LittleEndian.SHORT_SIZE];
+
+    for (int x = 0; x &lt; convert.length; x++)
+    {
+      LittleEndian.putShort(buf, x * LittleEndian.SHORT_SIZE, convert[x]);
+    }
+
+    return buf;
+  }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>  protected static OtpErlangObject convertNumber(String string) {
+    try {
+      return new OtpErlangBinary(string.replace(&quot;,&quot;, &quot;&quot;).getBytes(&quot;UTF-8&quot;));
+    } catch(UnsupportedEncodingException uee) {
+      return new OtpErlangAtom(&quot;nil&quot;);
+    }
+  }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>		DocumentBlock[] getBlocks() {
+			if (isValid() &amp;&amp; _writer != null) {
+				ByteArrayOutputStream stream = new ByteArrayOutputStream(_size);
+				DocumentOutputStream dstream = new DocumentOutputStream(stream, _size);
+
+				_writer.processPOIFSWriterEvent(new POIFSWriterEvent(dstream, _path, _name, _size));
+				bigBlocks = DocumentBlock.convert(_bigBlockSize, stream.toByteArray(), _size);
+			}
+			return bigBlocks;
+		}
+</code></pre>
+</body>

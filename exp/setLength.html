@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void buildParagraphs()
+    {
+        paragraphs = new LinkedHashMap&lt;Integer, String&gt;();
+
+        StringBuilder part = new StringBuilder();
+        String text = _doc.getDocumentText();
+        for ( int charIndex = 0; charIndex &lt; text.length(); charIndex++ )
+        {
+            char c = text.charAt( charIndex );
+            part.append( c );
+            if ( c == 13 || c == 7 || c == 12 )
+            {
+                paragraphs.put( Integer.valueOf( charIndex ), part.toString() );
+                part.setLength( 0 );
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void printColumnHeads() {
+        out.format(&quot;&lt;thead&gt;%n&quot;);
+        out.format(&quot;  &lt;tr class=%s&gt;%n&quot;, COL_HEAD_CLASS);
+        out.format(&quot;    &lt;th class=%s&gt;&amp;#x25CA;&lt;/th&gt;%n&quot;, COL_HEAD_CLASS);
+        //noinspection UnusedDeclaration
+        StringBuilder colName = new StringBuilder();
+        for (int i = firstColumn; i &lt; endColumn; i++) {
+            colName.setLength(0);
+            int cnum = i;
+            do {
+                colName.insert(0, (char) (&#x27;A&#x27; + cnum % 26));
+                cnum /= 26;
+            } while (cnum &gt; 0);
+            out.format(&quot;    &lt;th class=%s&gt;%s&lt;/th&gt;%n&quot;, COL_HEAD_CLASS, colName);
+        }
+        out.format(&quot;  &lt;/tr&gt;%n&quot;);
+        out.format(&quot;&lt;/thead&gt;%n&quot;);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void startElement(String uri, String localName, String name,
+                             Attributes attributes) throws SAXException {
+        if (&quot;sst&quot;.equals(name)) {
+            String count = attributes.getValue(&quot;count&quot;);
+            if(count != null) this.count = Integer.parseInt(count);
+            String uniqueCount = attributes.getValue(&quot;uniqueCount&quot;);
+            if(uniqueCount != null) this.uniqueCount = Integer.parseInt(uniqueCount);
+
+            this.strings = new ArrayList&lt;String&gt;(this.uniqueCount);
+
+            characters = new StringBuffer();
+        } else if (&quot;si&quot;.equals(name)) {
+            characters.setLength(0);
+        } else if (&quot;t&quot;.equals(name)) {
+            tIsOpen = true;
+        }
+    }
+</code></pre>
+</body>

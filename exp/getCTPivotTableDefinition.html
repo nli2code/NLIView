@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testAddThreeSametColumnLabelsToPivotTable() {
+        int columnOne = 0;
+        int columnTwo = 1;
+        int columnThree = 2;
+
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, columnOne);
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, columnTwo);
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, columnThree);
+        CTPivotTableDefinition defintion = pivotTable.getCTPivotTableDefinition();
+
+        assertEquals(defintion.getDataFields().getDataFieldList().size(), 3);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void testColumnLabelSetCustomName() {
+        int columnIndex = 0;
+
+        String customName = &quot;Custom Name&quot;;
+        
+        pivotTable.addColumnLabel(DataConsolidateFunction.SUM, columnIndex, customName);
+
+        CTPivotTableDefinition defintion = pivotTable.getCTPivotTableDefinition();
+
+        assertEquals(defintion.getDataFields().getDataFieldArray(0).getFld(), columnIndex);
+        assertEquals(defintion.getDataFields().getDataFieldArray(0).getName(), customName);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static void setFormatDataField(XSSFPivotTable pivotTable,
+											   long fieldIndex,
+											   long numFmtId) {
+		Optional.ofNullable(pivotTable
+				.getCTPivotTableDefinition()
+				.getDataFields())
+				.map(CTDataFields::getDataFieldList)
+				.map(List::stream)
+				.ifPresent(stream -&gt; stream
+						.filter(dataField -&gt; dataField.getFld() == fieldIndex)
+						.findFirst()
+						.ifPresent(dataField -&gt; dataField.setNumFmtId(numFmtId)));
+	}
+</code></pre>
+</body>

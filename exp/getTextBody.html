@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testReadDisplayFrom() {
+        try {
+            mapiMessage.getDisplayFrom();
+        } catch(ChunkNotFoundException exp) {
+            return;
+        }
+
+        TestCase.fail(&quot;Should have thrown a ChunkNotFoundException but didn&#x27;t&quot;);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSSFTextParagraph addNewTextParagraph() {
+        CTTextBody txBody = ctShape.getTxBody();
+        CTTextParagraph p = txBody.addNewP();
+        XSSFTextParagraph paragraph = new XSSFTextParagraph(p, ctShape);
+        _paragraphs.add(paragraph);
+        return paragraph;
+    }    
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testReadBody() throws Exception {
+		String obtained = mapiMessage.getTextBody();
+		String expected = &quot;This is a test message.&quot;;
+
+		TestCase.assertEquals(obtained, expected);
+	}
+</code></pre>
+</body>

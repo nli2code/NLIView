@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(&quot;[TABLE]\n&quot;);
+		buffer.append(&quot;    .range    = &quot;).append(getRange().toString()).append(&quot;\n&quot;);
+		buffer.append(&quot;    .flags    = &quot;) .append(HexDump.byteToHex(field_5_flags)).append(&quot;\n&quot;);
+		buffer.append(&quot;    .alwaysClc= &quot;).append(isAlwaysCalc()).append(&quot;\n&quot;);
+		buffer.append(&quot;    .reserved = &quot;).append(HexDump.intToHex(field_6_res)).append(&quot;\n&quot;);
+		CellReference crRowInput = cr(field_7_rowInputRow, field_8_colInputRow);
+		CellReference crColInput = cr(field_9_rowInputCol, field_10_colInputCol);
+		buffer.append(&quot;    .rowInput = &quot;).append(crRowInput.formatAsString()).append(&quot;\n&quot;);
+		buffer.append(&quot;    .colInput = &quot;).append(crColInput.formatAsString()).append(&quot;\n&quot;);
+		buffer.append(&quot;[/TABLE]\n&quot;);
+		return buffer.toString();
+	}
+</code></pre>
+</body>

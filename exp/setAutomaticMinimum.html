@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private ValueRangeRecord createValueRangeRecord()
+	{
+		ValueRangeRecord r = new ValueRangeRecord();
+		r.setMinimumAxisValue( 0.0 );
+		r.setMaximumAxisValue( 0.0 );
+		r.setMajorIncrement( 0 );
+		r.setMinorIncrement( 0 );
+		r.setCategoryAxisCross( 0 );
+		r.setAutomaticMinimum( true );
+		r.setAutomaticMaximum( true );
+		r.setAutomaticMajor( true );
+		r.setAutomaticMinor( true );
+		r.setAutomaticCategoryCrossing( true );
+		r.setLogarithmicScale( false );
+		r.setValuesInReverse( false );
+		r.setCrossCategoryAxisAtMaximum( false );
+		r.setReserved( true );	// what&#x27;s this do??
+		return r;
+	}
+</code></pre>
+</body>

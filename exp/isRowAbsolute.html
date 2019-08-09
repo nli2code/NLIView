@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    /* package */ static void confirmCell(CellReference cf, String expSheetName, int expRow,
+            int expCol, boolean expIsRowAbs, boolean expIsColAbs, String expText) {
+
+        assertEquals(expSheetName, cf.getSheetName());
+        assertEquals(&quot;row index is wrong&quot;, expRow, cf.getRow());
+        assertEquals(&quot;col index is wrong&quot;, expCol, cf.getCol());
+        assertEquals(&quot;isRowAbsolute is wrong&quot;, expIsRowAbs, cf.isRowAbsolute());
+        assertEquals(&quot;isColAbsolute is wrong&quot;, expIsColAbs, cf.isColAbsolute());
+        assertEquals(&quot;text is wrong&quot;, expText, cf.formatAsString());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	protected AreaPtgBase(AreaReference ar) {
+		CellReference firstCell = ar.getFirstCell();
+		CellReference lastCell = ar.getLastCell();
+		setFirstRow(firstCell.getRow());
+		setFirstColumn(firstCell.getCol() == -1 ? 0 : firstCell.getCol());
+		setLastRow(lastCell.getRow());
+		setLastColumn(lastCell.getCol() == -1 ? 0xFF : lastCell.getCol());
+		setFirstColRelative(!firstCell.isColAbsolute());
+		setLastColRelative(!lastCell.isColAbsolute());
+		setFirstRowRelative(!firstCell.isRowAbsolute());
+		setLastRowRelative(!lastCell.isRowAbsolute());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static void confirmCell(CellReference cell, int row, int col, boolean isRowAbs,
+            boolean isColAbs) {
+        assertEquals(row, cell.getRow());
+        assertEquals(col, cell.getCol());
+        assertEquals(isRowAbs, cell.isRowAbsolute());
+        assertEquals(isColAbs, cell.isColAbsolute());
+    }
+</code></pre>
+</body>

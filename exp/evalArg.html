@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1,
+			ValueEval arg2, ValueEval arg3, ValueEval arg4) {
+		double result;
+		try {
+			double d0 = NumericFunction.singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
+			double d1 = NumericFunction.singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
+			double d2 = NumericFunction.singleOperandEvaluate(arg2, srcRowIndex, srcColumnIndex);
+			double d3 = NumericFunction.singleOperandEvaluate(arg3, srcRowIndex, srcColumnIndex);
+			double d4 = NumericFunction.singleOperandEvaluate(arg4, srcRowIndex, srcColumnIndex);
+			result = evaluate(d0, d1, d2, d3, d4 != 0.0);
+			NumericFunction.checkValue(result);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+		return new NumberEval(result);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static int evalArg(ValueEval arg, int srcRowIndex, int srcColumnIndex) throws EvaluationException {
+		if (arg == MissingArgEval.instance) {
+			return 0;
+		}
+		ValueEval ev = OperandResolver.getSingleValue(arg, srcRowIndex, srcColumnIndex);
+		// Excel silently truncates double values to integers
+		return OperandResolver.coerceValueToInt(ev);
+	}
+</code></pre>
+</body>

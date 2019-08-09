@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	private static void put(Map&lt;OperationPtg, Function&gt; m, OperationPtg ptgKey,
+			Function instance) {
+		// make sure ptg has single private constructor because map lookups assume singleton keys
+		Constructor[] cc = ptgKey.getClass().getDeclaredConstructors();
+		if (cc.length &gt; 1 || !Modifier.isPrivate(cc[0].getModifiers())) {
+			throw new RuntimeException(&quot;Failed to verify instance (&quot;
+					+ ptgKey.getClass().getName() + &quot;) is a singleton.&quot;);
+		}
+		m.put(ptgKey, instance);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private boolean isCursorInHdrF(XmlCursor cursor) {
+        XmlCursor verify = cursor.newCursor();
+        verify.toParent();
+        if (verify.getObject() == this.headerFooter) {
+            return true;
+        }
+        return false;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static void assumeRequiredFontsAreInstalled(final Workbook workbook, final Cell cell) {
+        // autoSize will fail if required fonts are not installed, skip this test then
+        Font font = workbook.getFontAt(cell.getCellStyle().getFontIndex());
+        Assume.assumeTrue(&quot;Cannot verify autoSizeColumn() because the necessary Fonts are not installed on this machine: &quot; + font,
+                          SheetUtil.canComputeColumnWidth(font));
+    }
+</code></pre>
+</body>

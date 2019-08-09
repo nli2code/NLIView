@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void test52400ReadAttachedTNEF() throws Exception {
+        POIDataSamples samples = POIDataSamples.getHMEFInstance();
+        String testFile = &quot;bug52400-winmail-with-attachments.dat&quot;;
+        HMEFMessage tnefDat    = new HMEFMessage(samples.openResourceAsStream(testFile));
+        MAPIAttribute bodyHtml = tnefDat.getMessageMAPIAttribute(MAPIProperty.BODY_HTML);
+        String bodyStr = new String(bodyHtml.getData(), getEncoding(tnefDat));
+        assertTrue(bodyStr.contains(&quot;There are also two attachments.&quot;));
+        assertEquals(2, tnefDat.getAttachments().size());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>   public void testBasicMessageMAPIAttributes() throws Exception {
+      HMEFMessage msg = new HMEFMessage(
+            _samples.openResourceAsStream(&quot;quick-winmail.dat&quot;)
+      );
+      
+      assertEquals(&quot;This is a test message&quot;, msg.getSubject());
+      assertEquals(&quot;{\\rtf1&quot;, msg.getBody().substring(0, 6));
+   }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>   public HMEFMessage(InputStream inp) throws IOException {
+      // Check the signature matches
+      long sig = LittleEndian.readInt(inp);
+      if(sig != HEADER_SIGNATURE) {
+         throw new IllegalArgumentException(
+               &quot;TNEF signature not detected in file, &quot; +
+               &quot;expected &quot; + HEADER_SIGNATURE + &quot; but got &quot; + sig
+         );
+      }
+      
+      // Read the File ID
+      fileId = LittleEndian.readUShort(inp);
+      
+      // Now begin processing the contents
+      process(inp, 0);
+   }
+</code></pre>
+</body>

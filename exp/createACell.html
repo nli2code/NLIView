@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testChangeTypeErrorToBoolean() {
+        Cell cell = createACell();
+        cell.setCellErrorValue((byte)ErrorConstants.ERROR_NAME);
+        cell.setCellValue(true);
+        try {
+            cell.getBooleanCellValue();
+        } catch (IllegalStateException e) {
+            if (e.getMessage().equals(&quot;Cannot get a boolean value from a error cell&quot;)) {
+
+                throw new AssertionFailedError(&quot;Identified bug 46479c&quot;);
+            }
+            throw e;
+        }
+        assertEquals(true, cell.getBooleanCellValue());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testConvertStringFormulaCell() {
+		Cell cellA1 = createACell();
+		cellA1.setCellFormula(&quot;\&quot;abc\&quot;&quot;);
+
+		// default cached formula result is numeric zero
+		assertEquals(0.0, cellA1.getNumericCellValue(), 0.0);
+
+		FormulaEvaluator fe = cellA1.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
+
+		fe.evaluateFormulaCell(cellA1);
+		assertEquals(&quot;abc&quot;, cellA1.getStringCellValue());
+
+		fe.evaluateInCell(cellA1);
+		if (cellA1.getStringCellValue().equals(&quot;&quot;)) {
+			throw new AssertionFailedError(&quot;Identified bug with writing back formula result of type string&quot;);
+		}
+		assertEquals(&quot;abc&quot;, cellA1.getStringCellValue());
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testChangeTypeErrorToNumber() {
+		Cell cell = createACell();
+		cell.setCellErrorValue((byte)ErrorConstants.ERROR_NAME);
+		try {
+			cell.setCellValue(2.5);
+		} catch (ClassCastException e) {
+			throw new AssertionFailedError(&quot;Identified bug 46479b&quot;);
+		}
+		assertEquals(2.5, cell.getNumericCellValue(), 0.0);
+	}
+</code></pre>
+</body>

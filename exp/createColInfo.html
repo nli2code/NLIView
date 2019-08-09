@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testGetRecordSize() {
+		ColumnInfoRecordsAggregate agg = new ColumnInfoRecordsAggregate();
+		agg.insertColumn(createColInfo(1, 3));
+		agg.insertColumn(createColInfo(4, 7));
+		agg.insertColumn(createColInfo(8, 8));
+		agg.groupColumnRange((short) 2, (short) 5, true);
+		assertEquals(4, agg.getNumColumns());
+
+		confirmSerializedSize(agg);
+
+		agg = new ColumnInfoRecordsAggregate();
+		agg.groupColumnRange((short) 3, (short) 6, true);
+		confirmSerializedSize(agg);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static ColumnInfoRecord createColInfo(int firstCol, int lastCol) {
+		ColumnInfoRecord columnInfoRecord = new ColumnInfoRecord();
+		columnInfoRecord.setFirstColumn((short) firstCol);
+		columnInfoRecord.setLastColumn((short) lastCol);
+		return columnInfoRecord;
+	}
+</code></pre>
+</body>

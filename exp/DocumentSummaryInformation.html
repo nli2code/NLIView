@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public static DocumentSummaryInformation newDocumentSummaryInformation()
+    {
+        final MutablePropertySet ps = new MutablePropertySet();
+        final MutableSection s = (MutableSection) ps.getFirstSection();
+        s.setFormatID(SectionIDMap.DOCUMENT_SUMMARY_INFORMATION_ID[0]);
+        try
+        {
+            return new DocumentSummaryInformation(ps);
+        }
+        catch (UnexpectedPropertySetTypeException ex)
+        {
+            /* This should never happen. */
+            throw new HPSFRuntimeException(ex);
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static DocumentSummaryInformation getDocumentSummaryInformation(NPOIFSFileSystem poifs) throws Exception {
+        DocumentInputStream dis = poifs.createDocumentInputStream(DocumentSummaryInformation.DEFAULT_STREAM_NAME);
+        PropertySet ps = new PropertySet(dis);
+        DocumentSummaryInformation dsi = new DocumentSummaryInformation(ps);
+        dis.close();
+        return dsi;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	protected void writeProperties(POIFSFileSystem outFS, List&lt;String&gt; writtenEntries) throws IOException {
+        SummaryInformation si = getSummaryInformation();
+        if(si != null) {
+			writePropertySet(SummaryInformation.DEFAULT_STREAM_NAME, si, outFS);
+			if(writtenEntries != null) {
+				writtenEntries.add(SummaryInformation.DEFAULT_STREAM_NAME);
+			}
+		}
+        DocumentSummaryInformation dsi = getDocumentSummaryInformation();
+        if(dsi != null) {
+			writePropertySet(DocumentSummaryInformation.DEFAULT_STREAM_NAME, dsi, outFS);
+			if(writtenEntries != null) {
+				writtenEntries.add(DocumentSummaryInformation.DEFAULT_STREAM_NAME);
+			}
+		}
+	}
+</code></pre>
+</body>

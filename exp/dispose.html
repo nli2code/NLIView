@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected static void preserveSpaces(STXstring xs) {
+        String text = xs.getStringValue();
+        if (text != null &amp;&amp; text.length() &gt; 0) {
+            char firstChar = text.charAt(0);
+            char lastChar  = text.charAt(text.length() - 1);
+            if(Character.isWhitespace(firstChar) || Character.isWhitespace(lastChar)) {
+                XmlCursor c = xs.newCursor();
+                c.toNextToken();
+                c.insertAttributeWithValue(new QName(&quot;http://www.w3.org/XML/1998/namespace&quot;, &quot;space&quot;), &quot;preserve&quot;);
+                c.dispose();
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private boolean isCursorInBody(XmlCursor cursor) {
+        XmlCursor verify = cursor.newCursor();
+        verify.toParent();
+        try {
+            return (verify.getObject() == this.ctDocument.getBody());
+        } finally {
+            verify.dispose();
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private XSSFAnchor getAnchorFromParent(XmlObject obj){
+        XSSFAnchor anchor = null;
+
+        XmlObject parentXbean = null;
+        XmlCursor cursor = obj.newCursor();
+        if(cursor.toParent()) parentXbean = cursor.getObject();
+        cursor.dispose();
+        if(parentXbean != null){
+            if (parentXbean instanceof CTTwoCellAnchor) {
+                CTTwoCellAnchor ct = (CTTwoCellAnchor)parentXbean;
+                anchor = new XSSFClientAnchor(ct.getFrom(), ct.getTo());
+            } else if (parentXbean instanceof CTOneCellAnchor) {
+                CTOneCellAnchor ct = (CTOneCellAnchor)parentXbean;
+                anchor = new XSSFClientAnchor(ct.getFrom(), CTMarker.Factory.newInstance());
+            }
+        }
+        return anchor;
+    }
+</code></pre>
+</body>

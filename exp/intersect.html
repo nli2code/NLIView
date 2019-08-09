@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void clip(Shape shape)
+    {
+        if(getDeviceclip() != null)
+        {
+            Area area = new Area(getClip());
+            if(shape != null)
+                area.intersect(new Area(shape));
+            shape = area;
+        }
+        setClip(shape);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static void assertNotIntersects(CellRangeAddress regionA, CellRangeAddress regionB) {
+        if ((regionA.intersects(regionB) || regionB.intersects(regionA))) {
+            final String A = regionA.formatAsString();
+            final String B = regionB.formatAsString();
+            fail(&quot;expected: regions &quot;+A+&quot; and &quot;+B+&quot; do not intersect&quot;);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testIntersectMethod()
+	{
+		assertEquals(CellRangeUtil.OVERLAP, CellRangeUtil.intersect(box0, box5));
+		assertEquals(CellRangeUtil.OVERLAP, CellRangeUtil.intersect(box5, box0));
+		assertEquals(CellRangeUtil.NO_INTERSECTION, CellRangeUtil.intersect(box1, box4));
+		assertEquals(CellRangeUtil.NO_INTERSECTION, CellRangeUtil.intersect(box4, box1));
+		assertEquals(CellRangeUtil.NO_INTERSECTION, CellRangeUtil.intersect(box2, box3));
+		assertEquals(CellRangeUtil.NO_INTERSECTION, CellRangeUtil.intersect(box3, box2));
+		assertEquals(CellRangeUtil.INSIDE, CellRangeUtil.intersect(box0, box1));
+		assertEquals(CellRangeUtil.INSIDE, CellRangeUtil.intersect(box0, box0));
+		assertEquals(CellRangeUtil.ENCLOSES, CellRangeUtil.intersect(box1, box0));
+		assertEquals(CellRangeUtil.INSIDE, CellRangeUtil.intersect(tenthColumn, oneCell));
+		assertEquals(CellRangeUtil.ENCLOSES, CellRangeUtil.intersect(oneCell, tenthColumn));
+		assertEquals(CellRangeUtil.OVERLAP, CellRangeUtil.intersect(tenthColumn, tenthRow));
+		assertEquals(CellRangeUtil.OVERLAP, CellRangeUtil.intersect(tenthRow, tenthColumn));
+		assertEquals(CellRangeUtil.INSIDE, CellRangeUtil.intersect(tenthColumn, tenthColumn));
+		assertEquals(CellRangeUtil.INSIDE, CellRangeUtil.intersect(tenthRow, tenthRow));
+	}
+</code></pre>
+</body>

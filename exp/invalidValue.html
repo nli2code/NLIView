@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	protected final double[] getNumberArray(ValueEval[] operands) throws EvaluationException {
+		if (operands.length &gt; getMaxNumOperands()) {
+			throw EvaluationException.invalidValue();
+		}
+		DoubleList retval = new DoubleList();
+
+		for (int i=0, iSize=operands.length; i&lt;iSize; i++) {
+			collectValues(operands[i], retval);
+		}
+		return retval.toArray();
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private static AreaEval convertRangeArg(ValueEval eval) throws EvaluationException {
+		if (eval instanceof AreaEval) {
+			return (AreaEval) eval;
+		}
+		if (eval instanceof RefEval) {
+			return ((RefEval)eval).offset(0, 0, 0, 0);
+		}
+		throw new EvaluationException(ErrorEval.VALUE_INVALID);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private static void collectValue(ValueEval arg, List&lt;Double&gt; temp, boolean mustBeNumber)
+			throws EvaluationException {
+		if (arg instanceof ErrorEval) {
+			throw new EvaluationException((ErrorEval) arg);
+		}
+		if (arg == BlankEval.instance || arg instanceof BoolEval || arg instanceof StringEval) {
+			if (mustBeNumber) {
+				throw EvaluationException.invalidValue();
+			}
+			return;
+		}
+		if (arg instanceof NumberEval) {
+			temp.add(new Double(((NumberEval) arg).getNumberValue()));
+			return;
+		}
+		throw new RuntimeException(&quot;Unexpected value type (&quot; + arg.getClass().getName() + &quot;)&quot;);
+	}
+</code></pre>
+</body>

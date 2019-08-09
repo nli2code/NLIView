@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    HSSFRow(HSSFWorkbook book, HSSFSheet sheet, RowRecord record) {
+        this.book = book;
+        this.sheet = sheet;
+        row = record;
+        setRowNum(record.getRowNumber());
+        
+        // Size the initial cell list such that a read only case won&#x27;t waste
+        //  lots of memory, and a create/read followed by adding new cells can
+        //  add a bit without needing a resize
+        cells = new HSSFCell[record.getLastCol()+INITIAL_CAPACITY];
+        
+        // Don&#x27;t trust colIx boundaries as read by other apps
+        // set the RowRecord empty for the moment
+        record.setEmpty();
+        // subsequent calls to createCellFromRecord() will update the colIx boundaries properly
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setRowNum(int rowIndex) {
+        int maxrow = SpreadsheetVersion.EXCEL2007.getLastRowIndex();
+        if (rowIndex &lt; 0 || rowIndex &gt; maxrow) {
+            throw new IllegalArgumentException(&quot;Invalid row number (&quot; + rowIndex
+                    + &quot;) outside allowable range (0..&quot; + maxrow + &quot;)&quot;);
+        }
+        _row.setR(rowIndex + 1);
+    }
+</code></pre>
+</body>

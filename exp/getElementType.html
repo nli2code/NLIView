@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public boolean removeBodyElement(int pos){
+    	if(pos &gt;= 0 &amp;&amp; pos &lt; bodyElements.size()) {
+    	   BodyElementType type = bodyElements.get(pos).getElementType(); 
+    		if(type == BodyElementType.TABLE){
+    			int tablePos = getTablePos(pos);
+    			tables.remove(tablePos);
+    			ctDocument.getBody().removeTbl(tablePos);
+    		}
+    		if(type == BodyElementType.PARAGRAPH){
+    			int paraPos = getParagraphPos(pos);
+    			paragraphs.remove(paraPos);
+    			ctDocument.getBody().removeP(paraPos);
+    		}
+         bodyElements.remove(pos);
+         return true;            
+    	}
+    	return false;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private int getPosOfBodyElement(IBodyElement needle) {
+	   BodyElementType type = needle.getElementType();
+      IBodyElement current; 
+	   for(int i=0; i&lt;bodyElements.size(); i++) {
+	      current = bodyElements.get(i);
+	      if(current.getElementType() == type) {
+	         if(current.equals(needle)) {
+	            return i;
+	         }
+	      }
+	   }
+	   return -1;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testParagraphStyles()
+        throws Exception
+    {
+        // 1) Load docx with Apache POI
+        XWPFDocument document = new XWPFDocument( Data.class.getResourceAsStream( &quot;TableCellVerticalAlignment.docx&quot; ) );
+
+        // Create styles engine
+        XWPFStylesDocument stylesDocument = new XWPFStylesDocument( document );
+
+        // Loop for each paragraph
+        List&lt;IBodyElement&gt; elements = document.getBodyElements();
+        for ( IBodyElement element : elements )
+        {
+            if ( element.getElementType() == BodyElementType.TABLE )
+            {
+                testTable( (XWPFTable) element, stylesDocument );
+            }
+        }
+    }
+</code></pre>
+</body>

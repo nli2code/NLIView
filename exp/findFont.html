@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    protected final void baseTestDefaultFont(String defaultName, short defaultSize, short defaultColor){
+        //get default font and check against default value
+        Workbook workbook = _testDataProvider.createWorkbook();
+        Font fontFind=workbook.findFont(Font.BOLDWEIGHT_NORMAL, defaultColor, defaultSize, defaultName, false, false, Font.SS_NONE, Font.U_NONE);
+        assertNotNull(fontFind);
+
+        //get default font, then change 2 values and check against different values (height changes)
+        Font font=workbook.createFont();
+        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        assertEquals(Font.BOLDWEIGHT_BOLD, font.getBoldweight());
+        font.setUnderline(Font.U_DOUBLE);
+        assertEquals(Font.U_DOUBLE, font.getUnderline());
+        font.setFontHeightInPoints((short)15);
+        assertEquals(15*20, font.getFontHeight());
+        assertEquals(15, font.getFontHeightInPoints());
+        fontFind=workbook.findFont(Font.BOLDWEIGHT_BOLD, defaultColor, (short)(15*20), defaultName, false, false, Font.SS_NONE, Font.U_DOUBLE);
+        assertNotNull(fontFind);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public XSSFFont findFont(short boldWeight, short color, short fontHeight, String name, boolean italic, boolean strikeout, short typeOffset, byte underline) {
+		for (XSSFFont font : fonts) {
+			if (	(font.getBoldweight() == boldWeight)
+					&amp;&amp; font.getColor() == color
+					&amp;&amp; font.getFontHeight() == fontHeight
+					&amp;&amp; font.getFontName().equals(name)
+					&amp;&amp; font.getItalic() == italic
+					&amp;&amp; font.getStrikeout() == strikeout
+					&amp;&amp; font.getTypeOffset() == typeOffset
+					&amp;&amp; font.getUnderline() == underline)
+			{
+				return font;
+			}
+		}
+		return null;
+	}
+</code></pre>
+</body>

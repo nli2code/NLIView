@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public int fillFields(byte[] data, int pOffset, EscherRecordFactory recordFactory) {
+        int bytesRemaining = readHeader(data, pOffset);
+        int bytesWritten = 8;
+        int offset = pOffset + 8;
+        while (bytesRemaining &gt; 0 &amp;&amp; offset &lt; data.length) {
+            EscherRecord child = recordFactory.createRecord(data, offset);
+            int childBytesWritten = child.fillFields(data, offset, recordFactory);
+            bytesWritten += childBytesWritten;
+            offset += childBytesWritten;
+            bytesRemaining -= childBytesWritten;
+            addChildRecord(child);
+            if (offset &gt;= data.length &amp;&amp; bytesRemaining &gt; 0) {
+                System.out.println(&quot;WARNING: &quot; + bytesRemaining + &quot; bytes remaining but no space left&quot;);
+            }
+        }
+        return bytesWritten;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public int fillFields( byte[] data, int offset,
+            EscherRecordFactory recordFactory )
+    {
+        int bytesRemaining = readHeader( data, offset );
+        short propertiesCount = readInstance( data, offset );
+        int pos = offset + 8;
+
+        EscherPropertyFactory f = new EscherPropertyFactory();
+        properties = f.createProperties( data, pos, propertiesCount );
+        return bytesRemaining + 8;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public int fillFields(byte[] data, int offset, EscherRecordFactory recordFactory) {
+        int bytesRemaining = readHeader( data, offset );
+        byte remainingData[] = new byte[bytesRemaining];
+        System.arraycopy(data, offset+8, remainingData, 0, bytesRemaining);
+        setRemainingData(remainingData);
+        return bytesRemaining + 8;
+    }
+</code></pre>
+</body>

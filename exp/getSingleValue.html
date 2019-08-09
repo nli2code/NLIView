@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	protected static final double singleOperandEvaluate(ValueEval arg, int srcRowIndex, int srcColumnIndex) throws EvaluationException {
+		if (arg == null) {
+			throw new IllegalArgumentException(&quot;arg must not be null&quot;);
+		}
+		ValueEval ve = OperandResolver.getSingleValue(arg, srcRowIndex, srcColumnIndex);
+		double result = OperandResolver.coerceValueToDouble(ve);
+		checkValue(result);
+		return result;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+		ValueEval ve;
+		try {
+			ve = OperandResolver.getSingleValue(arg0, srcRowIndex, srcColumnIndex);
+		} catch (EvaluationException e) {
+			if (false) {
+				// Note - it is more usual to propagate error codes straight to the result like this:
+				return e.getErrorEval();
+				// but logical functions behave a little differently
+			}
+			// this will usually cause a &#x27;FALSE&#x27; result except for ISNONTEXT()
+			ve = e.getErrorEval();
+		}
+		return BoolEval.valueOf(evaluate(ve));
+
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1,
+			ValueEval arg2, ValueEval arg3) {
+		try {
+			// Evaluation order:
+			// arg0 lookup_value, arg1 table_array, arg3 range_lookup, find lookup value, arg2 row_index, fetch result
+			ValueEval lookupValue = OperandResolver.getSingleValue(arg0, srcRowIndex, srcColumnIndex);
+			TwoDEval tableArray = LookupUtils.resolveTableArrayArg(arg1);
+			boolean isRangeLookup = LookupUtils.resolveRangeLookupArg(arg3, srcRowIndex, srcColumnIndex);
+			int colIndex = LookupUtils.lookupIndexOfValue(lookupValue, LookupUtils.createRowVector(tableArray, 0), isRangeLookup);
+			int rowIndex = LookupUtils.resolveRowOrColIndexArg(arg2, srcRowIndex, srcColumnIndex);
+			ValueVector resultCol = createResultColumnVector(tableArray, rowIndex);
+			return resultCol.getItem(colIndex);
+		} catch (EvaluationException e) {
+			return e.getErrorEval();
+		}
+	}
+</code></pre>
+</body>

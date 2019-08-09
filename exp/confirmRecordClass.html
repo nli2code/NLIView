@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testProtectSheetRecordOrder_bug47363a() {
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet s = wb.createSheet();
+        s.protectSheet(&quot;secret&quot;);
+        RecordCollector rc = new RecordCollector();
+        s.getSheet().visitContainedRecords(rc, 0);
+        Record[] recs = rc.getRecords();
+        int nRecs = recs.length;
+        if (recs[nRecs-2] instanceof PasswordRecord &amp;&amp; recs[nRecs-5] instanceof DimensionsRecord) {
+           throw new AssertionFailedError(&quot;Identified bug 47363a - PASSWORD after DIMENSION&quot;);
+        }
+        // Check that protection block is together, and before DIMENSION
+        confirmRecordClass(recs, nRecs-4, DimensionsRecord.class);
+        confirmRecordClass(recs, nRecs-9, ProtectRecord.class);
+        confirmRecordClass(recs, nRecs-8, ObjectProtectRecord.class);
+        confirmRecordClass(recs, nRecs-7, ScenarioProtectRecord.class);
+        confirmRecordClass(recs, nRecs-6, PasswordRecord.class);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private static void confirmRecordClass(Record[] recs, int index, Class&lt;? extends Record&gt; cls) {
+        if (recs.length &lt;= index) {
+            fail(&quot;Expected (&quot; + cls.getName() + &quot;) at index &quot;
+                + index + &quot; but array length is &quot; + recs.length + &quot;.&quot;);
+        }
+        assertEquals(cls, recs[index].getClass());
+    }
+</code></pre>
+</body>

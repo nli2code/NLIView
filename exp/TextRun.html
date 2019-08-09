@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void textRunsToText(StringBuffer ret, TextRun[] runs) {
+        if (runs==null) {
+            return;
+        }
+
+        for (int j = 0; j &lt; runs.length; j++) {
+            TextRun run = runs[j];
+            if (run != null) {
+                String text = run.getText();
+                ret.append(text);
+                if (!text.endsWith(&quot;\n&quot;)) {
+                    ret.append(&quot;\n&quot;);
+                }
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test41071() throws Exception {
+        SlideShow ppt = new SlideShow(_slTests.openResourceAsStream(&quot;41071.ppt&quot;));
+
+        Slide slide = ppt.getSlides()[0];
+        Shape[] sh = slide.getShapes();
+        assertEquals(1, sh.length);
+        assertTrue(sh[0] instanceof TextShape);
+        TextShape tx = (TextShape)sh[0];
+        assertEquals(&quot;Fundera, planera och involvera.&quot;, tx.getTextRun().getText());
+
+        TextRun[] run = slide.getTextRuns();
+        assertEquals(1, run.length);
+        assertEquals(&quot;Fundera, planera och involvera.&quot;, run[0].getText());
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testSetText() {
+		Slide slideOne = ss.getSlides()[0];
+		TextRun[] textRuns = slideOne.getTextRuns();
+		TextRun run = textRuns[0];
+
+		// Check current text
+		assertEquals(&quot;This is a test title&quot;, run.getText());
+
+		// Change
+		String changeTo = &quot;New test title&quot;;
+		run.setText(changeTo);
+		assertEquals(changeTo, run.getText());
+
+		// Ensure trailing \n&#x27;s are NOT stripped, it is legal to set a text with a trailing &#x27;\r&#x27;
+		run.setText(changeTo + &quot;\n&quot;);
+		assertEquals(changeTo + &quot;\n&quot;, run.getText());
+	}
+</code></pre>
+</body>

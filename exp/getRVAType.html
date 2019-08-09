@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testTypeOfRootPtg(){
+        HSSFWorkbook wb = new HSSFWorkbook();
+        wb.createSheet(&quot;CSCO&quot;);
+
+        Ptg[] ptgs = HSSFFormulaParser.parse(&quot;CSCO!$E$71&quot;, wb, FormulaType.NAMEDRANGE, 0);
+        for (int i = 0; i &lt; ptgs.length; i++) {
+            assertEquals(&#x27;R&#x27;, ptgs[i].getRVAType());
+        }
+
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(&quot;[AI]\n&quot;);
+        buffer.append(&quot;    .linkType             = &quot;).append(HexDump.byteToHex(getLinkType())).append(&#x27;\n&#x27;);
+        buffer.append(&quot;    .referenceType        = &quot;).append(HexDump.byteToHex(getReferenceType())).append(&#x27;\n&#x27;);
+        buffer.append(&quot;    .options              = &quot;).append(HexDump.shortToHex(getOptions())).append(&#x27;\n&#x27;);
+        buffer.append(&quot;    .customNumberFormat   = &quot;).append(isCustomNumberFormat()).append(&#x27;\n&#x27;);
+        buffer.append(&quot;    .indexNumberFmtRecord = &quot;).append(HexDump.shortToHex(getIndexNumberFmtRecord())).append(&#x27;\n&#x27;);
+        buffer.append(&quot;    .formulaOfLink        = &quot;).append(&#x27;\n&#x27;);
+        Ptg[] ptgs = field_5_formulaOfLink.getTokens();
+        for (int i = 0; i &lt; ptgs.length; i++) {
+            Ptg ptg = ptgs[i];
+            buffer.append(ptg.toString()).append(ptg.getRVAType()).append(&#x27;\n&#x27;);
+        }
+
+        buffer.append(&quot;[/AI]\n&quot;);
+        return buffer.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public String toString() {
+        StringBuffer sb = new StringBuffer(256);
+
+        sb.append(&quot;[ftLbsData]\n&quot;);
+        sb.append(&quot;    .unknownShort1 =&quot;).append(HexDump.shortToHex(_cbFContinued)).append(&quot;\n&quot;);
+        sb.append(&quot;    .formula        = &quot;).append(&#x27;\n&#x27;);
+        if(_linkPtg != null) sb.append(_linkPtg.toString()).append(_linkPtg.getRVAType()).append(&#x27;\n&#x27;);
+        sb.append(&quot;    .nEntryCount   =&quot;).append(HexDump.shortToHex(_cLines)).append(&quot;\n&quot;);
+        sb.append(&quot;    .selEntryIx    =&quot;).append(HexDump.shortToHex(_iSel)).append(&quot;\n&quot;);
+        sb.append(&quot;    .style         =&quot;).append(HexDump.shortToHex(_flags)).append(&quot;\n&quot;);
+        sb.append(&quot;    .unknownShort10=&quot;).append(HexDump.shortToHex(_idEdit)).append(&quot;\n&quot;);
+        if(_dropData != null) sb.append(&#x27;\n&#x27;).append(_dropData.toString());
+        sb.append(&quot;[/ftLbsData]\n&quot;);
+        return sb.toString();
+    }
+</code></pre>
+</body>

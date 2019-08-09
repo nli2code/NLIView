@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testPictureDetectionWithPNG() throws Exception {
+        HWPFDocument document = HWPFTestDataSamples.openSampleFile(&quot;PngPicture.doc&quot;);
+        PicturesTable pictureTable = document.getPicturesTable();
+        
+        assertEquals(1, pictureTable.getAllPictures().size());
+        
+        Picture p = pictureTable.getAllPictures().get(0);
+        assertEquals(PictureType.PNG, p.suggestPictureType());
+        assertEquals(&quot;png&quot;, p.suggestFileExtension());
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void test46122() {
+        SlideShow ppt = new SlideShow();
+        Slide slide = ppt.createSlide();
+
+        Picture pict = new Picture(-1); //index to non-existing picture data
+        pict.setSheet(slide);
+        PictureData data = pict.getPictureData();
+        assertNull(data);
+
+        BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = img.createGraphics();
+        pict.draw(graphics);
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public void testTwoImages() {
+		HWPFDocument doc = HWPFTestDataSamples.openSampleFile(&quot;two_images.doc&quot;);
+		List&lt;Picture&gt; pics = doc.getPicturesTable().getAllPictures();
+
+		assertNotNull(pics);
+		assertEquals(pics.size(), 2);
+		for(int i=0; i&lt;pics.size(); i++) {
+			Picture pic = (Picture)pics.get(i);
+			assertNotNull(pic.suggestFileExtension());
+			assertNotNull(pic.suggestFullFileName());
+		}
+
+		Picture picA = pics.get(0);
+		Picture picB = pics.get(1);
+		assertEquals(&quot;jpg&quot;, picA.suggestFileExtension());
+		assertEquals(&quot;jpg&quot;, picA.suggestFileExtension());
+	}
+</code></pre>
+</body>

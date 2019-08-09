@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testToString() {
+        UnknownEscherRecord r = new UnknownEscherRecord();
+        r.setOptions( (short) 0x1234 );
+        r.setRecordId( (short) 0xF112 );
+        byte[] data = new byte[8];
+        r.serialize( 0, data, new NullEscherSerializationListener() );
+
+        assertEquals( &quot;org.apache.poi.ddf.UnknownEscherRecord:&quot; + &#x27;\n&#x27; +
+                &quot;  isContainer: false&quot; + &#x27;\n&#x27; +
+                &quot;  version: 0x0004&quot; + &#x27;\n&#x27; +
+                &quot;  instance: 0x0123&quot; + &#x27;\n&#x27; +
+                &quot;  recordId: 0xF112&quot; + &#x27;\n&#x27; +
+                &quot;  numchildren: 0&quot; + &#x27;\n&#x27; +
+                &quot;: 0&quot;
+                , r.toString() );
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testSerialize() {
+		UnknownEscherRecord r = new UnknownEscherRecord();
+		r.setOptions((short) 0x123F);
+		r.setRecordId((short) 0xF112);
+		byte[] data = new byte[8];
+		r.serialize(0, data, new NullEscherSerializationListener());
+
+		assertEquals(&quot;[3F, 12, 12, F1, 00, 00, 00, 00]&quot;, HexDump.toHex(data));
+
+		EscherRecord childRecord = new UnknownEscherRecord();
+		childRecord.setOptions((short) 0x9999);
+		childRecord.setRecordId((short) 0xFF01);
+		r.addChildRecord(childRecord);
+		data = new byte[16];
+		r.serialize(0, data, new NullEscherSerializationListener());
+
+		assertEquals(&quot;[3F, 12, 12, F1, 08, 00, 00, 00, 99, 99, 01, FF, 00, 00, 00, 00]&quot;, HexDump.toHex(data));
+
+	}
+</code></pre>
+</body>

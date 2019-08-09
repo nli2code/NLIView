@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	protected int getDataSize() {
+		int size = 4+2+2+2+2;//options_field+first_formula_size+first_unused+sec_formula_size+sec+unused;
+		size += getUnicodeStringSize(_promptTitle);
+		size += getUnicodeStringSize(_errorTitle);
+		size += getUnicodeStringSize(_promptText);
+		size += getUnicodeStringSize(_errorText);
+		size += _formula1.getEncodedTokenSize();
+		size += _formula2.getEncodedTokenSize();
+		size += _regions.getSize();
+		return size;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void serialize(LittleEndianOutput out) {
+
+		out.writeInt(_option_flags);
+		
+		serializeUnicodeString(_promptTitle, out);
+		serializeUnicodeString(_errorTitle, out);
+		serializeUnicodeString(_promptText, out);
+		serializeUnicodeString(_errorText, out);
+		out.writeShort(_formula1.getEncodedTokenSize());
+		out.writeShort(_not_used_1);
+		_formula1.serializeTokens(out);
+		
+		out.writeShort(_formula2.getEncodedTokenSize());
+		out.writeShort(_not_used_2);
+		_formula2.serializeTokens(out);
+		
+		_regions.serialize(out);
+	}
+</code></pre>
+</body>

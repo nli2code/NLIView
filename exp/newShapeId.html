@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    void afterCreate() {
+        DrawingManager2 drawingManager = _sheet.getWorkbook().getWorkbook().getDrawingManager();
+        short dgId = drawingManager.findNewDrawingGroupId();
+        _boundAggregate.setDgId(dgId);
+        _boundAggregate.setMainSpRecordId(newShapeId());
+        drawingManager.incrementDrawingsSaved();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private void onCreate(HSSFShape shape){
+        if(getPatriarch() != null){
+            EscherContainerRecord spContainer = shape.getEscherContainer();
+            int shapeId = getPatriarch().newShapeId();
+            shape.setShapeId(shapeId);
+            getEscherContainer().addChildRecord(spContainer);
+            shape.afterInsert(getPatriarch());
+            EscherSpRecord sp;
+            if (shape instanceof HSSFShapeGroup){
+                sp = shape.getEscherContainer().getChildContainers().get(0).getChildById(EscherSpRecord.RECORD_ID);
+            } else {
+                sp = shape.getEscherContainer().getChildById(EscherSpRecord.RECORD_ID);
+            }
+            sp.setFlags(sp.getFlags() | EscherSpRecord.FLAG_CHILD);
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSSFSimpleShape createSimpleShape(XSSFClientAnchor anchor)
+    {
+        long shapeId = newShapeId();
+        CTTwoCellAnchor ctAnchor = createTwoCellAnchor(anchor);
+        CTShape ctShape = ctAnchor.addNewSp();
+        ctShape.set(XSSFSimpleShape.prototype());
+        ctShape.getNvSpPr().getCNvPr().setId(shapeId);
+        XSSFSimpleShape shape = new XSSFSimpleShape(this, ctShape);
+        shape.anchor = anchor;
+        return shape;
+    }
+</code></pre>
+</body>

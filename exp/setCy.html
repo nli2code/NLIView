@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void setPageSize(Dimension pgSize){
+        CTSlideSize sz = CTSlideSize.Factory.newInstance();
+        sz.setCx(Units.toEMU(pgSize.getWidth()));
+        sz.setCy(Units.toEMU(pgSize.getHeight()));
+        _presentation.setSldSz(sz);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setAnchor(Rectangle2D anchor) {
+        CTTransform2D xfrm = getSafeXfrm();
+        CTPoint2D off = xfrm.isSetOff() ? xfrm.getOff() : xfrm.addNewOff();
+        long x = Units.toEMU(anchor.getX());
+        long y = Units.toEMU(anchor.getY());
+        off.setX(x);
+        off.setY(y);
+        CTPositiveSize2D ext = xfrm.isSetExt() ? xfrm.getExt() : xfrm
+                .addNewExt();
+        long cx = Units.toEMU(anchor.getWidth());
+        long cy = Units.toEMU(anchor.getHeight());
+        ext.setCx(cx);
+        ext.setCy(cy);
+    }
+</code></pre>
+</body>

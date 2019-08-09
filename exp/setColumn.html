@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static NumberRecord convertToNumberRecord(RKRecord rk) {
+		NumberRecord num = new NumberRecord();
+
+		num.setColumn(rk.getColumn());
+		num.setRow(rk.getRow());
+		num.setXFIndex(rk.getXFIndex());
+		num.setValue(rk.getRKNumber());
+		return num;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void setRow(int row) {
+	   CellAddress oldRef = new CellAddress(_comment.getRef());
+	   
+		CellAddress ref = new CellAddress(row, getColumn());
+		_comment.setRef(ref.formatAsString());
+		_comments.referenceUpdated(oldRef, _comment);
+      
+        if(_vmlShape != null) {
+        	_vmlShape.getClientDataArray(0).setRowArray(0, 
+        			new BigInteger(String.valueOf(row)));
+        	
+            // There is a very odd xmlbeans bug when changing the row
+            //  arrays which can lead to corrupt pointer
+            // This call seems to fix them again... See bug #50795
+            _vmlShape.getClientDataList().toString();
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>     private NoteRecord createNoteRecord( HSSFComment shape, int shapeId )
+    {
+        NoteRecord note = new NoteRecord();
+        note.setColumn(shape.getColumn());
+        note.setRow(shape.getRow());
+        note.setFlags(shape.isVisible() ? NoteRecord.NOTE_VISIBLE : NoteRecord.NOTE_HIDDEN);
+        note.setShapeId(shapeId);
+        note.setAuthor(shape.getAuthor() == null ? &quot;&quot; : shape.getAuthor());
+        return note;
+    }
+</code></pre>
+</body>

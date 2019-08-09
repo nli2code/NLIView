@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private static void addNewSheetWithCellsA1toD4(Workbook book, int sheet) {
+
+        Sheet sht = book .createSheet(&quot;s&quot; + sheet);
+        for (int r=0; r &lt; 4; r++) {
+
+            Row   row = sht.createRow (r);
+            for (int c=0; c &lt; 4; c++) {
+
+                Cell cel = row.createCell(c);
+                cel.setCellValue(sheet*100 + r*10 + c);
+            }
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public final void testBug43093() {
+        Workbook xlw = _testDataProvider.createWorkbook();
+
+        addNewSheetWithCellsA1toD4(xlw, 1);
+        addNewSheetWithCellsA1toD4(xlw, 2);
+        addNewSheetWithCellsA1toD4(xlw, 3);
+        addNewSheetWithCellsA1toD4(xlw, 4);
+
+        Sheet s2   = xlw.getSheet(&quot;s2&quot;);
+        Row   s2r3 = s2.getRow(3);
+        Cell  s2E4 = s2r3.createCell(4);
+        s2E4.setCellFormula(&quot;SUM(s3!B2:C3)&quot;);
+
+        FormulaEvaluator eva = xlw.getCreationHelper().createFormulaEvaluator();
+        double d = eva.evaluate(s2E4).getNumberValue();
+
+        assertEquals(d, (311+312+321+322), 0.0000001);
+    }
+</code></pre>
+</body>

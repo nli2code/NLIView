@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public String toFormulaString(String[] operands) {
+        if(space.isSet(_options)) {
+            return operands[ 0 ];
+        } else if (optiIf.isSet(_options)) {
+            return toFormulaString() + &quot;(&quot; + operands[0] + &quot;)&quot;;
+        } else if (optiSkip.isSet(_options)) {
+            return toFormulaString() + operands[0];   //goto isn&#x27;t a real formula element should not show up
+        } else {
+            return toFormulaString() + &quot;(&quot; + operands[0] + &quot;)&quot;;
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected boolean flagBoolean(String flagName, boolean expected) {
+        String value = testFlags.get(flagName);
+        boolean isSet;
+        if (value == null)
+            isSet = false;
+        else {
+            isSet = value.equalsIgnoreCase(&quot;true&quot;) || value.equalsIgnoreCase(
+                    &quot;yes&quot;) || value.equalsIgnoreCase(&quot;on&quot;);
+        }
+        warnIfUnexpected(flagName, expected, isSet);
+        return isSet;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSSFComment createCellComment(ClientAnchor anchor) {
+        XSSFClientAnchor ca = (XSSFClientAnchor)anchor;
+        XSSFSheet sheet = (XSSFSheet)getParent();
+
+        //create comments and vmlDrawing parts if they don&#x27;t exist
+        CommentsTable comments = sheet.getCommentsTable(true);
+        XSSFVMLDrawing vml = sheet.getVMLDrawing(true);
+        schemasMicrosoftComVml.CTShape vmlShape = vml.newCommentShape();
+        if(ca.isSet()){
+            String position =
+                    ca.getCol1() + &quot;, 0, &quot; + ca.getRow1() + &quot;, 0, &quot; +
+                    ca.getCol2() + &quot;, 0, &quot; + ca.getRow2() + &quot;, 0&quot;;
+            vmlShape.getClientDataArray(0).setAnchorArray(0, position);
+        }
+        XSSFComment shape = new XSSFComment(comments, comments.newComment(), vmlShape);
+        shape.setColumn(ca.getCol1());
+        shape.setRow(ca.getRow1());
+        return shape;
+    }
+</code></pre>
+</body>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HSSFPatriarch getDrawingPatriarch() {
+        if(_patriarch != null) return _patriarch;
+        
+        EscherAggregate agg = getDrawingEscherAggregate();
+        if(agg == null) return null;
+
+        _patriarch = new HSSFPatriarch(this, agg);
+        agg.setPatriarch(_patriarch);
+
+        // Have it process the records into high level objects
+        //  as best it can do (this step may eat anything
+        //  that isn&#x27;t supported, you were warned...)
+        agg.convertRecordsToUserModel();
+
+        // Return what we could cope with
+        return _patriarch;
+    }
+</code></pre>
+</body>

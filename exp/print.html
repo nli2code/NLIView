@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private void outHex( int bytes, InputStream in, PrintStream out ) throws IOException, LittleEndian.BufferUnderrunException
+    {
+        switch ( bytes )
+        {
+            case 1:
+                out.print( HexDump.toHex( (byte) in.read() ) );
+                break;
+            case 2:
+                out.print( HexDump.toHex( LittleEndian.readShort( in ) ) );
+                break;
+            case 4:
+                out.print( HexDump.toHex( LittleEndian.readInt( in ) ) );
+                break;
+            default:
+                throw new IOException( &quot;Unable to output variable of that width&quot; );
+        }
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void addCustomKeys(String[] keys, String identifier) {
+		System.out.println(&quot;Creating key map:&quot;);
+		idIndex = -1;
+		this.currentKeyMap = new HashMap&lt;Integer, String&gt;();
+		for (int i = 0; i &lt; keys.length; i++) {
+			if (keys[i].equals(identifier)) idIndex = i;
+			currentKeyMap.put(i, keys[i]);
+			keySet.add(keys[i]);
+		}
+		System.out.println(this.currentKeyMap);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	public static void main(String[] args) throws Exception {
+	    // Excelファイルの指定
+	    Workbook wb = WorkbookFactory.create(new FileInputStream(&quot;./files/read.xlsx&quot;));
+
+	  //エクセルのシートの情報を表示する
+	    System.out.println(&quot;総シート数:&quot; + wb.getNumberOfSheets());
+	    System.out.println(&quot;シート名(1):&quot; + wb.getSheetName(0));
+		System.out.println(&quot;シート名(2):&quot; + wb.getSheetName(1));
+		System.out.println(&quot;シート名(3):&quot; + wb.getSheetName(2));
+
+		//引数で指定した番号のシートを取得する
+	    Sheet sheet = wb.getSheetAt(0);
+	    
+	    Row row = sheet.getRow(0);//左から1番目のセル
+	    Cell cell = row.getCell(0); //(0,0)を読み込む
+	    System.out.print(&quot;左上セル(0,0)の内容＝&quot;);
+	    System.out.println(cell.getStringCellValue());
+	  }
+</code></pre>
+</body>

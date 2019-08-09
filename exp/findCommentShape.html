@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public XSSFComment getCellComment(int row, int column) {
+        if (sheetComments == null) {
+            return null;
+        }
+
+        String ref = new CellReference(row, column).formatAsString();
+        CTComment ctComment = sheetComments.getCTComment(ref);
+        if(ctComment == null) return null;
+
+        XSSFVMLDrawing vml = getVMLDrawing(false);
+        return new XSSFComment(sheetComments, ctComment,
+                vml == null ? null : vml.findCommentShape(row, column));
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    protected CTShape findCommentShape(int row, int col){
+        for(XmlObject itm : _items){
+            if(itm instanceof CTShape){
+                CTShape sh = (CTShape)itm;
+                if(sh.sizeOfClientDataArray() &gt; 0){
+                    CTClientData cldata = sh.getClientDataArray(0);
+                    if(cldata.getObjectType() == STObjectType.NOTE){
+                        int crow = cldata.getRowArray(0).intValue();
+                        int ccol = cldata.getColumnArray(0).intValue();
+                        if(crow == row &amp;&amp; ccol == col) {
+                            return sh;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public void testRemoveCommentShape() throws Exception {
+        XSSFVMLDrawing vml = new XSSFVMLDrawing();
+        vml.read(POIDataSamples.getSpreadSheetInstance().openResourceAsStream(&quot;vmlDrawing1.vml&quot;));
+
+        CTShape sh_a1 = vml.findCommentShape(0, 0);
+        assertNotNull(sh_a1);
+
+        assertTrue(vml.removeCommentShape(0, 0));
+        assertNull(vml.findCommentShape(0, 0));
+
+    }
+</code></pre>
+</body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HSSFCellStyle getRowStyle() {
+        if(!isFormatted()) { return null; }
+        short styleIndex = row.getXFIndex();
+        ExtendedFormatRecord xf = book.getWorkbook().getExFormatAt(styleIndex);
+        return new HSSFCellStyle(styleIndex, xf, book);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	private CellStyle getRowStyle(HSSFWorkbook workbook) {
+
+		CellStyle style = workbook.createCellStyle();
+		Font font = workbook.createFont();
+		font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
+		font.setColor(Font.COLOR_NORMAL);
+		font.setItalic(true);
+		font.setFontName(&quot;Times New Roman&quot;);
+
+		style.setFont(font);
+		return style;
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public XSSFCellStyle getRowStyle() {
+       if(!isFormatted()) return null;
+       
+       StylesTable stylesSource = getSheet().getWorkbook().getStylesSource();
+       if(stylesSource.getNumCellStyles() &gt; 0) {
+           return stylesSource.getStyleAt((int)_row.getS());
+       } else {
+          return null;
+       }
+    }
+</code></pre>
+</body>

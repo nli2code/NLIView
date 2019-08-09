@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testGetFormattedCellValueHSSFCellHSSFFormulaEvaluator() {
+		// test formula format
+		HSSFRow row = wb.getSheetAt(0).getRow(7);
+		HSSFCell cell = row.getCell(0);
+		log(&quot;\n==== FORMULA CELL ====&quot;);
+
+		// first without a formula evaluator
+		log(formatter.formatCellValue(cell) + &quot;\t (without evaluator)&quot;);
+		assertEquals(&quot;SUM(12.25,12.25)/100&quot;, formatter.formatCellValue(cell));
+
+		// now with a formula evaluator
+		HSSFFormulaEvaluator evaluator = new HSSFFormulaEvaluator(wb);
+		log(formatter.formatCellValue(cell, evaluator) + &quot;\t\t\t (with evaluator)&quot;);
+		char decimalSeparator = new DecimalFormatSymbols().getDecimalSeparator();
+		assertEquals(&quot;24&quot; + decimalSeparator + &quot;50%&quot;, formatter.formatCellValue(cell,evaluator));
+		
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testSetDefaultNumberFormat() {
+		HSSFRow row = wb.getSheetAt(0).getRow(3);
+		Iterator&lt;Cell&gt; it = row.cellIterator();
+		Format defaultFormat = new DecimalFormat(&quot;Balance $#,#00.00 USD;Balance -$#,#00.00 USD&quot;);
+		formatter.setDefaultNumberFormat(defaultFormat);
+
+		log(&quot;\n==== DEFAULT NUMBER FORMAT ====&quot;);
+		while (it.hasNext()) {
+			Cell cell = it.next();
+			cell.setCellValue(cell.getNumericCellValue() * Math.random() / 1000000 - 1000);
+			log(formatter.formatCellValue(cell));
+			assertTrue(formatter.formatCellValue(cell).startsWith(&quot;Balance &quot;));
+			assertTrue(formatter.formatCellValue(cell).endsWith(&quot; USD&quot;));
+		}
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void confirm(String expectedTimeStr, String formulaText) {
+//		System.out.println(&quot;=&quot; + formulaText);
+		String[] parts = Pattern.compile(&quot;:&quot;).split(expectedTimeStr);
+		int expH = Integer.parseInt(parts[0]);
+		int expM = Integer.parseInt(parts[1]);
+		int expS = Integer.parseInt(parts[2]);
+
+		double expectedValue = (expH*SECONDS_PER_HOUR + expM*SECONDS_PER_MINUTE + expS)/SECONDS_PER_DAY;
+
+		cell11.setCellFormula(formulaText);
+		cell11.setCellStyle(style);
+		evaluator.clearAllCachedResultValues();
+
+		double actualValue = evaluator.evaluate(cell11).getNumberValue();
+		assertEquals(expectedValue, actualValue, 0.0);
+
+		String actualText = form.formatCellValue(cell11, evaluator);
+		assertEquals(expectedTimeStr, actualText);
+	}
+</code></pre>
+</body>

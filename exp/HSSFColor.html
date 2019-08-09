@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public HSSFColor findSimilarColor(int red, int green, int blue) {
+        HSSFColor result = null;
+        int minColorDistance = Integer.MAX_VALUE;
+        byte[] b = _palette.getColor(PaletteRecord.FIRST_COLOR_INDEX);
+        for (short i = PaletteRecord.FIRST_COLOR_INDEX; b != null;
+            b = _palette.getColor(++i))
+        {
+            int colorDistance = Math.abs(red - unsignedInt(b[0])) +
+            	Math.abs(green - unsignedInt(b[1])) +
+            	Math.abs(blue - unsignedInt(b[2]));
+            if (colorDistance &lt; minColorDistance)
+            {
+                minColorDistance = colorDistance;
+                result = getColor(i);
+            }
+        }
+        return result;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void setFillForegroundColor(Color fg) {
+        HSSFColor hcolor = HSSFColor.toHSSFColor(fg);
+        if (hcolor == null) {
+            setFillForegroundColor((short)0);
+        } else {
+            setFillForegroundColor(hcolor.getIndex());
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    private static String renderColor(Color color) {
+        if (color instanceof HSSFColor) {
+            return ((HSSFColor) color).getHexString();
+        } else if (color instanceof XSSFColor) {
+            return ((XSSFColor) color).getARGBHex();
+        } else {
+            return &quot;(none)&quot;;
+        }
+    }
+</code></pre>
+</body>

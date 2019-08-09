@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    private static void copyAttributes(Font font, AttributedString str, int startIdx, int endIdx) {
+        str.addAttribute(TextAttribute.FAMILY, font.getFontName(), startIdx, endIdx);
+        str.addAttribute(TextAttribute.SIZE, (float)font.getFontHeightInPoints());
+        if (font.getBoldweight() == Font.BOLDWEIGHT_BOLD) str.addAttribute(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD, startIdx, endIdx);
+        if (font.getItalic() ) str.addAttribute(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE, startIdx, endIdx);
+        if (font.getUnderline() == Font.U_SINGLE ) str.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, startIdx, endIdx);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    private String tab2space(){
+        AttributedString string = new AttributedString(&quot; &quot;);
+        // user can pass an object to convert fonts via a rendering hint
+        string.addAttribute(TextAttribute.FAMILY, getFontFamily());
+
+        string.addAttribute(TextAttribute.SIZE, (float)getFontSize());
+        TextLayout l = new TextLayout(string.getIterator(), new FontRenderContext(null, true, true));
+        double wspace = l.getAdvance();
+
+        double tabSz = _p.getDefaultTabSize();
+
+        int numSpaces = (int)Math.ceil(tabSz / wspace);
+        StringBuffer buf = new StringBuffer();
+        for(int i = 0; i &lt; numSpaces; i++) {
+            buf.append(&#x27; &#x27;);
+        }
+        return buf.toString();
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	private void addModified() {
+		if (!propsPart.getModifiedProperty().hasValue())
+			return;
+
+		Element elem = xmlDoc.getRootElement().element(
+				new QName(KEYWORD_MODIFIED, namespaceDcTerms));
+		if (elem == null) {
+			// missing, we add it
+			elem = xmlDoc.getRootElement().addElement(
+					new QName(KEYWORD_MODIFIED, namespaceDcTerms));
+		} else {
+			elem.clearContent();// clear the old value
+		}
+		elem.addAttribute(new QName(&quot;type&quot;, namespaceXSI), &quot;dcterms:W3CDTF&quot;);
+		elem.addText(propsPart.getModifiedPropertyString());
+	}
+</code></pre>
+</body>

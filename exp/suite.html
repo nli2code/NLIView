@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public static Test suite() {
+
+		TestSuite suite = new TestSuite(AllOpenXML4JTests.class.getName());
+		suite.addTestSuite(TestContentType.class);
+		suite.addTestSuite(TestFileHelper.class);
+		suite.addTestSuite(TestListParts.class);
+		suite.addTestSuite(TestPackage.class);
+		suite.addTestSuite(TestPackageCoreProperties.class);
+		suite.addTestSuite(TestPackagePartName.class);
+		suite.addTestSuite(TestPackageThumbnail.class);
+		suite.addTestSuite(TestPackagingURIHelper.class);
+		suite.addTestSuite(TestRelationships.class);
+		suite.addTest(AllOpenXML4JComplianceTests.suite());
+		suite.addTest(AllOpenXML4JInternalTests.suite());
+		return suite;
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public static Test suite() {
+        TestSuite suite = new TestSuite(HSSFTests.class.getName());
+
+        suite.addTest(AllEventUserModelTests.suite());
+        suite.addTest(AllModelTests.suite());
+        suite.addTest(AllUserModelTests.suite());
+        suite.addTest(AllRecordTests.suite());
+        suite.addTest(AllHSSFUtilTests.suite());
+        suite.addTest(new TestSuite(TestExcelExtractor.class));
+        suite.addTest(new TestSuite(TestEventRecordFactory.class));
+        suite.addTest(AllSSFormulaTests.suite());
+        suite.addTest(AllSSUtilTests.suite());
+        return suite;
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public static Test suite() {
+        TestSuite result = new TestSuite(&quot;Tests for org.apache.poi&quot;);
+        result.addTestSuite(TestPOIDocumentMain.class);
+        result.addTest(AllPOIDDFTests.suite());
+        result.addTest(AllPOIHPSFBasicTests.suite());
+        result.addTest(HSSFTests.suite());
+        result.addTest(AllPOIFSTests.suite());
+        result.addTest(AllPOIUtilTests.suite());
+        return result;
+    }
+</code></pre>
+</body>

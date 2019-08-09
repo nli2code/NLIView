@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>	public void testBooleanLiterals() {
+		confirmFormat(&quot;TRUE&quot;, &quot;&#x27;TRUE&#x27;&quot;);
+		confirmFormat(&quot;FALSE&quot;, &quot;&#x27;FALSE&#x27;&quot;);
+		confirmFormat(&quot;True&quot;, &quot;&#x27;True&#x27;&quot;);
+		confirmFormat(&quot;fAlse&quot;, &quot;&#x27;fAlse&#x27;&quot;);
+		
+		confirmFormat(&quot;Yes&quot;, &quot;Yes&quot;);
+		confirmFormat(&quot;No&quot;, &quot;No&quot;);
+	}
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public void testFormat() {
+		
+		confirmFormat(&quot;abc&quot;, &quot;abc&quot;);
+		confirmFormat(&quot;123&quot;, &quot;&#x27;123&#x27;&quot;);
+		
+		confirmFormat(&quot;my sheet&quot;, &quot;&#x27;my sheet&#x27;&quot;); // space
+		confirmFormat(&quot;A:MEM&quot;, &quot;&#x27;A:MEM&#x27;&quot;); // colon
+
+		confirmFormat(&quot;O&#x27;Brian&quot;, &quot;&#x27;O&#x27;&#x27;Brian&#x27;&quot;); // single quote gets doubled
+		
+		
+		confirmFormat(&quot;3rdTimeLucky&quot;, &quot;&#x27;3rdTimeLucky&#x27;&quot;); // digit in first pos
+		confirmFormat(&quot;_&quot;, &quot;_&quot;); // plain underscore OK
+		confirmFormat(&quot;my_3rd_sheet&quot;, &quot;my_3rd_sheet&quot;); // underscores and digits OK
+		confirmFormat(&quot;A12220&quot;, &quot;&#x27;A12220&#x27;&quot;); 
+		confirmFormat(&quot;TAXRETURN19980415&quot;, &quot;TAXRETURN19980415&quot;); 
+	}
+</code></pre>
+</body>

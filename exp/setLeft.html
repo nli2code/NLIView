@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testSetGetSpacingLineRule() throws IOException {
+        XWPFDocument doc = new XWPFDocument();
+        XWPFParagraph p = doc.createParagraph();
+
+        CTP ctp = p.getCTP();
+        CTPPr ppr = ctp.getPPr() == null ? ctp.addNewPPr() : ctp.getPPr();
+
+        assertEquals(STLineSpacingRule.INT_AUTO, p.getSpacingLineRule().getValue());
+
+        CTSpacing spacing = ppr.addNewSpacing();
+        spacing.setLineRule(STLineSpacingRule.AT_LEAST);
+        assertEquals(LineSpacingRule.AT_LEAST, p.getSpacingLineRule());
+
+        p.setSpacingAfter(100);
+        assertEquals(100, spacing.getAfter().intValue());
+        
+        doc.close();
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>	public static void main(String[] args) throws Exception
+	{
+		String dataPath = &quot;src/featurescomparison/workingwithworksheets/headerandfooter/data/&quot;;
+		
+		Workbook wb = new HSSFWorkbook();
+	    Sheet sheet = wb.createSheet(&quot;new sheet&quot;);
+
+	    Header header = sheet.getHeader();
+	    header.setCenter(&quot;Center Header&quot;);
+	    header.setLeft(&quot;Left Header&quot;);
+	    header.setRight(HSSFHeader.font(&quot;Stencil-Normal&quot;, &quot;Italic&quot;) +
+	                    HSSFHeader.fontSize((short) 16) + &quot;Right w/ Stencil-Normal Italic font and size 16&quot;);
+
+	    FileOutputStream fileOut = new FileOutputStream(dataPath + &quot;ApacheHeaderFooter_Out.xls&quot;);
+	    wb.write(fileOut);
+	    fileOut.close();
+	    
+	    System.out.println(&quot;Aspose Header Footer Created.&quot;);
+	}
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>	 public void testFooterHas16bitCharacter() {
+		HSSFWorkbook b = new HSSFWorkbook();
+		HSSFSheet s = b.createSheet(&quot;Test&quot;);
+		HSSFFooter f = s.getFooter();
+		f.setLeft(&quot;\u0391&quot;);
+		f.setCenter(&quot;\u0392&quot;);
+		f.setRight(&quot;\u0393&quot;);
+
+		HSSFWorkbook b2 = HSSFTestDataSamples.writeOutAndReadBack(b);
+		HSSFFooter f2 = b2.getSheet(&quot;Test&quot;).getFooter();
+
+		assertEquals(f2.getLeft(),&quot;\u0391&quot;);
+		assertEquals(f2.getCenter(),&quot;\u0392&quot;);
+		assertEquals(f2.getRight(),&quot;\u0393&quot;);
+	}
+</code></pre>
+</body>

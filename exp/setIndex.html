@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public void testStore()
+    {
+        SeriesChartGroupIndexRecord record = new SeriesChartGroupIndexRecord();
+        record.setChartGroupIndex( (short)0 );
+
+
+        byte [] recordBytes = record.serialize();
+        assertEquals(recordBytes.length - 4, data.length);
+        for (int i = 0; i &lt; data.length; i++)
+            assertEquals(&quot;At offset &quot; + i, data[i], recordBytes[i+4]);
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public void preWrite()
+    {
+        Property[] properties = _properties.toArray(new Property[_properties.size()]);
+
+        // give each property its index
+        for (int k = 0; k &lt; properties.length; k++)
+        {
+            properties[ k ].setIndex(k);
+        }
+
+        // allocate the blocks for the property table
+        _blocks = PropertyBlock.createPropertyBlockArray(_bigBigBlockSize, _properties);
+
+        // prepare each property for writing
+        for (int k = 0; k &lt; properties.length; k++)
+        {
+            properties[ k ].preWrite();
+        }
+    }
+</code></pre>
+<h2 id="exp3">Example 3</h2><pre><code>    public List&lt;XSLFPictureData&gt; getAllPictures() {
+        if(_pictures == null){
+            List&lt;PackagePart&gt; mediaParts = getPackage().getPartsByName(Pattern.compile(&quot;/ppt/media/.*?&quot;));
+            _pictures = new ArrayList&lt;XSLFPictureData&gt;(mediaParts.size());
+            for(PackagePart part : mediaParts){
+                _pictures.add(new XSLFPictureData(part, null));    
+            }
+        }
+        return Collections.unmodifiableList(_pictures);
+    }
+</code></pre>
+</body>

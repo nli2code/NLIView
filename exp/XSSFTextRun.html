@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>API Example</title>
+	
+	<style type="text/css" media="screen">
+	
+		body {
+			line-height: 140%;
+			margin: 50px;
+			width: 1000px;
+		}
+		code {font-size: 120%;}
+		
+		
+		pre code {
+			background-color: #eee;
+			border: 1px solid #999;
+			display: block;
+			padding: 20px;
+		}
+		
+	</style>
+	
+</head>
+<body>
+<h2 id="exp1">Example 1</h2><pre><code>    public XSLFTextRun addNewTextRun(){
+        CTRegularTextRun r = _p.addNewR();
+        CTTextCharacterProperties rPr = r.addNewRPr();
+        rPr.setLang(&quot;en-US&quot;);
+        XSLFTextRun run = new XSLFTextRun(r, this);
+        _runs.add(run);
+        return run;
+    }
+</code></pre>
+<h2 id="exp2">Example 2</h2><pre><code>    public XSLFTextRun addLineBreak(){
+        CTTextLineBreak br = _p.addNewBr();
+        CTTextCharacterProperties brProps = br.addNewRPr();
+        if(_runs.size() &gt; 0){
+            // by default line break has the font size of the last text run
+            CTTextCharacterProperties prevRun = _runs.get(_runs.size() - 1).getRPr();
+            brProps.set(prevRun);
+        }
+        CTRegularTextRun r = CTRegularTextRun.Factory.newInstance();
+        r.setRPr(brProps);
+        r.setT(&quot;\n&quot;);
+        XSLFTextRun run = new XSLFLineBreak(r, this, brProps);
+        _runs.add(run);
+        return run;
+    }
+</code></pre>
+</body>
